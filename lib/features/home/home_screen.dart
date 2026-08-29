@@ -7,6 +7,7 @@ import '../../db/daos/progress_dao.dart';
 import '../../theme/app_theme.dart';
 import '../packs/pack_browser_screen.dart';
 import '../packs/pack_detail_screen.dart';
+import '../settings/settings_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -55,6 +56,13 @@ class HomeScreen extends ConsumerWidget {
               ),
               actions: [
                 IconButton(
+                  icon: const Icon(Icons.settings_outlined),
+                  tooltip: 'Settings & Tools',
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                  ),
+                ),
+                IconButton(
                   icon: const Icon(Icons.add_circle_outline_rounded),
                   tooltip: 'Browse Knowledge Packs',
                   onPressed: () => Navigator.of(context).push(
@@ -76,7 +84,7 @@ class HomeScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 4),
                     Text('Spaced repetition · Any subject · Your pace',
-                      style: TextStyle(fontSize: 13, color: cs.onSurfaceVariant)),
+                        style: TextStyle(fontSize: 13, color: cs.onSurfaceVariant)),
                     const SizedBox(height: 20),
                   ],
                 ),
@@ -121,8 +129,9 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   icon: const Icon(Icons.explore_rounded, size: 18),
                   label: const Text('Browse Knowledge Packs'),
-                  style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(52),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))),
+                  style: OutlinedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(52),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14))),
                 ),
               ),
             ),
@@ -232,17 +241,21 @@ class _PackCard extends ConsumerWidget {
   }
 
   Color _parseColor(String hex) {
-    try { return Color(int.parse(hex.replaceAll('#', '0xFF'))); } catch (_) { return SynapseColors.primary; }
+    try {
+      return Color(int.parse(hex.replaceAll('#', '0xFF')));
+    } catch (_) {
+      return SynapseColors.primary;
+    }
   }
 
   IconData _iconData(String name) {
     return switch (name) {
-      'science'   => Icons.science_rounded,
-      'code'      => Icons.code_rounded,
+      'science' => Icons.science_rounded,
+      'code' => Icons.code_rounded,
       'functions' => Icons.functions_rounded,
-      'terminal'  => Icons.terminal_rounded,
+      'terminal' => Icons.terminal_rounded,
       'grid_view' => Icons.grid_view_rounded,
-      _           => Icons.school_rounded,
+      _ => Icons.school_rounded,
     };
   }
 }
@@ -274,10 +287,11 @@ class _EmptyPackCard extends StatelessWidget {
         children: [
           const Icon(Icons.bolt, size: 48, color: SynapseColors.primary),
           const SizedBox(height: 12),
-          const Text('No Knowledge Packs Installed', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17), textAlign: TextAlign.center),
+          const Text('No Knowledge Packs Installed',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17), textAlign: TextAlign.center),
           const SizedBox(height: 6),
           Text('Browse available packs to start mastering a subject.',
-            textAlign: TextAlign.center, style: TextStyle(color: cs.onSurfaceVariant, fontSize: 13)),
+              textAlign: TextAlign.center, style: TextStyle(color: cs.onSurfaceVariant, fontSize: 13)),
           const SizedBox(height: 18),
           FilledButton.icon(
             onPressed: onBrowse,

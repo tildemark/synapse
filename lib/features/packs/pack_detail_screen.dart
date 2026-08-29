@@ -8,6 +8,9 @@ import '../../db/daos/progress_dao.dart';
 import '../../theme/app_theme.dart';
 import '../lessons/lessons_screen.dart';
 import '../reviews/reviews_screen.dart';
+import '../cram/cram_screen.dart';
+import '../drills/tag_drill_screen.dart';
+import '../mock_exam/mock_exam_screen.dart';
 
 class PackDetailScreen extends ConsumerWidget {
   const PackDetailScreen({super.key, required this.pack});
@@ -29,7 +32,7 @@ class PackDetailScreen extends ConsumerWidget {
             slivers: [
               // Hero App Bar
               SliverAppBar(
-                expandedHeight: 200,
+                expandedHeight: 180,
                 pinned: true,
                 backgroundColor: SynapseColors.surface,
                 flexibleSpace: FlexibleSpaceBar(
@@ -43,7 +46,7 @@ class PackDetailScreen extends ConsumerWidget {
                       ),
                     ),
                     child: Center(
-                      child: Icon(_iconData(pack.iconName), size: 80, color: color.withAlpha(180)),
+                      child: Icon(_iconData(pack.iconName), size: 70, color: color.withAlpha(180)),
                     ),
                   ),
                 ),
@@ -61,7 +64,9 @@ class PackDetailScreen extends ConsumerWidget {
                         const SizedBox(height: 20),
                       ],
 
-                      // Action Buttons
+                      // Core SRS Actions
+                      Text('SRS Core Queue', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: cs.onSurface)),
+                      const SizedBox(height: 10),
                       Row(
                         children: [
                           Expanded(
@@ -72,18 +77,63 @@ class PackDetailScreen extends ConsumerWidget {
                               color: SynapseColors.primary,
                               onTap: () => Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => LessonsScreen(packId: pack.packId),
-                              )),
+                              )).then((_) => ref.invalidate(installedPacksProvider)),
                             ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
                             child: _ActionButton(
                               label: 'Reviews',
-                              subtitle: '${counts?.apprentice ?? 0} due',
+                              subtitle: '${counts?.apprentice ?? 0} active',
                               icon: Icons.replay_rounded,
                               color: SynapseColors.apprentice,
                               onTap: () => Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => ReviewsScreen(packId: pack.packId),
+                              )).then((_) => ref.invalidate(installedPacksProvider)),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // Practice & Assessment Modes
+                      Text('Extra Practice & Exams', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: cs.onSurface)),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _ActionButton(
+                              label: 'Cram Mode',
+                              subtitle: 'Freestyle all cards',
+                              icon: Icons.bolt_rounded,
+                              color: SynapseColors.burned,
+                              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => CramScreen(packId: pack.packId, packName: pack.name),
+                              )),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: _ActionButton(
+                              label: 'Topic Drills',
+                              subtitle: 'Filter by chapter',
+                              icon: Icons.filter_list_rounded,
+                              color: SynapseColors.secondary,
+                              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => TagDrillScreen(packId: pack.packId, packName: pack.name),
+                              )),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: _ActionButton(
+                              label: 'Mock Exam',
+                              subtitle: 'Timed test',
+                              icon: Icons.timer_rounded,
+                              color: SynapseColors.guru,
+                              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => MockExamScreen(packId: pack.packId, packName: pack.name),
                               )),
                             ),
                           ),
@@ -93,9 +143,11 @@ class PackDetailScreen extends ConsumerWidget {
                       const SizedBox(height: 24),
 
                       // Stage breakdown
-                      Text('Stage Breakdown', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: cs.onSurface)),
+                      Text('Stage Breakdown', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: cs.onSurface)),
                       const SizedBox(height: 12),
                       if (counts != null) _StageBreakdownGrid(counts: counts),
+
+                      const SizedBox(height: 30),
                     ],
                   ),
                 ),
@@ -108,17 +160,21 @@ class PackDetailScreen extends ConsumerWidget {
   }
 
   Color _parseColor(String hex) {
-    try { return Color(int.parse(hex.replaceAll('#', '0xFF'))); } catch (_) { return SynapseColors.primary; }
+    try {
+      return Color(int.parse(hex.replaceAll('#', '0xFF')));
+    } catch (_) {
+      return SynapseColors.primary;
+    }
   }
 
   IconData _iconData(String name) {
     return switch (name) {
-      'science'   => Icons.science_rounded,
-      'code'      => Icons.code_rounded,
+      'science' => Icons.science_rounded,
+      'code' => Icons.code_rounded,
       'functions' => Icons.functions_rounded,
-      'terminal'  => Icons.terminal_rounded,
+      'terminal' => Icons.terminal_rounded,
       'grid_view' => Icons.grid_view_rounded,
-      _           => Icons.school_rounded,
+      _ => Icons.school_rounded,
     };
   }
 }
@@ -134,11 +190,11 @@ class _SrsDonutCard extends StatelessWidget {
     final cs = Theme.of(context).colorScheme;
     final total = counts.total;
     final segments = <(int, Color, String)>[
-      (counts.available,   const Color(0xFF64748B), 'Available'),
-      (counts.apprentice,  SynapseColors.apprentice, 'Apprentice'),
-      (counts.guru,        SynapseColors.guru,       'Guru'),
-      (counts.master,      SynapseColors.master,     'Master'),
-      (counts.burned,      SynapseColors.burned,     'Burned'),
+      (counts.available, const Color(0xFF64748B), 'Available'),
+      (counts.apprentice, SynapseColors.apprentice, 'Apprentice'),
+      (counts.guru, SynapseColors.guru, 'Guru'),
+      (counts.master, SynapseColors.master, 'Master'),
+      (counts.burned, SynapseColors.burned, 'Burned'),
     ].where((s) => s.$1 > 0).toList();
 
     return Container(
@@ -151,7 +207,8 @@ class _SrsDonutCard extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(
-            width: 100, height: 100,
+            width: 100,
+            height: 100,
             child: CustomPaint(
               painter: _DonutPainter(counts: counts, total: total),
               child: Center(
@@ -159,7 +216,7 @@ class _SrsDonutCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text('${(counts.masteryRatio * 100).round()}%',
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                     const Text('mastery', style: TextStyle(fontSize: 9, color: Colors.grey)),
                   ],
                 ),
@@ -170,18 +227,20 @@ class _SrsDonutCard extends StatelessWidget {
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: segments.map((s) => Padding(
-                padding: const EdgeInsets.only(bottom: 6),
-                child: Row(
-                  children: [
-                    Container(width: 10, height: 10, decoration: BoxDecoration(color: s.$2, shape: BoxShape.circle)),
-                    const SizedBox(width: 8),
-                    Text(s.$3, style: const TextStyle(fontSize: 12)),
-                    const Spacer(),
-                    Text('${s.$1}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                  ],
-                ),
-              )).toList(),
+              children: segments
+                  .map((s) => Padding(
+                        padding: const EdgeInsets.only(bottom: 6),
+                        child: Row(
+                          children: [
+                            Container(width: 10, height: 10, decoration: BoxDecoration(color: s.$2, shape: BoxShape.circle)),
+                            const SizedBox(width: 8),
+                            Text(s.$3, style: const TextStyle(fontSize: 12)),
+                            const Spacer(),
+                            Text('${s.$1}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ))
+                  .toList(),
             ),
           ),
         ],
@@ -200,19 +259,26 @@ class _DonutPainter extends CustomPainter {
     if (total == 0) return;
     final rect = Rect.fromLTWH(8, 8, size.width - 16, size.height - 16);
     final segments = [
-      (counts.available,  const Color(0xFF64748B)),
+      (counts.available, const Color(0xFF64748B)),
       (counts.apprentice, SynapseColors.apprentice),
-      (counts.guru,       SynapseColors.guru),
-      (counts.master,     SynapseColors.master),
-      (counts.burned,     SynapseColors.burned),
+      (counts.guru, SynapseColors.guru),
+      (counts.master, SynapseColors.master),
+      (counts.burned, SynapseColors.burned),
     ];
     double startAngle = -math.pi / 2;
     for (final seg in segments) {
       if (seg.$1 == 0) continue;
       final sweep = (seg.$1 / total) * 2 * math.pi;
       canvas.drawArc(
-        rect, startAngle, sweep, false,
-        Paint()..color = seg.$2..style = PaintingStyle.stroke..strokeWidth = 12..strokeCap = StrokeCap.butt,
+        rect,
+        startAngle,
+        sweep,
+        false,
+        Paint()
+          ..color = seg.$2
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 12
+          ..strokeCap = StrokeCap.butt,
       );
       startAngle += sweep;
     }
@@ -230,11 +296,11 @@ class _StageBreakdownGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final stages = [
-      ('Available',  counts.available,  const Color(0xFF64748B), Icons.inbox_rounded),
+      ('Available', counts.available, const Color(0xFF64748B), Icons.inbox_rounded),
       ('Apprentice', counts.apprentice, SynapseColors.apprentice, Icons.school_rounded),
-      ('Guru',       counts.guru,       SynapseColors.guru,       Icons.auto_awesome_rounded),
-      ('Master',     counts.master,     SynapseColors.master,     Icons.workspace_premium_rounded),
-      ('Burned',     counts.burned,     SynapseColors.burned,     Icons.local_fire_department_rounded),
+      ('Guru', counts.guru, SynapseColors.guru, Icons.auto_awesome_rounded),
+      ('Master', counts.master, SynapseColors.master, Icons.workspace_premium_rounded),
+      ('Burned', counts.burned, SynapseColors.burned, Icons.local_fire_department_rounded),
     ];
     return Wrap(
       spacing: 10,
@@ -271,7 +337,13 @@ class _StageBreakdownGrid extends StatelessWidget {
 
 // ─── Action Button ────────────────────────────────────────────────────────────
 class _ActionButton extends StatelessWidget {
-  const _ActionButton({required this.label, required this.subtitle, required this.icon, required this.color, required this.onTap});
+  const _ActionButton({
+    required this.label,
+    required this.subtitle,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
   final String label;
   final String subtitle;
   final IconData icon;
@@ -285,7 +357,7 @@ class _ActionButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
         decoration: BoxDecoration(
           color: color.withAlpha(20),
           borderRadius: BorderRadius.circular(16),
@@ -294,10 +366,10 @@ class _ActionButton extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, color: color, size: 26),
-            const SizedBox(height: 8),
-            Text(label, style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 15)),
-            Text(subtitle, style: TextStyle(fontSize: 11, color: cs.onSurfaceVariant)),
+            Icon(icon, color: color, size: 24),
+            const SizedBox(height: 6),
+            Text(label, style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 13), maxLines: 1),
+            Text(subtitle, style: TextStyle(fontSize: 10, color: cs.onSurfaceVariant), maxLines: 1),
           ],
         ),
       ),

@@ -7,6 +7,16 @@ import '../../theme/app_theme.dart';
 // Registry of all available Knowledge Packs (bundled)
 const _kAvailablePacks = [
   _PackMeta(
+    packId: 'html_fundamentals',
+    name: 'HTML Fundamentals',
+    subject: 'Web Development',
+    description: 'Master modern HTML5 semantics, document structure, forms, media, accessibility, and SEO best practices.',
+    iconName: 'code',
+    color: '#E44D26',
+    questionCount: 15,
+    assetPath: 'assets/packs/pack_html.json',
+  ),
+  _PackMeta(
     packId: 'c_programming',
     name: 'C Programming',
     subject: 'Computer Science',

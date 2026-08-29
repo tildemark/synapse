@@ -1,4 +1,4 @@
-﻿import 'dart:convert';
+import 'dart:convert';
 import 'package:flutter/services.dart';
 import '../db/app_database.dart';
 
@@ -9,6 +9,7 @@ class PackService {
 
   static const _bundledPacks = [
     'assets/packs/pack_c_programming.json',
+    'assets/packs/pack_html.json',
   ];
 
   /// Returns list of asset paths for all bundled packs.
