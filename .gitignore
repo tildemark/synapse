@@ -46,6 +46,9 @@ app.*.map.json
 
 # Web related
 lib/generated_plugin_registrant.dart
+web/node_modules/
+web/.next/
+web/out/
 
 # Exceptions to above rules.
 !**/ios/**/default.mode1v2
