@@ -1,4 +1,4 @@
-﻿# Synapse — Agent Continuation Guide
+# Synapse — Agent Continuation Guide
 
 This file gives an AI coding agent full context to continue development of the **Synapse** Flutter app without any prior conversation history. Read this entire file before touching any code.
 
@@ -83,10 +83,10 @@ No `build_runner` step needed — packs are read at runtime via `rootBundle.load
 |-------|---------|--------|
 | 1 | Flutter shell, SRS engine, Drift DB, theming | ✅ Complete |
 | 2 | Lessons screen, Reviews screen | ✅ Complete |
-| 3 | Pack browser + seed packs | 🔧 Partial — C Programming done (15 Qs); need Physics, Algebra, Linux, Excel |
-| 4 | Cram Mode, Tag Drills, Module Mastery panel | ⬜ Not started |
-| 5 | Mock Exam (timed), Fast-Forward dev tools | ⬜ Not started |
-| 6 | Settings screen, full CI/CD, landing page | ⬜ Not started |
+| 3 | Pack browser + bundled seed packs (C Programming & HTML) | ✅ Complete |
+| 4 | Cram Mode, Tag Drills, Module Mastery panel | ✅ Complete |
+| 5 | Mock Exam (timed), Fast-Forward dev tools | ✅ Complete |
+| 6 | Settings screen, full CI/CD, landing page | ✅ Complete |
 
 ---
 

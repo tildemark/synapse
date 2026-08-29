@@ -1,4 +1,4 @@
-﻿# Synapse Architecture
+# Synapse Architecture
 
 ## Overview
 
@@ -256,7 +256,7 @@ git push origin v1.0.0
 |-------|---------|--------|
 | 1 | Flutter shell, SRS engine, DB schema | ✅ Done |
 | 2 | Lessons + Reviews screens | ✅ Done |
-| 3 | Pack Browser + 4 more seed packs | 🔧 In Progress (C Programming done) |
-| 4 | Cram Mode, Tag Drills, Module Mastery Panel | ⬜ Pending |
-| 5 | Mock Exam (timed), Fast-Forward dev tools | ⬜ Pending |
-| 6 | Settings screen, full CI/CD, landing page | ⬜ Pending |
+| 3 | Pack Browser + Bundled Seed Packs (C & HTML) | ✅ Done |
+| 4 | Cram Mode, Tag Drills, Module Mastery Panel | ✅ Done |
+| 5 | Mock Exam (timed), Fast-Forward dev tools | ✅ Done |
+| 6 | Settings screen, full CI/CD, landing page | ✅ Done |
