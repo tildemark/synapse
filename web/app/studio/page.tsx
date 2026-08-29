@@ -319,36 +319,93 @@ export default function StudioPage() {
     const reader = new FileReader();
     reader.onload = (event) => {
       try {
-        const parsed = JSON.parse(event.target?.result as string);
-        if (!parsed.packId || !parsed.questions || !Array.isArray(parsed.questions)) {
-          throw new Error('Invalid Knowledge Pack JSON format');
+        const content = event.target?.result as string;
+        const parsed = JSON.parse(content);
+
+        // Normalize questions array from various JSON formats
+        const rawQuestions = Array.isArray(parsed.questions)
+          ? parsed.questions
+          : Array.isArray(parsed)
+          ? parsed
+          : null;
+
+        if (!rawQuestions) {
+          throw new Error('JSON file must contain a "questions" list.');
         }
-        setPack({
-          packId: parsed.packId || 'imported_pack',
-          name: parsed.name || 'Imported Pack',
-          subject: parsed.subject || 'General',
-          icon: parsed.icon || 'code',
-          color: parsed.color || '#6C63FF',
-          version: parsed.version || 1,
-          modules: parsed.modules || [{ number: 1, name: 'General' }],
-          questions: parsed.questions.map((q: any, i: number) => ({
-            id: `q_imported_${i}`,
-            question: q.question || '',
-            a: q.a || '',
-            b: q.b || '',
-            c: q.c || '',
-            d: q.d || '',
-            answer: q.answer || 'A',
-            explanation: q.explanation || '',
-            level: q.level || 1,
-            module: q.module || 1,
-            moduleName: q.moduleName || 'General',
-          })),
+
+        // Normalize modules
+        let loadedModules: Module[] = [];
+        if (Array.isArray(parsed.modules) && parsed.modules.length > 0) {
+          loadedModules = parsed.modules.map((m: any, i: number) => ({
+            number: Number(m.number) || i + 1,
+            name: String(m.name || `Module ${i + 1}`),
+          }));
+        } else {
+          // Infer modules from question module names if not explicitly listed
+          const moduleSet = new Map<number, string>();
+          rawQuestions.forEach((q: any, i: number) => {
+            const num = Number(q.module) || 1;
+            const name = String(q.moduleName || `Module ${num}`);
+            if (!moduleSet.has(num)) {
+              moduleSet.set(num, name);
+            }
+          });
+
+          if (moduleSet.size > 0) {
+            loadedModules = Array.from(moduleSet.entries()).map(([number, name]) => ({
+              number,
+              name,
+            }));
+          } else {
+            loadedModules = [{ number: 1, name: 'General' }];
+          }
+        }
+
+        // Normalize questions
+        const loadedQuestions: Question[] = rawQuestions.map((q: any, i: number) => {
+          const rawAnswer = String(q.answer || q.correct_answer || 'A').toUpperCase().trim();
+          const validAnswer: 'A' | 'B' | 'C' | 'D' = ['A', 'B', 'C', 'D'].includes(rawAnswer)
+            ? (rawAnswer as 'A' | 'B' | 'C' | 'D')
+            : 'A';
+
+          const modNum = Number(q.module || q.module_number) || 1;
+          const matchingMod = loadedModules.find((m) => m.number === modNum);
+
+          return {
+            id: `q_loaded_${Date.now()}_${i}`,
+            question: String(q.question || q.prompt || ''),
+            a: String(q.a || q.choice_a || q.choiceA || ''),
+            b: String(q.b || q.choice_b || q.choiceB || ''),
+            c: String(q.c || q.choice_c || q.choiceC || ''),
+            d: String(q.d || q.choice_d || q.choiceD || ''),
+            answer: validAnswer,
+            explanation: String(q.explanation || q.rationale || ''),
+            level: Number(q.level || q.difficulty_level || q.difficulty) || 1,
+            module: modNum,
+            moduleName: matchingMod ? matchingMod.name : String(q.moduleName || q.module_name || 'General'),
+          };
         });
+
+        const newPack: PackData = {
+          packId: String(parsed.packId || parsed.pack_id || file.name.replace(/\.json$/i, '').replace(/^pack_/i, '') || 'custom_pack'),
+          name: String(parsed.name || parsed.title || 'Imported Knowledge Pack'),
+          subject: String(parsed.subject || parsed.category || 'General'),
+          icon: String(parsed.icon || parsed.iconName || 'code'),
+          color: String(parsed.color || '#6C63FF'),
+          version: Number(parsed.version) || 1,
+          modules: loadedModules,
+          questions: loadedQuestions.length > 0 ? loadedQuestions : TEMPLATES.cs.questions,
+        };
+
+        setPack(newPack);
         setSelectedQuestionIndex(0);
         setValidationErrors([]);
+        setActiveTab('questions');
       } catch (err: any) {
-        setValidationErrors([`Import error: ${err.message}`]);
+        setValidationErrors([`Failed to load JSON: ${err.message}`]);
+      } finally {
+        // Reset file input so user can re-import the same file if modified
+        e.target.value = '';
       }
     };
     reader.readAsText(file);
