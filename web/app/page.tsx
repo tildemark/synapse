@@ -47,6 +47,9 @@ export default function HomePage() {
             <a href="#features" className="nav-link">Features</a>
             <a href="#srs" className="nav-link">SRS Model</a>
             <a href="#packs" className="nav-link">Packs</a>
+            <Link href="/studio" className="nav-link" style={{ color: '#10B981', fontWeight: 'bold' }}>
+              ⚡ Pack Studio
+            </Link>
             <a href="#downloads" className="nav-link">Downloads</a>
             <a
               href="https://github.com/tildemark/synapse"
@@ -277,6 +280,25 @@ export default function HomePage() {
               <div style={{ fontSize: '12px', color: '#E44D26', fontWeight: 600 }}>
                 Modules: Structure &amp; Meta · Semantics · Forms · Media &amp; Picture · Accessibility &amp; SEO
               </div>
+            </div>
+
+            {/* Create Your Own Pack Card */}
+            <div className="card" style={{ borderColor: 'rgba(16, 185, 129, 0.4)', background: 'linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(20, 20, 36, 0.9) 100%)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
+                <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(16, 185, 129, 0.2)', color: '#10B981', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>
+                  <Sparkles size={20} />
+                </div>
+                <div>
+                  <h3 style={{ fontSize: '18px' }}>Create Community Pack</h3>
+                  <span style={{ fontSize: '12px', color: '#10B981', fontWeight: 600 }}>Interactive Web Studio</span>
+                </div>
+              </div>
+              <p style={{ marginBottom: '20px' }}>
+                Build your own Knowledge Pack using our visual question editor. Export instantly to JSON or submit a PR to the community repository.
+              </p>
+              <Link href="/studio" className="btn btn-primary" style={{ background: '#10B981', width: '100%', justifyContent: 'center' }}>
+                Open Pack Studio &rarr;
+              </Link>
             </div>
           </div>
         </section>
