@@ -1,4 +1,4 @@
-﻿import 'dart:math' as math;
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,6 +11,7 @@ import '../reviews/reviews_screen.dart';
 import '../cram/cram_screen.dart';
 import '../drills/tag_drill_screen.dart';
 import '../mock_exam/mock_exam_screen.dart';
+import '../home/module_mastery_panel.dart';
 
 class PackDetailScreen extends ConsumerWidget {
   const PackDetailScreen({super.key, required this.pack});
@@ -146,6 +147,8 @@ class PackDetailScreen extends ConsumerWidget {
                       Text('Stage Breakdown', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: cs.onSurface)),
                       const SizedBox(height: 12),
                       if (counts != null) _StageBreakdownGrid(counts: counts),
+                      const SizedBox(height: 24),
+                      ModuleMasteryPanel(packId: pack.packId, color: color),
 
                       const SizedBox(height: 30),
                     ],
