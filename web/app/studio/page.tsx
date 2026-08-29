@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import {
   ArrowLeft,
@@ -16,6 +16,10 @@ import {
   Eye,
   FileUp,
   AlertCircle,
+  Info,
+  Lightbulb,
+  Check,
+  BookOpen,
 } from 'lucide-react';
 
 interface Module {
@@ -48,43 +52,103 @@ interface PackData {
   questions: Question[];
 }
 
-const DEFAULT_PACK: PackData = {
-  packId: 'custom_subject',
-  name: 'My Knowledge Pack',
-  subject: 'Computer Science',
-  icon: 'code',
-  color: '#6C63FF',
-  version: 1,
-  modules: [
-    { number: 1, name: 'Module 1: Fundamentals' },
-    { number: 2, name: 'Module 2: Advanced Topics' },
-  ],
-  questions: [
-    {
-      id: 'q1',
-      question: 'What is the primary benefit of spaced repetition learning?',
-      a: 'Instant memorization without practice',
-      b: 'Long-term retention by testing memory decay thresholds',
-      c: 'Decreasing study frequency over time without reviews',
-      d: 'Eliminating the need for sleep and memory consolidation',
-      answer: 'B',
-      explanation:
-        'Spaced repetition schedules reviews at expanding intervals right before forgetting occurs, shifting short-term knowledge to long-term memory.',
-      level: 1,
-      module: 1,
-      moduleName: 'Module 1: Fundamentals',
-    },
-  ],
+const TEMPLATES: Record<string, PackData> = {
+  cs: {
+    packId: 'python_fundamentals',
+    name: 'Python Fundamentals',
+    subject: 'Computer Science',
+    icon: 'code',
+    color: '#3B82F6',
+    version: 1,
+    modules: [
+      { number: 1, name: 'Variables & Data Types' },
+      { number: 2, name: 'Control Flow & Loops' },
+      { number: 3, name: 'Functions & Modules' },
+      { number: 4, name: 'Data Structures' },
+    ],
+    questions: [
+      {
+        id: 'q1',
+        question: 'Which built-in Python function returns the unique memory address identifier of an object?',
+        a: 'type()',
+        b: 'id()',
+        c: 'hex()',
+        d: 'address()',
+        answer: 'B',
+        explanation: 'id() returns the unique integer identity (memory address in CPython) of the specified object.',
+        level: 1,
+        module: 1,
+        moduleName: 'Variables & Data Types',
+      },
+    ],
+  },
+  devops: {
+    packId: 'docker_essentials',
+    name: 'Docker Essentials',
+    subject: 'DevOps & Systems',
+    icon: 'terminal',
+    color: '#10B981',
+    version: 1,
+    modules: [
+      { number: 1, name: 'Images & Containers' },
+      { number: 2, name: 'Dockerfile Directives' },
+      { number: 3, name: 'Volumes & Networking' },
+    ],
+    questions: [
+      {
+        id: 'q1',
+        question: 'Which Dockerfile instruction sets the default command that cannot be easily overridden by command line arguments?',
+        a: 'CMD',
+        b: 'RUN',
+        c: 'ENTRYPOINT',
+        d: 'ENV',
+        answer: 'C',
+        explanation: 'ENTRYPOINT specifies the primary executable for the container. CMD serves as default arguments that can be overridden at runtime.',
+        level: 2,
+        module: 2,
+        moduleName: 'Dockerfile Directives',
+      },
+    ],
+  },
+  math: {
+    packId: 'linear_algebra',
+    name: 'Linear Algebra',
+    subject: 'Mathematics',
+    icon: 'functions',
+    color: '#F59E0B',
+    version: 1,
+    modules: [
+      { number: 1, name: 'Vectors & Dot Products' },
+      { number: 2, name: 'Matrices & Determinants' },
+      { number: 3, name: 'Eigenvalues & Eigenvectors' },
+    ],
+    questions: [
+      {
+        id: 'q1',
+        question: 'What is the determinant of a 2x2 identity matrix?',
+        a: '0',
+        b: '1',
+        c: '-1',
+        d: '2',
+        answer: 'B',
+        explanation: 'For any identity matrix I, det(I) is always 1.',
+        level: 1,
+        module: 2,
+        moduleName: 'Matrices & Determinants',
+      },
+    ],
+  },
 };
 
 export default function StudioPage() {
-  const [pack, setPack] = useState<PackData>(DEFAULT_PACK);
-  const [activeTab, setActiveTab] = useState<'metadata' | 'modules' | 'questions' | 'export'>('questions');
+  const [pack, setPack] = useState<PackData>(TEMPLATES.cs);
+  const [activeTab, setActiveTab] = useState<'questions' | 'modules' | 'metadata' | 'export'>('questions');
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState<number>(0);
   const [copied, setCopied] = useState(false);
-  const [validationError, setValidationError] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  const [showHelperModal, setShowHelperModal] = useState(false);
 
-  // Auto-slugify packId based on Name if default
+  // Auto-slugify packId based on Name
   const handleNameChange = (name: string) => {
     const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
     setPack((prev) => ({
@@ -105,7 +169,6 @@ export default function StudioPage() {
   const updateModule = (index: number, name: string) => {
     const updated = [...pack.modules];
     updated[index] = { ...updated[index], name };
-    // Also sync existing questions attached to this module
     const modNumber = updated[index].number;
     const updatedQuestions = pack.questions.map((q) =>
       q.module === modNumber ? { ...q, moduleName: name } : q
@@ -117,7 +180,6 @@ export default function StudioPage() {
   const removeModule = (index: number) => {
     if (pack.modules.length <= 1) return;
     const updated = pack.modules.filter((_, i) => i !== index);
-    // Renumber
     const renumbered = updated.map((m, i) => ({ ...m, number: i + 1 }));
     setPack((prev) => ({ ...prev, modules: renumbered }));
   };
@@ -171,6 +233,26 @@ export default function StudioPage() {
     setSelectedQuestionIndex(Math.max(0, index - 1));
   };
 
+  // Validation Engine
+  const validatePack = (): string[] => {
+    const errors: string[] = [];
+    if (!pack.name.trim()) errors.push('Pack Name is required.');
+    if (!pack.packId.trim()) errors.push('Pack ID (slug) is required.');
+    if (pack.modules.length === 0) errors.push('At least 1 Module is required.');
+
+    pack.questions.forEach((q, idx) => {
+      const qNum = idx + 1;
+      if (!q.question.trim()) errors.push(`Question #${qNum}: Prompt text is missing.`);
+      if (!q.a.trim()) errors.push(`Question #${qNum}: Choice A cannot be blank.`);
+      if (!q.b.trim()) errors.push(`Question #${qNum}: Choice B cannot be blank.`);
+      if (!q.c.trim()) errors.push(`Question #${qNum}: Choice C cannot be blank.`);
+      if (!q.d.trim()) errors.push(`Question #${qNum}: Choice D cannot be blank.`);
+      if (!q.explanation.trim()) errors.push(`Question #${qNum}: Explanation is recommended for effective SRS reviews.`);
+    });
+
+    return errors;
+  };
+
   // Generate Clean Schema JSON
   const generateCleanJson = () => {
     const cleanQuestions = pack.questions.map((q) => ({
@@ -204,6 +286,13 @@ export default function StudioPage() {
 
   // Download JSON
   const handleDownload = () => {
+    const errors = validatePack();
+    if (errors.length > 0) {
+      setValidationErrors(errors);
+      setActiveTab('export');
+      return;
+    }
+    setValidationErrors([]);
     const jsonStr = generateCleanJson();
     const blob = new Blob([jsonStr], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -257,9 +346,9 @@ export default function StudioPage() {
           })),
         });
         setSelectedQuestionIndex(0);
-        setValidationError(null);
+        setValidationErrors([]);
       } catch (err: any) {
-        setValidationError(`Import error: ${err.message}`);
+        setValidationErrors([`Import error: ${err.message}`]);
       }
     };
     reader.readAsText(file);
@@ -267,6 +356,13 @@ export default function StudioPage() {
 
   // Submit GitHub PR / Issue
   const handleGitHubSubmit = () => {
+    const errors = validatePack();
+    if (errors.length > 0) {
+      setValidationErrors(errors);
+      setActiveTab('export');
+      return;
+    }
+    setValidationErrors([]);
     const jsonStr = generateCleanJson();
     const title = encodeURIComponent(`[Community Pack] ${pack.name} (${pack.questions.length} questions)`);
     const body = encodeURIComponent(
@@ -290,36 +386,82 @@ export default function StudioPage() {
 
       <div className="container" style={{ maxWidth: '1300px', paddingTop: '24px' }}>
         {/* Header Bar */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', flexWrap: 'wrap', gap: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <Link href="/" className="btn btn-secondary" style={{ padding: '8px 14px' }}>
               <ArrowLeft size={16} /> Home
             </Link>
             <div>
-              <h1 style={{ fontSize: '24px', fontWeight: 800 }}>⚡ Synapse Pack Studio</h1>
+              <h1 style={{ fontSize: '24px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                ⚡ Synapse Pack Studio
+                <span style={{ fontSize: '11px', fontWeight: 700, padding: '3px 8px', borderRadius: '6px', background: 'rgba(16, 185, 129, 0.2)', color: '#10B981' }}>
+                  Interactive Builder
+                </span>
+              </h1>
               <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-                Visual Builder &amp; Schema Generator for Community Knowledge Packs
+                Author &amp; validate custom multiple-choice subject curricula with zero JSON coding
               </span>
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            {/* Template Dropdown */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--bg-card-subtle)', padding: '4px 10px', borderRadius: '10px', border: '1px solid var(--border-card)' }}>
+              <BookOpen size={14} color="var(--text-muted)" />
+              <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Preset:</span>
+              <select
+                onChange={(e) => {
+                  if (TEMPLATES[e.target.value]) {
+                    setPack(TEMPLATES[e.target.value]);
+                    setSelectedQuestionIndex(0);
+                  }
+                }}
+                style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: '12px', outline: 'none', cursor: 'pointer' }}
+              >
+                <option value="cs">Python Fundamentals</option>
+                <option value="devops">Docker Essentials</option>
+                <option value="math">Linear Algebra</option>
+              </select>
+            </div>
+
             <label className="btn btn-secondary" style={{ cursor: 'pointer', padding: '8px 14px', fontSize: '13px' }}>
-              <FileUp size={16} /> Import JSON
+              <FileUp size={16} /> Load .json
               <input type="file" accept=".json" onChange={handleImportJson} style={{ display: 'none' }} />
             </label>
+
             <button onClick={handleDownload} className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '13px' }}>
-              <Download size={16} /> Export pack_{pack.packId}.json
+              <Download size={16} /> Export Pack
             </button>
           </div>
         </div>
 
-        {validationError && (
-          <div style={{ background: 'rgba(239, 83, 80, 0.15)', border: '1px solid #EF5350', padding: '12px 16px', borderRadius: '12px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <AlertCircle size={18} color="#EF5350" />
-            <span style={{ fontSize: '14px', color: '#EF5350' }}>{validationError}</span>
+        {/* Validation Errors Notice */}
+        {validationErrors.length > 0 && (
+          <div style={{ background: 'rgba(239, 83, 80, 0.12)', border: '1px solid rgba(239, 83, 80, 0.4)', padding: '16px 20px', borderRadius: '16px', marginBottom: '20px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px', color: '#EF5350', fontWeight: 700, fontSize: '15px' }}>
+              <AlertCircle size={18} />
+              <span>Please resolve the following before exporting ({validationErrors.length}):</span>
+            </div>
+            <ul style={{ paddingLeft: '24px', fontSize: '13px', color: '#EF5350', lineHeight: 1.6 }}>
+              {validationErrors.map((err, i) => (
+                <li key={i}>{err}</li>
+              ))}
+            </ul>
           </div>
         )}
+
+        {/* Quick Helper Banner */}
+        <div style={{ background: 'rgba(108, 99, 255, 0.1)', border: '1px solid rgba(108, 99, 255, 0.25)', borderRadius: '14px', padding: '12px 18px', marginBottom: '20px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Lightbulb size={18} color="#A78BFA" />
+            <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+              <strong>Authoring Tip:</strong> Click any letter badge (A, B, C, or D) to mark it as the correct answer. Provide clear explanations for high-retention spaced reviews.
+            </span>
+          </div>
+          <span style={{ fontSize: '12px', color: '#A78BFA', fontWeight: 600 }}>
+            {pack.questions.length} Cards in Curriculum
+          </span>
+        </div>
 
         {/* Tab Switcher */}
         <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', borderBottom: '1px solid var(--border-card)', paddingBottom: '12px' }}>
@@ -328,28 +470,28 @@ export default function StudioPage() {
             className={`btn ${activeTab === 'questions' ? 'btn-primary' : 'btn-secondary'}`}
             style={{ padding: '8px 16px', fontSize: '13px' }}
           >
-            <HelpCircle size={16} /> Questions ({pack.questions.length})
+            <HelpCircle size={16} /> Question Cards ({pack.questions.length})
           </button>
           <button
             onClick={() => setActiveTab('modules')}
             className={`btn ${activeTab === 'modules' ? 'btn-primary' : 'btn-secondary'}`}
             style={{ padding: '8px 16px', fontSize: '13px' }}
           >
-            <Layers size={16} /> Modules ({pack.modules.length})
+            <Layers size={16} /> Modules &amp; Chapters ({pack.modules.length})
           </button>
           <button
             onClick={() => setActiveTab('metadata')}
             className={`btn ${activeTab === 'metadata' ? 'btn-primary' : 'btn-secondary'}`}
             style={{ padding: '8px 16px', fontSize: '13px' }}
           >
-            <Sparkles size={16} /> Pack Metadata &amp; Branding
+            <Sparkles size={16} /> Pack Branding &amp; Info
           </button>
           <button
             onClick={() => setActiveTab('export')}
             className={`btn ${activeTab === 'export' ? 'btn-primary' : 'btn-secondary'}`}
             style={{ padding: '8px 16px', fontSize: '13px' }}
           >
-            <Download size={16} /> Export &amp; Submit PR
+            <Download size={16} /> Export &amp; Submit
           </button>
         </div>
 
@@ -360,9 +502,14 @@ export default function StudioPage() {
             {/* TAB: QUESTIONS */}
             {activeTab === 'questions' && (
               <div className="card" style={{ padding: '24px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontWeight: 800, fontSize: '16px' }}>Question {selectedQuestionIndex + 1} of {pack.questions.length}</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                  <div>
+                    <span style={{ fontWeight: 800, fontSize: '16px' }}>
+                      Card #{selectedQuestionIndex + 1} of {pack.questions.length}
+                    </span>
+                    <p style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
+                      Assigned to: <strong style={{ color: pack.color }}>{currentQ?.moduleName || 'General'}</strong>
+                    </p>
                   </div>
                   <div style={{ display: 'flex', gap: '8px' }}>
                     <button onClick={addQuestion} className="btn btn-secondary" style={{ padding: '6px 12px', fontSize: '12px' }}>
@@ -383,8 +530,8 @@ export default function StudioPage() {
                       key={i}
                       onClick={() => setSelectedQuestionIndex(i)}
                       style={{
-                        minWidth: '32px',
-                        height: '32px',
+                        minWidth: '34px',
+                        height: '34px',
                         borderRadius: '8px',
                         border: i === selectedQuestionIndex ? '2px solid var(--primary)' : '1px solid var(--border-card)',
                         background: i === selectedQuestionIndex ? 'rgba(108, 99, 255, 0.25)' : 'var(--bg-card-subtle)',
@@ -400,16 +547,19 @@ export default function StudioPage() {
                 </div>
 
                 {currentQ && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
                     {/* Question Prompt */}
                     <div>
-                      <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>
-                        Question Prompt *
-                      </label>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                        <label style={{ fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          Question Prompt <span style={{ color: '#EF5350' }}>*</span>
+                        </label>
+                        <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Keep prompts clear &amp; unambiguous</span>
+                      </div>
                       <textarea
                         value={currentQ.question}
                         onChange={(e) => updateCurrentQuestion('question', e.target.value)}
-                        placeholder="e.g. Which of the following declares a pointer to an integer in C?"
+                        placeholder="e.g. Which of the following data structures in Python is immutable?"
                         rows={3}
                         style={{
                           width: '100%',
@@ -417,7 +567,7 @@ export default function StudioPage() {
                           border: '1px solid var(--border-card)',
                           borderRadius: '12px',
                           color: '#fff',
-                          padding: '12px',
+                          padding: '12px 14px',
                           fontSize: '14px',
                           outline: 'none',
                         }}
@@ -426,7 +576,15 @@ export default function StudioPage() {
 
                     {/* Choices A, B, C, D */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                      <label style={{ fontSize: '13px', fontWeight: 600 }}>Choices &amp; Correct Answer *</label>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <label style={{ fontSize: '13px', fontWeight: 700 }}>
+                          Answer Choices <span style={{ color: '#EF5350' }}>*</span>
+                        </label>
+                        <span style={{ fontSize: '11px', color: '#10B981', fontWeight: 600 }}>
+                          ✓ Click A / B / C / D badge to select correct answer
+                        </span>
+                      </div>
+
                       {(['A', 'B', 'C', 'D'] as const).map((letter) => {
                         const fieldKey = letter.toLowerCase() as 'a' | 'b' | 'c' | 'd';
                         const isCorrect = currentQ.answer === letter;
@@ -436,8 +594,8 @@ export default function StudioPage() {
                               type="button"
                               onClick={() => updateCurrentQuestion('answer', letter)}
                               style={{
-                                width: '36px',
-                                height: '36px',
+                                width: '38px',
+                                height: '38px',
                                 borderRadius: '10px',
                                 border: isCorrect ? '2px solid #10B981' : '1px solid var(--border-card)',
                                 background: isCorrect ? '#10B981' : 'var(--bg-card-subtle)',
@@ -447,8 +605,9 @@ export default function StudioPage() {
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
+                                transition: 'all 0.15s ease',
                               }}
-                              title="Click to set as correct answer"
+                              title={isCorrect ? 'Correct Answer Selected' : `Click to set ${letter} as correct answer`}
                             >
                               {letter}
                             </button>
@@ -456,11 +615,11 @@ export default function StudioPage() {
                               type="text"
                               value={currentQ[fieldKey]}
                               onChange={(e) => updateCurrentQuestion(fieldKey, e.target.value)}
-                              placeholder={`Option ${letter} text...`}
+                              placeholder={`Option ${letter} text (e.g. ${letter === 'A' ? 'Tuple' : letter === 'B' ? 'List' : letter === 'C' ? 'Dictionary' : 'Set'})...`}
                               style={{
                                 flex: 1,
                                 background: 'var(--bg-card-subtle)',
-                                border: isCorrect ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid var(--border-card)',
+                                border: isCorrect ? '1.5px solid rgba(16, 185, 129, 0.5)' : '1px solid var(--border-card)',
                                 borderRadius: '10px',
                                 color: '#fff',
                                 padding: '10px 14px',
@@ -476,8 +635,8 @@ export default function StudioPage() {
                     {/* Module & Difficulty */}
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                       <div>
-                        <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>
-                          Module Assignment
+                        <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, marginBottom: '6px' }}>
+                          Topic / Module
                         </label>
                         <select
                           value={currentQ.module}
@@ -501,8 +660,8 @@ export default function StudioPage() {
                       </div>
 
                       <div>
-                        <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>
-                          Difficulty Level (1-5)
+                        <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, marginBottom: '6px' }}>
+                          Difficulty Tier
                         </label>
                         <select
                           value={currentQ.level}
@@ -517,32 +676,35 @@ export default function StudioPage() {
                             fontSize: '13px',
                           }}
                         >
-                          <option value={1}>Level 1 (Fundamental / Easy)</option>
-                          <option value={2}>Level 2 (Intermediate)</option>
-                          <option value={3}>Level 3 (Advanced / Tricky)</option>
-                          <option value={4}>Level 4 (Expert)</option>
-                          <option value={5}>Level 5 (Mastery / Edge-Case)</option>
+                          <option value={1}>Level 1: Foundational / Definitions</option>
+                          <option value={2}>Level 2: Standard Application</option>
+                          <option value={3}>Level 3: Multi-Step / Tricky</option>
+                          <option value={4}>Level 4: Advanced Scenarios</option>
+                          <option value={5}>Level 5: Edge-Cases &amp; Deep Nuance</option>
                         </select>
                       </div>
                     </div>
 
                     {/* Explanation */}
                     <div>
-                      <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>
-                        Explanation (Shown after answering) *
-                      </label>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                        <label style={{ fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          Post-Answer Explanation <span style={{ color: '#EF5350' }}>*</span>
+                        </label>
+                        <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Shown after the user responds in SRS review</span>
+                      </div>
                       <textarea
                         value={currentQ.explanation}
                         onChange={(e) => updateCurrentQuestion('explanation', e.target.value)}
-                        placeholder="Explain why the correct answer is right and clarify common mistakes..."
-                        rows={2}
+                        placeholder="Explain why the correct answer is right and clarify why other options are incorrect..."
+                        rows={3}
                         style={{
                           width: '100%',
                           background: 'var(--bg-card-subtle)',
                           border: '1px solid var(--border-card)',
                           borderRadius: '12px',
                           color: '#fff',
-                          padding: '12px',
+                          padding: '12px 14px',
                           fontSize: '13px',
                           outline: 'none',
                         }}
@@ -557,25 +719,28 @@ export default function StudioPage() {
             {activeTab === 'modules' && (
               <div className="card" style={{ padding: '24px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <h3 style={{ fontSize: '18px', fontWeight: 800 }}>Subject Modules &amp; Chapters</h3>
+                  <div>
+                    <h3 style={{ fontSize: '18px', fontWeight: 800 }}>Subject Modules &amp; Chapters</h3>
+                    <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+                      Modules group related concepts for targeted drills, module mastery tracking, and lesson pacing.
+                    </p>
+                  </div>
                   <button onClick={addModule} className="btn btn-primary" style={{ padding: '6px 14px', fontSize: '13px' }}>
                     <Plus size={14} /> Add Module
                   </button>
                 </div>
-                <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '20px' }}>
-                  Modules group related concepts for tag drills, chapter mastery tracking, and lesson pacing.
-                </p>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   {pack.modules.map((m, idx) => (
                     <div key={m.number} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <span style={{ width: '28px', height: '28px', borderRadius: '8px', background: 'var(--primary)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '12px' }}>
+                      <span style={{ width: '32px', height: '32px', borderRadius: '8px', background: pack.color, color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '13px' }}>
                         {m.number}
                       </span>
                       <input
                         type="text"
                         value={m.name}
                         onChange={(e) => updateModule(idx, e.target.value)}
+                        placeholder="e.g. Module 1: Memory Management & Pointers"
                         style={{
                           flex: 1,
                           background: 'var(--bg-card-subtle)',
@@ -604,18 +769,23 @@ export default function StudioPage() {
 
             {/* TAB: METADATA */}
             {activeTab === 'metadata' && (
-              <div className="card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <h3 style={{ fontSize: '18px', fontWeight: 800, marginBottom: '6px' }}>Pack Metadata &amp; Branding</h3>
+              <div className="card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '18px' }}>
+                <div>
+                  <h3 style={{ fontSize: '18px', fontWeight: 800, marginBottom: '4px' }}>Pack Branding &amp; Details</h3>
+                  <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+                    Defines how your Knowledge Pack appears in the Synapse browser and dashboard cards.
+                  </p>
+                </div>
 
                 <div>
-                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>
-                    Knowledge Pack Name *
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, marginBottom: '6px' }}>
+                    Knowledge Pack Display Name <span style={{ color: '#EF5350' }}>*</span>
                   </label>
                   <input
                     type="text"
                     value={pack.name}
                     onChange={(e) => handleNameChange(e.target.value)}
-                    placeholder="e.g. Linux Command Line Mastery"
+                    placeholder="e.g. Linux Shell & Command Line Mastery"
                     style={{
                       width: '100%',
                       background: 'var(--bg-card-subtle)',
@@ -626,11 +796,14 @@ export default function StudioPage() {
                       fontSize: '14px',
                     }}
                   />
+                  <span style={{ fontSize: '11px', color: 'var(--text-muted)', display: 'block', marginTop: '4px' }}>
+                    Auto-generated identifier: <code style={{ color: '#A78BFA' }}>pack_{pack.packId}.json</code>
+                  </span>
                 </div>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, marginBottom: '6px' }}>
                       Pack Identifier (packId)
                     </label>
                     <input
@@ -652,14 +825,14 @@ export default function StudioPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, marginBottom: '6px' }}>
                       Subject Category
                     </label>
                     <input
                       type="text"
                       value={pack.subject}
                       onChange={(e) => setPack((prev) => ({ ...prev, subject: e.target.value }))}
-                      placeholder="e.g. Computer Science, DevOps, Mathematics"
+                      placeholder="e.g. Computer Science, Mathematics, DevOps"
                       style={{
                         width: '100%',
                         background: 'var(--bg-card-subtle)',
@@ -675,7 +848,7 @@ export default function StudioPage() {
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                   <div>
-                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, marginBottom: '6px' }}>
                       Brand Hex Color
                     </label>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -703,8 +876,8 @@ export default function StudioPage() {
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>
-                      Icon Name (Material Icons)
+                    <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, marginBottom: '6px' }}>
+                      Icon Symbol
                     </label>
                     <select
                       value={pack.icon}
@@ -716,13 +889,14 @@ export default function StudioPage() {
                         borderRadius: '10px',
                         color: '#fff',
                         padding: '10px',
+                        fontSize: '13px',
                       }}
                     >
-                      <option value="code">code (Programming / CS)</option>
-                      <option value="terminal">terminal (DevOps / Linux)</option>
-                      <option value="functions">functions (Math / Algebra)</option>
-                      <option value="science">science (Physics / Chemistry)</option>
-                      <option value="grid_view">grid_view (Excel / Productivity)</option>
+                      <option value="code">code (Programming / Software)</option>
+                      <option value="terminal">terminal (DevOps / Systems)</option>
+                      <option value="functions">functions (Math / Physics)</option>
+                      <option value="science">science (Natural Sciences)</option>
+                      <option value="grid_view">grid_view (Spreadsheets &amp; Data)</option>
                       <option value="school">school (Academic / General)</option>
                     </select>
                   </div>
@@ -736,7 +910,7 @@ export default function StudioPage() {
                 <div>
                   <h3 style={{ fontSize: '18px', fontWeight: 800, marginBottom: '6px' }}>Export &amp; Community Submission</h3>
                   <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-                    Your Knowledge Pack is validated and ready to be imported into the Synapse app or submitted to the official community repository.
+                    Export your Knowledge Pack JSON for immediate offline testing in the Synapse mobile/desktop app or submit it to the official open-source repository.
                   </p>
                 </div>
 
@@ -751,7 +925,7 @@ export default function StudioPage() {
 
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                    <label style={{ fontSize: '13px', fontWeight: 600 }}>Canonical JSON Output</label>
+                    <label style={{ fontSize: '13px', fontWeight: 700 }}>Canonical Schema Output (Validated)</label>
                     <button onClick={handleCopy} className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: '12px' }}>
                       {copied ? <CheckCircle2 size={14} color="#10B981" /> : <Copy size={14} />}
                       {copied ? 'Copied!' : 'Copy JSON'}
@@ -779,8 +953,13 @@ export default function StudioPage() {
           {/* Right Column: Live In-App Card Simulator */}
           <div>
             <div style={{ position: 'sticky', top: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-muted)', fontSize: '13px', fontWeight: 600 }}>
-                <Eye size={16} /> In-App Card Simulator (Live Preview)
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: 'var(--text-muted)', fontSize: '13px', fontWeight: 600 }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Eye size={16} /> Live In-App Simulator
+                </span>
+                <span style={{ fontSize: '11px', color: '#10B981', background: 'rgba(16, 185, 129, 0.15)', padding: '2px 8px', borderRadius: '4px' }}>
+                  Card #{selectedQuestionIndex + 1}
+                </span>
               </div>
 
               {/* Phone Frame Simulator */}
@@ -790,7 +969,7 @@ export default function StudioPage() {
                   border: `2px solid ${pack.color}`,
                   borderRadius: '28px',
                   padding: '24px',
-                  boxShadow: `0 20px 40px rgba(0, 0, 0, 0.6), 0 0 20px ${pack.color}25`,
+                  boxShadow: `0 20px 40px rgba(0, 0, 0, 0.6), 0 0 24px ${pack.color}25`,
                 }}
               >
                 {/* Pack Header Pill */}
@@ -800,7 +979,7 @@ export default function StudioPage() {
                       ⚡
                     </div>
                     <div>
-                      <div style={{ fontSize: '13px', fontWeight: 700 }}>{pack.name || 'Pack Name'}</div>
+                      <div style={{ fontSize: '13px', fontWeight: 700 }}>{pack.name || 'Untitled Pack'}</div>
                       <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{currentQ?.moduleName || 'Module Name'}</div>
                     </div>
                   </div>
@@ -870,7 +1049,7 @@ export default function StudioPage() {
                       lineHeight: 1.5,
                     }}
                   >
-                    <strong style={{ color: '#A78BFA', display: 'block', marginBottom: '4px' }}>💡 Explanation:</strong>
+                    <strong style={{ color: '#A78BFA', display: 'block', marginBottom: '4px' }}>💡 Post-Answer Explanation:</strong>
                     {currentQ.explanation}
                   </div>
                 )}
