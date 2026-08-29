@@ -1,0 +1,250 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../providers.dart';
+import '../../db/app_database.dart';
+import '../../theme/app_theme.dart';
+
+class ReviewsScreen extends ConsumerStatefulWidget {
+  const ReviewsScreen({super.key, required this.packId});
+  final String packId;
+
+  @override
+  ConsumerState<ReviewsScreen> createState() => _ReviewsScreenState();
+}
+
+class _ReviewsScreenState extends ConsumerState<ReviewsScreen> {
+  List<(UserProgressData, Question)> _queue = [];
+  int _currentIndex = 0;
+  String? _selectedAnswer;
+  bool _answered = false;
+  bool _loading = true;
+  int _correctCount = 0;
+
+  static const _stageNames = ['Available', 'Apprentice 1', 'Apprentice 2', 'Apprentice 3', 'Apprentice 4', 'Guru 1', 'Guru 2', 'Master', 'Burned'];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadReviews();
+  }
+
+  Future<void> _loadReviews() async {
+    final db = ref.read(dbProvider);
+    final due = await db.progressDao.getDueReviews();
+    // Filter by pack
+    final allQ = await (db.select(db.questions)..where((q) => q.packId.equals(widget.packId))).get();
+    final qById = {for (final q in allQ) q.id: q};
+    final pairs = due
+        .where((p) => qById.containsKey(p.questionId))
+        .map((p) => (p, qById[p.questionId]!))
+        .toList();
+    pairs.shuffle();
+    setState(() { _queue = pairs; _loading = false; });
+  }
+
+  (UserProgressData, Question) get _current => _queue[_currentIndex];
+
+  void _selectAnswer(String choice) {
+    if (_answered) return;
+    setState(() { _selectedAnswer = choice; _answered = true; });
+  }
+
+  Future<void> _next() async {
+    final db = ref.read(dbProvider);
+    final correct = _selectedAnswer == _current.$2.correctAnswer;
+    if (correct) _correctCount++;
+    await db.progressDao.recordAnswer(_current.$2.id, correct: correct);
+
+    if (_currentIndex < _queue.length - 1) {
+      setState(() { _currentIndex++; _selectedAnswer = null; _answered = false; });
+    } else {
+      if (mounted) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) => AlertDialog(
+            backgroundColor: SynapseColors.card,
+            title: const Text('Reviews Complete! 🎉'),
+            content: Text('Correct: $_correctCount / ${_queue.length}'),
+            actions: [
+              TextButton(
+                onPressed: () { Navigator.of(context).pop(); Navigator.of(context).pop(); },
+                child: const Text('Done'),
+              ),
+            ],
+          ),
+        );
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
+    if (_loading) return const Scaffold(body: Center(child: CircularProgressIndicator()));
+
+    if (_queue.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Reviews')),
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.celebration_rounded, size: 64, color: SynapseColors.secondary),
+                const SizedBox(height: 16),
+                const Text('No reviews due!', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 8),
+                Text('Check back later — the SRS will queue them when ready.', textAlign: TextAlign.center, style: TextStyle(color: cs.onSurfaceVariant)),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    final progress = _current.$1;
+    final question = _current.$2;
+    final stageName = progress.srsStage < _stageNames.length ? _stageNames[progress.srsStage] : 'Burned';
+    final stageColor = _stageColor(progress.srsStage);
+    final choices = [('A', question.choiceA), ('B', question.choiceB), ('C', question.choiceC), ('D', question.choiceD)];
+
+    return Scaffold(
+      backgroundColor: SynapseColors.surface,
+      appBar: AppBar(
+        title: Text('Review ${_currentIndex + 1} / ${_queue.length}'),
+        backgroundColor: SynapseColors.surface,
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(4),
+          child: LinearProgressIndicator(
+            value: (_currentIndex + 1) / _queue.length,
+            backgroundColor: cs.surfaceContainerHighest,
+            valueColor: AlwaysStoppedAnimation<Color>(stageColor),
+            minHeight: 4,
+          ),
+        ),
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: stageColor.withAlpha(25),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: stageColor.withAlpha(80)),
+                    ),
+                    child: Text(stageName, style: TextStyle(fontSize: 11, color: stageColor, fontWeight: FontWeight.w600)),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: cs.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(question.moduleName, style: TextStyle(fontSize: 11, color: cs.onSurfaceVariant)),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Text(question.question, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, height: 1.4)),
+              const SizedBox(height: 24),
+              ...choices.map((c) {
+                final letter = c.$1;
+                final text = c.$2;
+                final isSelected = _selectedAnswer == letter;
+                final isCorrect = letter == question.correctAnswer;
+                Color borderColor = cs.outline.withAlpha(80);
+                Color bgColor = cs.surfaceContainerHigh;
+                if (_answered) {
+                  if (isCorrect) { bgColor = SynapseColors.secondary.withAlpha(25); borderColor = SynapseColors.secondary; }
+                  else if (isSelected) { bgColor = cs.error.withAlpha(25); borderColor = cs.error; }
+                }
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () => _selectAnswer(letter),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                      decoration: BoxDecoration(
+                        color: bgColor,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: borderColor, width: isSelected || (_answered && isCorrect) ? 2 : 1),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 28, height: 28,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: isSelected || (_answered && isCorrect) ? borderColor : cs.surfaceContainerHighest,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Text(letter, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: isSelected || (_answered && isCorrect) ? Colors.white : cs.onSurface)),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(child: Text(text, style: const TextStyle(fontSize: 14, height: 1.3))),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }),
+              if (_answered) ...[
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: cs.surfaceContainerHigh,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: cs.outlineVariant.withAlpha(60)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text('Explanation', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                      const SizedBox(height: 4),
+                      Text(question.explanation, style: TextStyle(fontSize: 13, color: cs.onSurfaceVariant, height: 1.4)),
+                    ],
+                  ),
+                ),
+              ],
+              const Spacer(),
+              if (_answered)
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: _next,
+                    style: FilledButton.styleFrom(
+                      backgroundColor: stageColor,
+                      minimumSize: const Size.fromHeight(52),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    ),
+                    child: Text(_currentIndex < _queue.length - 1 ? 'Next Review' : 'Finish'),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Color _stageColor(int stage) {
+    if (stage <= 4) return SynapseColors.apprentice;
+    if (stage <= 6) return SynapseColors.guru;
+    if (stage == 7) return SynapseColors.master;
+    return SynapseColors.burned;
+  }
+}
