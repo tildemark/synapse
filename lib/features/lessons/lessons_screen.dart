@@ -1,9 +1,10 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers.dart';
 import '../../db/app_database.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/question_image_card.dart';
 
 class LessonsScreen extends ConsumerStatefulWidget {
   const LessonsScreen({super.key, required this.packId});
@@ -160,6 +161,8 @@ class _LessonsScreenState extends ConsumerState<LessonsScreen> {
                 ),
               ),
               const SizedBox(height: 16),
+              if (_current.imageUrl != null && _current.imageUrl!.isNotEmpty)
+                QuestionImageCard(imageUrl: _current.imageUrl!),
               // Question
               Text(
                 _current.question,

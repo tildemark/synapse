@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers.dart';
 import '../../db/app_database.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/question_image_card.dart';
 
 class ReviewsScreen extends ConsumerStatefulWidget {
   const ReviewsScreen({super.key, required this.packId});
@@ -236,6 +237,8 @@ class _ReviewsScreenState extends ConsumerState<ReviewsScreen> {
                 ],
               ),
               const SizedBox(height: 16),
+              if (question.imageUrl != null && question.imageUrl!.isNotEmpty)
+                QuestionImageCard(imageUrl: question.imageUrl!),
               Text(question.question, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, height: 1.4)),
               const SizedBox(height: 24),
               ...choices.map((c) {

@@ -1,9 +1,10 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers.dart';
 import '../../db/app_database.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/question_image_card.dart';
 
 class TagDrillScreen extends ConsumerStatefulWidget {
   const TagDrillScreen({super.key, required this.packId, required this.packName});
@@ -189,6 +190,8 @@ class _TagDrillScreenState extends ConsumerState<TagDrillScreen> {
                       ],
                     ),
                     const SizedBox(height: 12),
+                    if (_current.imageUrl != null && _current.imageUrl!.isNotEmpty)
+                      QuestionImageCard(imageUrl: _current.imageUrl!),
                     Text(
                       _current.question,
                       style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, height: 1.4),

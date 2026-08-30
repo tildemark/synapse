@@ -30,6 +30,7 @@ interface Module {
 interface Question {
   id: string;
   question: string;
+  imageUrl?: string;
   a: string;
   b: string;
   c: string;
@@ -257,6 +258,7 @@ export default function StudioPage() {
   const generateCleanJson = () => {
     const cleanQuestions = pack.questions.map((q) => ({
       question: q.question,
+      ...(q.imageUrl ? { imageUrl: q.imageUrl } : {}),
       a: q.a,
       b: q.b,
       c: q.c,

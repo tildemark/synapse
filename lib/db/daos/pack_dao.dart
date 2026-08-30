@@ -1,4 +1,4 @@
-﻿import 'package:drift/drift.dart';
+import 'package:drift/drift.dart';
 import '../app_database.dart';
 
 part 'pack_dao.g.dart';
@@ -55,6 +55,7 @@ class PackDao extends DatabaseAccessor<AppDatabase> with _$PackDaoMixin {
           choiceD: qMap['d'] as String,
           correctAnswer: qMap['answer'] as String,
           explanation: qMap['explanation'] as String,
+          imageUrl: Value((qMap['imageUrl'] ?? qMap['image']) as String?),
           difficultyLevel: Value((qMap['level'] as int?) ?? 1),
           moduleNumber: Value((qMap['module'] as int?) ?? 1),
           moduleName: Value((qMap['moduleName'] as String?) ?? 'General'),

@@ -522,6 +522,12 @@ class $QuestionsTable extends Questions
   late final GeneratedColumn<String> explanation = GeneratedColumn<String>(
       'explanation', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _imageUrlMeta =
+      const VerificationMeta('imageUrl');
+  @override
+  late final GeneratedColumn<String> imageUrl = GeneratedColumn<String>(
+      'image_url', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   static const VerificationMeta _difficultyLevelMeta =
       const VerificationMeta('difficultyLevel');
   @override
@@ -557,6 +563,7 @@ class $QuestionsTable extends Questions
         choiceD,
         correctAnswer,
         explanation,
+        imageUrl,
         difficultyLevel,
         moduleNumber,
         moduleName
@@ -626,6 +633,10 @@ class $QuestionsTable extends Questions
     } else if (isInserting) {
       context.missing(_explanationMeta);
     }
+    if (data.containsKey('image_url')) {
+      context.handle(_imageUrlMeta,
+          imageUrl.isAcceptableOrUnknown(data['image_url']!, _imageUrlMeta));
+    }
     if (data.containsKey('difficulty_level')) {
       context.handle(
           _difficultyLevelMeta,
@@ -671,6 +682,8 @@ class $QuestionsTable extends Questions
           .read(DriftSqlType.string, data['${effectivePrefix}correct_answer'])!,
       explanation: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}explanation'])!,
+      imageUrl: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}image_url']),
       difficultyLevel: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}difficulty_level'])!,
       moduleNumber: attachedDatabase.typeMapping
@@ -696,6 +709,7 @@ class Question extends DataClass implements Insertable<Question> {
   final String choiceD;
   final String correctAnswer;
   final String explanation;
+  final String? imageUrl;
   final int difficultyLevel;
   final int moduleNumber;
   final String moduleName;
@@ -709,6 +723,7 @@ class Question extends DataClass implements Insertable<Question> {
       required this.choiceD,
       required this.correctAnswer,
       required this.explanation,
+      this.imageUrl,
       required this.difficultyLevel,
       required this.moduleNumber,
       required this.moduleName});
@@ -724,6 +739,9 @@ class Question extends DataClass implements Insertable<Question> {
     map['choice_d'] = Variable<String>(choiceD);
     map['correct_answer'] = Variable<String>(correctAnswer);
     map['explanation'] = Variable<String>(explanation);
+    if (!nullToAbsent || imageUrl != null) {
+      map['image_url'] = Variable<String>(imageUrl);
+    }
     map['difficulty_level'] = Variable<int>(difficultyLevel);
     map['module_number'] = Variable<int>(moduleNumber);
     map['module_name'] = Variable<String>(moduleName);
@@ -741,6 +759,9 @@ class Question extends DataClass implements Insertable<Question> {
       choiceD: Value(choiceD),
       correctAnswer: Value(correctAnswer),
       explanation: Value(explanation),
+      imageUrl: imageUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(imageUrl),
       difficultyLevel: Value(difficultyLevel),
       moduleNumber: Value(moduleNumber),
       moduleName: Value(moduleName),
@@ -760,6 +781,7 @@ class Question extends DataClass implements Insertable<Question> {
       choiceD: serializer.fromJson<String>(json['choiceD']),
       correctAnswer: serializer.fromJson<String>(json['correctAnswer']),
       explanation: serializer.fromJson<String>(json['explanation']),
+      imageUrl: serializer.fromJson<String?>(json['imageUrl']),
       difficultyLevel: serializer.fromJson<int>(json['difficultyLevel']),
       moduleNumber: serializer.fromJson<int>(json['moduleNumber']),
       moduleName: serializer.fromJson<String>(json['moduleName']),
@@ -778,6 +800,7 @@ class Question extends DataClass implements Insertable<Question> {
       'choiceD': serializer.toJson<String>(choiceD),
       'correctAnswer': serializer.toJson<String>(correctAnswer),
       'explanation': serializer.toJson<String>(explanation),
+      'imageUrl': serializer.toJson<String?>(imageUrl),
       'difficultyLevel': serializer.toJson<int>(difficultyLevel),
       'moduleNumber': serializer.toJson<int>(moduleNumber),
       'moduleName': serializer.toJson<String>(moduleName),
@@ -794,6 +817,7 @@ class Question extends DataClass implements Insertable<Question> {
           String? choiceD,
           String? correctAnswer,
           String? explanation,
+          Value<String?> imageUrl = const Value.absent(),
           int? difficultyLevel,
           int? moduleNumber,
           String? moduleName}) =>
@@ -807,6 +831,7 @@ class Question extends DataClass implements Insertable<Question> {
         choiceD: choiceD ?? this.choiceD,
         correctAnswer: correctAnswer ?? this.correctAnswer,
         explanation: explanation ?? this.explanation,
+        imageUrl: imageUrl.present ? imageUrl.value : this.imageUrl,
         difficultyLevel: difficultyLevel ?? this.difficultyLevel,
         moduleNumber: moduleNumber ?? this.moduleNumber,
         moduleName: moduleName ?? this.moduleName,
@@ -825,6 +850,7 @@ class Question extends DataClass implements Insertable<Question> {
           : this.correctAnswer,
       explanation:
           data.explanation.present ? data.explanation.value : this.explanation,
+      imageUrl: data.imageUrl.present ? data.imageUrl.value : this.imageUrl,
       difficultyLevel: data.difficultyLevel.present
           ? data.difficultyLevel.value
           : this.difficultyLevel,
@@ -848,6 +874,7 @@ class Question extends DataClass implements Insertable<Question> {
           ..write('choiceD: $choiceD, ')
           ..write('correctAnswer: $correctAnswer, ')
           ..write('explanation: $explanation, ')
+          ..write('imageUrl: $imageUrl, ')
           ..write('difficultyLevel: $difficultyLevel, ')
           ..write('moduleNumber: $moduleNumber, ')
           ..write('moduleName: $moduleName')
@@ -866,6 +893,7 @@ class Question extends DataClass implements Insertable<Question> {
       choiceD,
       correctAnswer,
       explanation,
+      imageUrl,
       difficultyLevel,
       moduleNumber,
       moduleName);
@@ -882,6 +910,7 @@ class Question extends DataClass implements Insertable<Question> {
           other.choiceD == this.choiceD &&
           other.correctAnswer == this.correctAnswer &&
           other.explanation == this.explanation &&
+          other.imageUrl == this.imageUrl &&
           other.difficultyLevel == this.difficultyLevel &&
           other.moduleNumber == this.moduleNumber &&
           other.moduleName == this.moduleName);
@@ -897,6 +926,7 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
   final Value<String> choiceD;
   final Value<String> correctAnswer;
   final Value<String> explanation;
+  final Value<String?> imageUrl;
   final Value<int> difficultyLevel;
   final Value<int> moduleNumber;
   final Value<String> moduleName;
@@ -910,6 +940,7 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
     this.choiceD = const Value.absent(),
     this.correctAnswer = const Value.absent(),
     this.explanation = const Value.absent(),
+    this.imageUrl = const Value.absent(),
     this.difficultyLevel = const Value.absent(),
     this.moduleNumber = const Value.absent(),
     this.moduleName = const Value.absent(),
@@ -924,6 +955,7 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
     required String choiceD,
     required String correctAnswer,
     required String explanation,
+    this.imageUrl = const Value.absent(),
     this.difficultyLevel = const Value.absent(),
     this.moduleNumber = const Value.absent(),
     this.moduleName = const Value.absent(),
@@ -945,6 +977,7 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
     Expression<String>? choiceD,
     Expression<String>? correctAnswer,
     Expression<String>? explanation,
+    Expression<String>? imageUrl,
     Expression<int>? difficultyLevel,
     Expression<int>? moduleNumber,
     Expression<String>? moduleName,
@@ -959,6 +992,7 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
       if (choiceD != null) 'choice_d': choiceD,
       if (correctAnswer != null) 'correct_answer': correctAnswer,
       if (explanation != null) 'explanation': explanation,
+      if (imageUrl != null) 'image_url': imageUrl,
       if (difficultyLevel != null) 'difficulty_level': difficultyLevel,
       if (moduleNumber != null) 'module_number': moduleNumber,
       if (moduleName != null) 'module_name': moduleName,
@@ -975,6 +1009,7 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
       Value<String>? choiceD,
       Value<String>? correctAnswer,
       Value<String>? explanation,
+      Value<String?>? imageUrl,
       Value<int>? difficultyLevel,
       Value<int>? moduleNumber,
       Value<String>? moduleName}) {
@@ -988,6 +1023,7 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
       choiceD: choiceD ?? this.choiceD,
       correctAnswer: correctAnswer ?? this.correctAnswer,
       explanation: explanation ?? this.explanation,
+      imageUrl: imageUrl ?? this.imageUrl,
       difficultyLevel: difficultyLevel ?? this.difficultyLevel,
       moduleNumber: moduleNumber ?? this.moduleNumber,
       moduleName: moduleName ?? this.moduleName,
@@ -1024,6 +1060,9 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
     if (explanation.present) {
       map['explanation'] = Variable<String>(explanation.value);
     }
+    if (imageUrl.present) {
+      map['image_url'] = Variable<String>(imageUrl.value);
+    }
     if (difficultyLevel.present) {
       map['difficulty_level'] = Variable<int>(difficultyLevel.value);
     }
@@ -1048,6 +1087,7 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
           ..write('choiceD: $choiceD, ')
           ..write('correctAnswer: $correctAnswer, ')
           ..write('explanation: $explanation, ')
+          ..write('imageUrl: $imageUrl, ')
           ..write('difficultyLevel: $difficultyLevel, ')
           ..write('moduleNumber: $moduleNumber, ')
           ..write('moduleName: $moduleName')
@@ -2081,6 +2121,7 @@ typedef $$QuestionsTableCreateCompanionBuilder = QuestionsCompanion Function({
   required String choiceD,
   required String correctAnswer,
   required String explanation,
+  Value<String?> imageUrl,
   Value<int> difficultyLevel,
   Value<int> moduleNumber,
   Value<String> moduleName,
@@ -2095,6 +2136,7 @@ typedef $$QuestionsTableUpdateCompanionBuilder = QuestionsCompanion Function({
   Value<String> choiceD,
   Value<String> correctAnswer,
   Value<String> explanation,
+  Value<String?> imageUrl,
   Value<int> difficultyLevel,
   Value<int> moduleNumber,
   Value<String> moduleName,
@@ -2135,6 +2177,9 @@ class $$QuestionsTableFilterComposer
 
   ColumnFilters<String> get explanation => $composableBuilder(
       column: $table.explanation, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get imageUrl => $composableBuilder(
+      column: $table.imageUrl, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<int> get difficultyLevel => $composableBuilder(
       column: $table.difficultyLevel,
@@ -2184,6 +2229,9 @@ class $$QuestionsTableOrderingComposer
   ColumnOrderings<String> get explanation => $composableBuilder(
       column: $table.explanation, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get imageUrl => $composableBuilder(
+      column: $table.imageUrl, builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<int> get difficultyLevel => $composableBuilder(
       column: $table.difficultyLevel,
       builder: (column) => ColumnOrderings(column));
@@ -2232,6 +2280,9 @@ class $$QuestionsTableAnnotationComposer
   GeneratedColumn<String> get explanation => $composableBuilder(
       column: $table.explanation, builder: (column) => column);
 
+  GeneratedColumn<String> get imageUrl =>
+      $composableBuilder(column: $table.imageUrl, builder: (column) => column);
+
   GeneratedColumn<int> get difficultyLevel => $composableBuilder(
       column: $table.difficultyLevel, builder: (column) => column);
 
@@ -2274,6 +2325,7 @@ class $$QuestionsTableTableManager extends RootTableManager<
             Value<String> choiceD = const Value.absent(),
             Value<String> correctAnswer = const Value.absent(),
             Value<String> explanation = const Value.absent(),
+            Value<String?> imageUrl = const Value.absent(),
             Value<int> difficultyLevel = const Value.absent(),
             Value<int> moduleNumber = const Value.absent(),
             Value<String> moduleName = const Value.absent(),
@@ -2288,6 +2340,7 @@ class $$QuestionsTableTableManager extends RootTableManager<
             choiceD: choiceD,
             correctAnswer: correctAnswer,
             explanation: explanation,
+            imageUrl: imageUrl,
             difficultyLevel: difficultyLevel,
             moduleNumber: moduleNumber,
             moduleName: moduleName,
@@ -2302,6 +2355,7 @@ class $$QuestionsTableTableManager extends RootTableManager<
             required String choiceD,
             required String correctAnswer,
             required String explanation,
+            Value<String?> imageUrl = const Value.absent(),
             Value<int> difficultyLevel = const Value.absent(),
             Value<int> moduleNumber = const Value.absent(),
             Value<String> moduleName = const Value.absent(),
@@ -2316,6 +2370,7 @@ class $$QuestionsTableTableManager extends RootTableManager<
             choiceD: choiceD,
             correctAnswer: correctAnswer,
             explanation: explanation,
+            imageUrl: imageUrl,
             difficultyLevel: difficultyLevel,
             moduleNumber: moduleNumber,
             moduleName: moduleName,

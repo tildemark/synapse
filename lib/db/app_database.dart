@@ -1,4 +1,4 @@
-﻿import 'dart:io';
+import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
@@ -37,6 +37,7 @@ class Questions extends Table {
   TextColumn get choiceD => text()();
   TextColumn get correctAnswer => text()(); // 'A', 'B', 'C', or 'D'
   TextColumn get explanation => text()();
+  TextColumn get imageUrl => text().nullable()(); // Road sign diagram or asset path
   IntColumn get difficultyLevel => integer().withDefault(const Constant(1))();
   IntColumn get moduleNumber => integer().withDefault(const Constant(1))();
   TextColumn get moduleName => text().withDefault(const Constant('General'))();
@@ -80,7 +81,21 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
+
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      onCreate: (Migrator m) async {
+        await m.createAll();
+      },
+      onUpgrade: (Migrator m, int from, int to) async {
+        if (from < 2) {
+          await m.addColumn(questions, questions.imageUrl);
+        }
+      },
+    );
+  }
 
   static QueryExecutor _openConnection() {
     return LazyDatabase(() async {
