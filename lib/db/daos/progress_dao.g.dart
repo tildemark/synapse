@@ -6,4 +6,14 @@ part of 'progress_dao.dart';
 mixin _$ProgressDaoMixin on DatabaseAccessor<AppDatabase> {
   $UserProgressTable get userProgress => attachedDatabase.userProgress;
   $QuestionsTable get questions => attachedDatabase.questions;
+  ProgressDaoManager get managers => ProgressDaoManager(this);
+}
+
+class ProgressDaoManager {
+  final _$ProgressDaoMixin _db;
+  ProgressDaoManager(this._db);
+  $$UserProgressTableTableManager get userProgress =>
+      $$UserProgressTableTableManager(_db.attachedDatabase, _db.userProgress);
+  $$QuestionsTableTableManager get questions =>
+      $$QuestionsTableTableManager(_db.attachedDatabase, _db.questions);
 }
