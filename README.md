@@ -46,7 +46,7 @@ Built with **Flutter**, **Drift (SQLite)**, and **Riverpod**, Synapse decouples 
 | :--- | :--- | :---: | :---: | :---: | :---: |
 | **C Systems Programming** | Computer Science | 15 | **101** | Active & Bundled | `SYN-CPROG-8F39-VERIFIED` |
 | **HTML5 Web Semantics** | Web Development | 15 | **138** | Active & Bundled | `SYN-HTML-9B41-VERIFIED` |
-| **LTO Driver's Licensing Reviewer** | Traffic Laws & Safety | 15 | **300** | Active & Bundled | `SYN-LTOPH-4D21-VERIFIED` |
+| **LTO Driver's Licensing Reviewer** | Traffic Laws & Safety | 15 | **450** | Active & Bundled | `SYN-LTOPH-4D21-VERIFIED` |
 
 ---
 
