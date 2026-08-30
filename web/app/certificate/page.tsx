@@ -136,7 +136,7 @@ export default function CertificatePage() {
 
       <div className="container" style={{ maxWidth: '1100px', paddingTop: '30px' }}>
         {/* Navigation / Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '28px', flexWrap: 'wrap', gap: '14px' }}>
+        <div className="no-print" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '28px', flexWrap: 'wrap', gap: '14px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
             <Link href="/" className="btn btn-secondary" style={{ padding: '8px 14px', fontSize: '13px' }}>
               <ArrowLeft size={16} /> Home
@@ -162,7 +162,7 @@ export default function CertificatePage() {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-            <button onClick={handlePrint} className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '13px' }}>
+            <button onClick={handlePrint} className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '13px' }}>
               <Printer size={16} /> Print / Save as PDF
             </button>
             <button onClick={handleCopyLink} className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '13px' }}>
@@ -173,7 +173,7 @@ export default function CertificatePage() {
         </div>
 
         {/* Customization Bar */}
-        <div className="card" style={{ padding: '20px', marginBottom: '30px', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+        <div className="card no-print" style={{ padding: '20px', marginBottom: '30px', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
           <div style={{ fontSize: '13px', fontWeight: 800, color: '#F59E0B', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Sparkles size={16} /> Customize Graduate Credential Parameters:
           </div>
@@ -378,7 +378,7 @@ export default function CertificatePage() {
         </div>
 
         {/* Social & Professional Sharing Action Center */}
-        <div className="card" style={{ padding: '30px', textAlign: 'center' }}>
+        <div className="card no-print" style={{ padding: '30px', textAlign: 'center' }}>
           <h3 style={{ fontSize: '20px', fontWeight: 800, marginBottom: '8px' }}>
             Publish &amp; Showcase Your Verified Credential
           </h3>

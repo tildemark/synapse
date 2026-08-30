@@ -688,3 +688,64 @@ a {
   background: rgba(255, 255, 255, 0.06);
   color: var(--text-muted);
 }
+
+/* ==========================================================================
+   High-Precision Academic Certificate Print Engine
+   ========================================================================== */
+@media print {
+  @page {
+    size: landscape A4;
+    margin: 0;
+  }
+
+  html, body {
+    background: #0B0B14 !important;
+    color: #FFFFFF !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide all UI chrome, controls, buttons, forms, and background effects */
+  .no-print,
+  .glow-backdrop,
+  .academic-grid-pattern,
+  .btn,
+  .card:not(.cert-frame),
+  footer,
+  nav,
+  input,
+  select {
+    display: none !important;
+  }
+
+  /* Expand certificate frame to full landscape page */
+  .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .cert-frame {
+    margin: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+    padding: 36px 48px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Ensure high-contrast elements and QR code render cleanly */
+  .cert-seal {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
