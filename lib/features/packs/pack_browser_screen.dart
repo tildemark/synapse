@@ -13,7 +13,7 @@ const _kAvailablePacks = [
     description: 'Master C fundamentals: pointers, memory management, structs, file I/O, and systems programming.',
     iconName: 'code',
     color: '#3B82F6',
-    questionCount: 101,
+    questionCount: 249,
     assetPath: 'assets/packs/pack_c_programming.json',
   ),
   _PackMeta(
