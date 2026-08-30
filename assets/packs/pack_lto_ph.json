@@ -4,7 +4,7 @@
   "subject": "Road Safety & Philippine Traffic Laws",
   "icon": "terminal",
   "color": "#10B981",
-  "version": 3,
+  "version": 4,
   "modules": [
     { "number": 1, "name": "Priority & Regulatory Traffic Signs" },
     { "number": 2, "name": "Directional, Mandatory & Prohibitory Signs" },
@@ -14,7 +14,10 @@
     { "number": 6, "name": "Warning Signs: Road Width, Hills & Physical Hazards" },
     { "number": 7, "name": "Warning Signs: Pedestrians, Schools & Special Hazards" },
     { "number": 8, "name": "Pavement Markings & Lane Dividers" },
-    { "number": 9, "name": "Traffic Light Signals & Hand Signals" }
+    { "number": 9, "name": "Traffic Light Signals & Hand Signals" },
+    { "number": 10, "name": "Right-of-Way Rules & Intersection Priority" },
+    { "number": 11, "name": "Overtaking, Passing & Expressway Driving Rules" },
+    { "number": 12, "name": "General Traffic Code & Republic Act 4136" }
   ],
   "questions": [
     {
@@ -593,6 +596,187 @@
       "level": 2,
       "module": 9,
       "moduleName": "Traffic Light Signals & Hand Signals"
+    },
+    {
+      "question": "At an uncontrolled 4-way intersection where two vehicles arrive at the exact same time from perpendicular roads, who has the right-of-way?",
+      "imageUrl": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect x='5' y='5' width='90' height='90' rx='10' fill='%231F2937'/><rect x='36' y='0' width='28' height='100' fill='%23374151'/><rect x='0' y='36' width='100' height='28' fill='%23374151'/><rect x='44' y='68' width='12' height='20' rx='3' fill='%233B82F6'/><rect x='68' y='44' width='20' height='12' rx='3' fill='%2310B981'/><text x='50' y='78' fill='white' font-size='8' font-weight='bold' text-anchor='middle'>A</text><text x='78' y='52' fill='white' font-size='8' font-weight='bold' text-anchor='middle'>B</text></svg>",
+      "a": "Vehicle A (on the vertical road)",
+      "b": "Vehicle B on the right side of Vehicle A has the right-of-way",
+      "c": "The heavier or larger vehicle",
+      "d": "Whichever vehicle honks first",
+      "answer": "B",
+      "explanation": "Under RA 4136 Section 42(a), when two vehicles approach an uncontrolled intersection at the same time, the driver on the left must yield to the vehicle on their right.",
+      "level": 2,
+      "module": 10,
+      "moduleName": "Right-of-Way Rules & Intersection Priority"
+    },
+    {
+      "question": "When making a Left Turn across opposing oncoming traffic at an intersection without a green turn arrow, you must:",
+      "a": "Speed up to turn before oncoming vehicles arrive",
+      "b": "Yield the right-of-way to all oncoming vehicles proceeding straight or turning right",
+      "c": "Honk continuously and claim right-of-way",
+      "d": "Flash your high beams to force oncoming traffic to stop",
+      "answer": "B",
+      "explanation": "Under Section 42(b) of RA 4136, a driver intending to turn left within an intersection must yield the right of way to any oncoming vehicle approaching straight or turning right.",
+      "level": 1,
+      "module": 10,
+      "moduleName": "Right-of-Way Rules & Intersection Priority"
+    },
+    {
+      "question": "When an authorized Emergency Vehicle (Ambulance, Fire Truck, or Police Car) approaches sounding a siren or flashing red/blue lights, what must all drivers do?",
+      "a": "Speed up to clear the road ahead of the ambulance",
+      "b": "Immediately drive to the right-hand edge/curb of the road and come to a complete stop until it passes",
+      "c": "Stop immediately in the center lane",
+      "d": "Follow closely behind the emergency vehicle to bypass heavy traffic",
+      "answer": "B",
+      "explanation": "Under RA 4136 Section 43, drivers must immediately pull over as close as possible to the right-hand curb and remain stopped until the emergency vehicle has completely passed.",
+      "level": 1,
+      "module": 10,
+      "moduleName": "Right-of-Way Rules & Intersection Priority"
+    },
+    {
+      "question": "When entering a public highway or thoroughfare from a private driveway, garage, or building alley, who has the right-of-way?",
+      "a": "The vehicle exiting the private driveway",
+      "b": "All vehicles already traveling on the public highway",
+      "c": "The vehicle moving at the higher speed",
+      "d": "Motorcycles exiting the alley",
+      "answer": "B",
+      "explanation": "Under Section 42(c) of RA 4136, a driver entering a public highway from a private road or driveway must yield the right of way to all vehicles approaching on the highway.",
+      "level": 1,
+      "module": 10,
+      "moduleName": "Right-of-Way Rules & Intersection Priority"
+    },
+    {
+      "question": "On a steep, narrow mountain road where two vehicles cannot pass each other simultaneously, which vehicle has the right-of-way?",
+      "a": "The vehicle descending (going downhill)",
+      "b": "The vehicle ascending (traveling uphill)",
+      "c": "The smaller passenger vehicle",
+      "d": "The vehicle traveling faster",
+      "answer": "B",
+      "explanation": "The vehicle traveling uphill (ascending) has the right of way because it is harder to regain momentum and start from a standstill on a steep grade. The downhill vehicle must back up if needed.",
+      "level": 2,
+      "module": 10,
+      "moduleName": "Right-of-Way Rules & Intersection Priority"
+    },
+    {
+      "question": "As a general rule on Philippine roads, on which side must a driver overtake or pass another vehicle traveling in the same direction?",
+      "a": "On the left side only, after signaling and ensuring the lane is clear",
+      "b": "On the right shoulder whenever traffic is slow",
+      "c": "On whichever side has more open space",
+      "d": "On the sidewalk if necessary",
+      "answer": "A",
+      "explanation": "Under RA 4136 Section 39, overtaking must always be made on the left side of the vehicle being passed, returning to the right lane only when safely clear.",
+      "level": 1,
+      "module": 11,
+      "moduleName": "Overtaking, Passing & Expressway Driving Rules"
+    },
+    {
+      "question": "In which of the following situations is overtaking strictly PROHIBITED under RA 4136?",
+      "a": "On multi-lane straight expressways",
+      "b": "Approaching the crest of a hill, on blind curves, at railway crossings, and within intersections",
+      "c": "On open dry highways during daytime",
+      "d": "When passing a stationary bicycle on the shoulder",
+      "answer": "B",
+      "explanation": "Under RA 4136 Section 41, passing is strictly prohibited on blind curves, hills with obstructed views, railway crossings, intersections, and school zones.",
+      "level": 2,
+      "module": 11,
+      "moduleName": "Overtaking, Passing & Expressway Driving Rules"
+    },
+    {
+      "question": "What is the primary function of the extreme Leftmost lane on Philippine multi-lane expressways (e.g. SLEX, NLEX, SCTEX, TPLEX)?",
+      "a": "Cruising lane for slow-moving trucks and buses",
+      "b": "Passing / Overtaking lane only",
+      "c": "Emergency breakdown parking lane",
+      "d": "Continuous cruising lane at 60 km/h",
+      "answer": "B",
+      "explanation": "Expressway regulations dictate 'Keep Right Except to Pass'. The leftmost lane (Lane 1) is dedicated for overtaking; lingering in it constitutes lane hogging.",
+      "level": 2,
+      "module": 11,
+      "moduleName": "Overtaking, Passing & Expressway Driving Rules"
+    },
+    {
+      "question": "What is the maximum speed limit for passenger cars on Philippine expressways (e.g. NLEX / SLEX)?",
+      "a": "60 km/h",
+      "b": "80 km/h",
+      "c": "100 km/h",
+      "d": "120 km/h",
+      "answer": "C",
+      "explanation": "The maximum legal speed limit for passenger cars on Philippine expressways is 100 km/h (minimum speed is 60 km/h).",
+      "level": 1,
+      "module": 11,
+      "moduleName": "Overtaking, Passing & Expressway Driving Rules"
+    },
+    {
+      "question": "When driving at 80 km/h in ideal weather conditions, what is the minimum safe following distance recommended by the defensive driving rule?",
+      "a": "At least 1 car length",
+      "b": "The 3-Second Rule (increasing to 4–6 seconds in rainy or slippery conditions)",
+      "c": "5 meters behind the bumper",
+      "d": "Close enough to read their license plate",
+      "answer": "B",
+      "explanation": "The 3-Second Rule ensures adequate perception and braking distance under normal dry conditions, and should be doubled during heavy rain or wet roads.",
+      "level": 2,
+      "module": 11,
+      "moduleName": "Overtaking, Passing & Expressway Driving Rules"
+    },
+    {
+      "question": "What is the official title of Republic Act No. 4136?",
+      "a": "The Clean Air Act of the Philippines",
+      "b": "The Land Transportation and Traffic Code",
+      "c": "The Anti-Drunk and Drugged Driving Act",
+      "d": "The Motor Vehicle Registration Act",
+      "answer": "B",
+      "explanation": "Republic Act No. 4136 is officially entitled 'The Land Transportation and Traffic Code' of the Philippines, enacted as the primary governing traffic statute.",
+      "level": 1,
+      "module": 12,
+      "moduleName": "General Traffic Code & Republic Act 4136"
+    },
+    {
+      "question": "What is the legal status of a driver's license in the Philippines?",
+      "a": "A constitutional right granted to all adult citizens",
+      "b": "A privilege granted by the government through the LTO, subject to revocation or suspension for traffic violations",
+      "c": "An irrevocable personal property document",
+      "d": "A lifetime identification card that cannot be confiscated",
+      "answer": "B",
+      "explanation": "A driver's license in the Philippines is a privilege, not a right. The government, through the LTO, may suspend or revoke it for violations of road safety laws.",
+      "level": 1,
+      "module": 12,
+      "moduleName": "General Traffic Code & Republic Act 4136"
+    },
+    {
+      "question": "Under RA 4136, during what hours must headlights on all moving motor vehicles be illuminated?",
+      "a": "From 8:00 PM to 4:00 AM",
+      "b": "From at least thirty minutes past sunset until at least thirty minutes before sunrise, or whenever visibility is poor",
+      "c": "Only during complete pitch black darkness",
+      "d": "Only when driving on provincial highways",
+      "answer": "B",
+      "explanation": "Under RA 4136 Section 34(c), headlights must be lighted from 30 minutes after sunset until 30 minutes before sunrise, and at any time when natural light is insufficient.",
+      "level": 2,
+      "module": 12,
+      "moduleName": "General Traffic Code & Republic Act 4136"
+    },
+    {
+      "question": "When meeting an oncoming motor vehicle on a dark highway at night, within how many meters must you dip (switch to low beam) your headlights?",
+      "a": "At least 50 meters",
+      "b": "At least 200 meters (or as soon as oncoming headlights appear)",
+      "c": "At least 500 meters",
+      "d": "Only when the oncoming driver flashes their high beams",
+      "answer": "B",
+      "explanation": "To prevent blinding oncoming drivers with high-beam glare, switch to low beams within at least 200 meters of an approaching oncoming vehicle.",
+      "level": 2,
+      "module": 12,
+      "moduleName": "General Traffic Code & Republic Act 4136"
+    },
+    {
+      "question": "What is required of a holder of a Student Driver's Permit when operating a motor vehicle on any public highway?",
+      "a": "They may drive alone if carrying an LTO official receipt",
+      "b": "They must be accompanied by a duly licensed driver (holding a valid Non-Professional or Professional Driver's License)",
+      "c": "They may only drive between 9:00 AM and 3:00 PM",
+      "d": "They can only drive an automatic transmission vehicle",
+      "answer": "B",
+      "explanation": "Under RA 4136 Section 30, a student driver cannot operate a motor vehicle unless accompanied by a licensed driver who is seated beside the student.",
+      "level": 1,
+      "module": 12,
+      "moduleName": "General Traffic Code & Republic Act 4136"
     }
   ]
 }
