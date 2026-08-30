@@ -4,7 +4,7 @@
   "subject": "Road Safety & Philippine Traffic Laws",
   "icon": "terminal",
   "color": "#10B981",
-  "version": 4,
+  "version": 5,
   "modules": [
     { "number": 1, "name": "Priority & Regulatory Traffic Signs" },
     { "number": 2, "name": "Directional, Mandatory & Prohibitory Signs" },
@@ -17,7 +17,10 @@
     { "number": 9, "name": "Traffic Light Signals & Hand Signals" },
     { "number": 10, "name": "Right-of-Way Rules & Intersection Priority" },
     { "number": 11, "name": "Overtaking, Passing & Expressway Driving Rules" },
-    { "number": 12, "name": "General Traffic Code & Republic Act 4136" }
+    { "number": 12, "name": "General Traffic Code & Republic Act 4136" },
+    { "number": 13, "name": "Special Laws: Anti-Drunk (RA 10586) & Distracted Driving (RA 10913)" },
+    { "number": 14, "name": "Fines, Penalties, Violations & Demerit System" },
+    { "number": 15, "name": "Vehicle Safety, Emergencies & BLOWBAGETS Pre-Trip Inspection" }
   ],
   "questions": [
     {
@@ -777,6 +780,186 @@
       "level": 1,
       "module": 12,
       "moduleName": "General Traffic Code & Republic Act 4136"
+    },
+    {
+      "question": "Under Republic Act No. 10586 (Anti-Drunk and Drugged Driving Act of 2013), what is the maximum allowable Blood Alcohol Concentration (BAC) for drivers of PRIVATE motor vehicles?",
+      "a": "0.00% BAC (Zero tolerance)",
+      "b": "Less than 0.05% BAC (0.05 grams of alcohol per 100 ml of blood)",
+      "c": "0.08% BAC",
+      "d": "0.10% BAC",
+      "answer": "B",
+      "explanation": "Under RA 10586, for private motor vehicle drivers, BAC must be below 0.05%. However, for professional drivers and commercial public utility operators, the limit is strictly 0.00% (Zero tolerance).",
+      "level": 2,
+      "module": 13,
+      "moduleName": "Special Laws: Anti-Drunk (RA 10586) & Distracted Driving (RA 10913)"
+    },
+    {
+      "question": "Under RA 10586, if a law enforcement officer has reasonable cause to believe a driver is intoxicated, which three mandatory Field Sobriety Tests must be administered first?",
+      "a": "IQ test, hearing test, and vision test",
+      "b": "Eye Test (Horizontal Gaze Nystagmus), Walk-and-Turn Test, and One-Leg Stand Test",
+      "c": "Blood test, urine test, and saliva swab",
+      "d": "Push-ups, sit-ups, and sprint test",
+      "answer": "B",
+      "explanation": "RA 10586 prescribes three standardized Field Sobriety Tests: (1) Horizontal Gaze Nystagmus, (2) Walk-and-Turn, and (3) One-Leg Stand before utilizing an electronic Breath Analyzer.",
+      "level": 3,
+      "module": 13,
+      "moduleName": "Special Laws: Anti-Drunk (RA 10586) & Distracted Driving (RA 10913)"
+    },
+    {
+      "question": "What is the legal penalty under RA 10586 if a driver refuses to undergo mandatory field sobriety tests or a breath analyzer exam upon lawful order?",
+      "a": "A ₱500 administrative fine only",
+      "b": "Automatic confiscation and immediate revocation of driver's license in addition to statutory penalties",
+      "c": "A verbal warning",
+      "d": "Mandatory driving re-education course",
+      "answer": "B",
+      "explanation": "Refusal to undergo field sobriety or breath analyzer testing results in automatic confiscation and immediate revocation/suspension of the driver's license by the LTO.",
+      "level": 2,
+      "module": 13,
+      "moduleName": "Special Laws: Anti-Drunk (RA 10586) & Distracted Driving (RA 10913)"
+    },
+    {
+      "question": "Under Republic Act No. 10913 (Anti-Distracted Driving Act), which action is considered a prohibited 'distracted driving' violation while the motor vehicle is in motion or temporarily stopped at a red light?",
+      "a": "Using a hands-free dash-mounted phone for navigation that does not obstruct the driver's line of sight",
+      "b": "Holding and using a mobile phone to write, send, or read text messages, make calls, or play games",
+      "c": "Listening to music through the car stereo system",
+      "d": "Looking at the side and rearview mirrors",
+      "answer": "B",
+      "explanation": "RA 10913 strictly bans holding or operating electronic communications devices with your hands while driving or waiting at red lights. Hands-free navigation mounted within the safe visual zone is permitted.",
+      "level": 1,
+      "module": 13,
+      "moduleName": "Special Laws: Anti-Drunk (RA 10586) & Distracted Driving (RA 10913)"
+    },
+    {
+      "question": "Under Republic Act No. 11229 (Child Safety in Motor Vehicles Act), at what age and height is a child strictly prohibited from sitting in the front passenger seat?",
+      "a": "Children 12 years old and below, unless they are at least 150 cm (4'11\") in height and properly fitted with standard seat belts",
+      "b": "Children 5 years old and below",
+      "c": "Children 18 years old and below",
+      "d": "Any child weighing less than 10 kg",
+      "answer": "A",
+      "explanation": "Under RA 11229, children aged 12 and below cannot sit in the front seat and must use an approved Child Restraint System (CRS) in the rear seat unless they exceed 150 cm in height.",
+      "level": 2,
+      "module": 13,
+      "moduleName": "Special Laws: Anti-Drunk (RA 10586) & Distracted Driving (RA 10913)"
+    },
+    {
+      "question": "Under the LTO Demerit Point System, how many accumulated demerit points within a license validity period will result in a mandatory 1-year suspension of driving privileges?",
+      "a": "5 demerit points",
+      "b": "10 demerit points (or 40 points for revocation)",
+      "c": "15 demerit points",
+      "d": "2 demerit points",
+      "answer": "B",
+      "explanation": "Under LTO guidelines, accumulating 10 demerit points results in a 1-year suspension of the driver's license. Accumulating 40 points results in total revocation.",
+      "level": 2,
+      "module": 14,
+      "moduleName": "Fines, Penalties, Violations & Demerit System"
+    },
+    {
+      "question": "What is the penalty for driving a motor vehicle without a valid driver's license (or with an expired/fake license) in the Philippines under Joint Administrative Order (JAO) 2014-01?",
+      "a": "₱1,000 fine only",
+      "b": "₱3,000 fine and disqualification from being granted a driver's license for one (1) year",
+      "c": "₱10,000 fine and 30 days imprisonment",
+      "d": "Confiscation of vehicle permanently",
+      "answer": "B",
+      "explanation": "Under JAO 2014-01, driving without a valid license carries a ₱3,000 fine and disqualifies the offender from obtaining a license for 1 year from payment.",
+      "level": 2,
+      "module": 14,
+      "moduleName": "Fines, Penalties, Violations & Demerit System"
+    },
+    {
+      "question": "What is the minimum license validity period granted to drivers with zero (0) traffic violations and clean records upon renewal?",
+      "a": "3 Years",
+      "b": "5 Years",
+      "c": "10 Years",
+      "d": "Lifetime",
+      "answer": "C",
+      "explanation": "Under RA 10930, holders of driver's licenses with zero demerit points / violations during their 5-year cycle are eligible for a 10-Year validity license renewal.",
+      "level": 1,
+      "module": 14,
+      "moduleName": "Fines, Penalties, Violations & Demerit System"
+    },
+    {
+      "question": "If you are involved in a traffic collision resulting in property damage or injury, what is your primary legal duty under RA 4136?",
+      "a": "Drive away immediately to avoid obstructing traffic",
+      "b": "Immediately stop, show your driver's license, provide your true name and address, and render assistance to any injured person",
+      "c": "Call your insurance broker before stopping",
+      "d": "Negotiate cash settlement without reporting",
+      "answer": "B",
+      "explanation": "Under RA 4136 Section 55 (Duty of driver in case of accident), leaving the scene without stopping and identifying yourself constitutes 'Hit and Run' — a severe criminal offense.",
+      "level": 1,
+      "module": 14,
+      "moduleName": "Fines, Penalties, Violations & Demerit System"
+    },
+    {
+      "question": "Under the Clean Air Act (RA 8749), what is the penalty for motor vehicles caught with excessive smoke belching on public roads?",
+      "a": "First offense: ₱2,000 fine and mandatory emission testing",
+      "b": "₱100 fine only",
+      "c": "Vehicle is crushed immediately",
+      "d": "Suspension of vehicle registration for 5 years",
+      "answer": "A",
+      "explanation": "Smoke-belching vehicles face progressive fines starting at ₱2,000 on the first offense, with required emission compliance before release.",
+      "level": 2,
+      "module": 14,
+      "moduleName": "Fines, Penalties, Violations & Demerit System"
+    },
+    {
+      "question": "What does the standard pre-trip automotive safety acronym 'BLOWBAGETS' stand for in Philippine driver education?",
+      "a": "Bumper, Lights, Oil, Wipers, Brakes, Air, Gas, Exhaust, Tires, Suspension",
+      "b": "Battery, Lights, Oil, Water, Brakes, Air, Gas, Engine, Tire, Self",
+      "c": "Body, Lubricant, Oxygen, Wheels, Battery, Alternator, Gearbox, Electronics, Torque, Steering",
+      "d": "Brakes, Locks, Overdrive, Windows, Belts, Axle, Gauge, Emissions, Transmission, Speedometer",
+      "answer": "B",
+      "explanation": "The official LTO pre-trip checklist 'BLOWBAGETS' stands for: Battery, Lights, Oil, Water, Brakes, Air, Gas, Engine, Tire, Self (driver readiness).",
+      "level": 1,
+      "module": 15,
+      "moduleName": "Vehicle Safety, Emergencies & BLOWBAGETS Pre-Trip Inspection"
+    },
+    {
+      "question": "If your vehicle experiences sudden Brake Failure while driving at highway speed, what is the safest sequence of emergency actions?",
+      "a": "Turn off the ignition immediately and pull the steering wheel sharply",
+      "b": "Pump the brake pedal rapidly, downshift progressively to lower gears to use engine braking, and gently apply the parking brake",
+      "c": "Jump out of the vehicle onto the shoulder",
+      "d": "Shift directly into Reverse gear",
+      "answer": "B",
+      "explanation": "In brake failure: (1) Rapidly pump brakes to build hydraulic pressure, (2) downshift gears for engine braking, and (3) gradually modulate the handbrake without locking rear wheels.",
+      "level": 2,
+      "module": 15,
+      "moduleName": "Vehicle Safety, Emergencies & BLOWBAGETS Pre-Trip Inspection"
+    },
+    {
+      "question": "What is the correct emergency response if a front tire suffers a sudden high-speed Tire Blowout?",
+      "a": "Slam on the brakes with maximum force and turn the steering wheel sharply",
+      "b": "Grip the steering wheel firmly with both hands, maintain a straight path, ease off the accelerator gradually, and brake gently once stabilized",
+      "c": "Pull the handbrake immediately",
+      "d": "Shift into neutral and switch off engine immediately",
+      "answer": "B",
+      "explanation": "Slamming on the brakes during a blowout causes catastrophic loss of control or rollover. Hold the wheel firmly straight, let momentum decay, and steer gently onto the shoulder.",
+      "level": 2,
+      "module": 15,
+      "moduleName": "Vehicle Safety, Emergencies & BLOWBAGETS Pre-Trip Inspection"
+    },
+    {
+      "question": "When stalled or disabled on the expressway or highway shoulder at night, at what distance behind your vehicle must the Early Warning Device (EWD) reflective triangle be placed?",
+      "a": "Directly against the rear bumper",
+      "b": "At least 4 meters behind the vehicle",
+      "c": "At least 10 meters (and up to 50–100 meters on high-speed expressways) to give approaching drivers ample warning",
+      "d": "On top of the roof rack only",
+      "answer": "C",
+      "explanation": "Early Warning Devices must be placed at least 10 to 50+ meters behind the disabled vehicle on expressways to provide approaching high-speed vehicles sufficient reaction distance.",
+      "level": 2,
+      "module": 15,
+      "moduleName": "Vehicle Safety, Emergencies & BLOWBAGETS Pre-Trip Inspection"
+    },
+    {
+      "question": "Why is the final 'S' (Self) in BLOWBAGETS considered the most critical pre-trip check?",
+      "a": "To ensure you brought enough snacks for the trip",
+      "b": "To ensure the driver is physically fit, mentally alert, well-rested, emotionally calm, and free from alcohol or impairing medication before getting behind the wheel",
+      "c": "To check your personal fashion appearance",
+      "d": "To calibrate the car's selfie camera",
+      "answer": "B",
+      "explanation": "'Self' refers to human fitness to drive: assessing fatigue, stress, illness, sobriety, and emotional composure, which are the root causes of over 85% of road crashes.",
+      "level": 1,
+      "module": 15,
+      "moduleName": "Vehicle Safety, Emergencies & BLOWBAGETS Pre-Trip Inspection"
     }
   ]
 }
