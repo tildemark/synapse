@@ -21,6 +21,9 @@ dependencies:
   # State Management
   flutter_riverpod: ^2.6.1
 
+  # Vectors & Graphics
+  flutter_svg: ^2.0.10+1
+
   # Storage
   shared_preferences: ^2.3.2
   path_provider: ^2.1.4
@@ -49,5 +52,5 @@ flutter_launcher_icons:
 flutter:
   uses-material-design: true
   assets:
-    - assets/packs/
     - assets/icons/
+    - assets/packs/

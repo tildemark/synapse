@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 /// Reusable responsive image and diagram viewer for Synapse questions.
 /// Supports:
-/// 1. Local Flutter assets (e.g. 'assets/packs/lto/stop_sign.png')
-/// 2. Base64 Data URIs (e.g. 'data:image/png;base64,...')
-/// 3. Direct Network URLs (e.g. 'https://...')
+/// 1. Data URIs with SVG (data:image/svg+xml;base64,...)
+/// 2. Data URIs with PNG/JPEG (data:image/png;base64,...)
+/// 3. Direct SVG string / XML markup
+/// 4. Local Flutter assets (assets/packs/...)
+/// 5. Direct Network URLs (https://...)
 class QuestionImageCard extends StatelessWidget {
   const QuestionImageCard({
     super.key,
@@ -22,7 +25,38 @@ class QuestionImageCard extends StatelessWidget {
 
     Widget imageWidget;
 
-    if (imageUrl.startsWith('data:image/')) {
+    if (imageUrl.startsWith('data:image/svg+xml;base64,')) {
+      try {
+        final base64Str = imageUrl.substring('data:image/svg+xml;base64,'.length);
+        final svgBytes = base64Decode(base64Str);
+        imageWidget = SvgPicture.memory(
+          svgBytes,
+          fit: BoxFit.contain,
+          placeholderBuilder: (_) => const _ImageLoadingPlaceholder(),
+        );
+      } catch (_) {
+        imageWidget = const _ImageErrorPlaceholder();
+      }
+    } else if (imageUrl.startsWith('data:image/svg+xml;utf8,') || imageUrl.startsWith('data:image/svg+xml,')) {
+      try {
+        final rawSvg = Uri.decodeComponent(
+          imageUrl.replaceFirst(RegExp(r'^data:image\/svg\+xml(;utf8)?,'), ''),
+        );
+        imageWidget = SvgPicture.string(
+          rawSvg,
+          fit: BoxFit.contain,
+          placeholderBuilder: (_) => const _ImageLoadingPlaceholder(),
+        );
+      } catch (_) {
+        imageWidget = const _ImageErrorPlaceholder();
+      }
+    } else if (imageUrl.trim().startsWith('<svg')) {
+      imageWidget = SvgPicture.string(
+        imageUrl,
+        fit: BoxFit.contain,
+        placeholderBuilder: (_) => const _ImageLoadingPlaceholder(),
+      );
+    } else if (imageUrl.startsWith('data:image/')) {
       try {
         final commaIdx = imageUrl.indexOf(',');
         final base64Str = commaIdx != -1 ? imageUrl.substring(commaIdx + 1) : imageUrl;
@@ -34,19 +68,27 @@ class QuestionImageCard extends StatelessWidget {
       } catch (_) {
         imageWidget = const _ImageErrorPlaceholder();
       }
+    } else if (imageUrl.endsWith('.svg')) {
+      if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+        imageWidget = SvgPicture.network(
+          imageUrl,
+          fit: BoxFit.contain,
+          placeholderBuilder: (_) => const _ImageLoadingPlaceholder(),
+        );
+      } else {
+        imageWidget = SvgPicture.asset(
+          imageUrl,
+          fit: BoxFit.contain,
+          placeholderBuilder: (_) => const _ImageLoadingPlaceholder(),
+        );
+      }
     } else if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
       imageWidget = Image.network(
         imageUrl,
         fit: BoxFit.contain,
         loadingBuilder: (context, child, progress) {
           if (progress == null) return child;
-          return const Center(
-            child: SizedBox(
-              width: 24,
-              height: 24,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            ),
-          );
+          return const _ImageLoadingPlaceholder();
         },
         errorBuilder: (_, __, ___) => const _ImageErrorPlaceholder(),
       );
@@ -74,6 +116,21 @@ class QuestionImageCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           child: imageWidget,
         ),
+      ),
+    );
+  }
+}
+
+class _ImageLoadingPlaceholder extends StatelessWidget {
+  const _ImageLoadingPlaceholder();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: SizedBox(
+        width: 24,
+        height: 24,
+        child: CircularProgressIndicator(strokeWidth: 2),
       ),
     );
   }
