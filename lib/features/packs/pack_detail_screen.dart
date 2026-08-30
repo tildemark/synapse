@@ -26,10 +26,20 @@ class PackDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: SynapseColors.surface,
-      body: FutureBuilder<SrsStageCounts>(
-        future: db.progressDao.getStageCounts(pack.packId),
+      body: FutureBuilder<(SrsStageCounts, int, DateTime?)>(
+        future: Future.wait([
+          db.progressDao.getStageCounts(pack.packId),
+          db.progressDao.getDueReviewsForPack(pack.packId),
+          db.progressDao.getEarliestUpcomingReview(pack.packId),
+        ]).then((res) => (
+          res[0] as SrsStageCounts,
+          (res[1] as List<UserProgressData>).length,
+          res[2] as DateTime?,
+        )),
         builder: (context, snap) {
-          final counts = snap.data;
+          final counts = snap.data?.$1;
+          final dueCount = snap.data?.$2 ?? 0;
+          final earliestUpcoming = snap.data?.$3;
           return CustomScrollView(
             slivers: [
               // Hero App Bar
@@ -88,9 +98,13 @@ class PackDetailScreen extends ConsumerWidget {
                           Expanded(
                             child: _ActionButton(
                               label: 'Reviews',
-                              subtitle: '${counts?.apprentice ?? 0} active',
+                              subtitle: dueCount > 0
+                                  ? '$dueCount due now'
+                                  : earliestUpcoming != null
+                                      ? '0 due (${_formatTiming(earliestUpcoming)})'
+                                      : '0 due',
                               icon: Icons.replay_rounded,
-                              color: SynapseColors.apprentice,
+                              color: dueCount > 0 ? SynapseColors.secondary : SynapseColors.apprentice,
                               onTap: () => Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => ReviewsScreen(packId: pack.packId),
                               )).then((_) => ref.invalidate(installedPacksProvider)),
@@ -163,6 +177,15 @@ class PackDetailScreen extends ConsumerWidget {
         },
       ),
     );
+  }
+
+  String _formatTiming(DateTime dt) {
+    final now = DateTime.now();
+    final diff = dt.difference(now);
+    if (diff.isNegative) return 'due now';
+    if (diff.inMinutes < 60) return 'in ${diff.inMinutes + 1}m';
+    if (diff.inHours < 24) return 'in ${diff.inHours}h';
+    return 'in ${diff.inDays}d';
   }
 
   Color _parseColor(String hex) {

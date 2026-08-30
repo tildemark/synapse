@@ -21,6 +21,40 @@ class ProgressDao extends DatabaseAccessor<AppDatabase> with _$ProgressDaoMixin 
         .get();
   }
 
+  /// Fetch due items specifically for a single pack.
+  Future<List<UserProgressData>> getDueReviewsForPack(String packId) async {
+    final now = AppTime.now();
+    final allQ = await (select(db.questions)..where((q) => q.packId.equals(packId))).get();
+    final qIds = allQ.map((q) => q.id).toList();
+    if (qIds.isEmpty) return [];
+
+    return (select(userProgress)
+          ..where((p) =>
+              p.questionId.isIn(qIds) &
+              p.isLessonCompleted.equals(true) &
+              p.nextReviewTime.isSmallerOrEqualValue(now)))
+        .get();
+  }
+
+  /// Get the earliest next review time for items not yet due in a pack.
+  Future<DateTime?> getEarliestUpcomingReview(String packId) async {
+    final now = AppTime.now();
+    final allQ = await (select(db.questions)..where((q) => q.packId.equals(packId))).get();
+    final qIds = allQ.map((q) => q.id).toList();
+    if (qIds.isEmpty) return null;
+
+    final upcoming = await (select(userProgress)
+          ..where((p) =>
+              p.questionId.isIn(qIds) &
+              p.isLessonCompleted.equals(true) &
+              p.nextReviewTime.isBiggerThanValue(now))
+          ..orderBy([(p) => OrderingTerm(expression: p.nextReviewTime, mode: OrderingMode.asc)])
+          ..limit(1))
+        .getSingleOrNull();
+
+    return upcoming?.nextReviewTime;
+  }
+
   /// Advance or demote a question after a review answer.
   Future<void> recordAnswer(int questionId, {required bool correct}) async {
     final now = AppTime.now();

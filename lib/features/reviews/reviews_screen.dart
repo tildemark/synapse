@@ -21,6 +21,9 @@ class _ReviewsScreenState extends ConsumerState<ReviewsScreen> {
   bool _loading = true;
   int _correctCount = 0;
 
+  DateTime? _earliestUpcoming;
+  int _activeLearningCount = 0;
+
   static const _stageNames = ['Available', 'Apprentice 1', 'Apprentice 2', 'Apprentice 3', 'Apprentice 4', 'Guru 1', 'Guru 2', 'Master', 'Burned'];
 
   @override
@@ -31,8 +34,10 @@ class _ReviewsScreenState extends ConsumerState<ReviewsScreen> {
 
   Future<void> _loadReviews() async {
     final db = ref.read(dbProvider);
-    final due = await db.progressDao.getDueReviews();
-    // Filter by pack
+    final due = await db.progressDao.getDueReviewsForPack(widget.packId);
+    final earliest = await db.progressDao.getEarliestUpcomingReview(widget.packId);
+    final stageCounts = await db.progressDao.getStageCounts(widget.packId);
+    
     final allQ = await (db.select(db.questions)..where((q) => q.packId.equals(widget.packId))).get();
     final qById = {for (final q in allQ) q.id: q};
     final pairs = due
@@ -40,7 +45,29 @@ class _ReviewsScreenState extends ConsumerState<ReviewsScreen> {
         .map((p) => (p, qById[p.questionId]!))
         .toList();
     pairs.shuffle();
-    setState(() { _queue = pairs; _loading = false; });
+    
+    if (mounted) {
+      setState(() {
+        _queue = pairs;
+        _earliestUpcoming = earliest;
+        _activeLearningCount = stageCounts.learnedTotal - stageCounts.burned;
+        _loading = false;
+      });
+    }
+  }
+
+  String _formatUpcomingTime(DateTime dt) {
+    final now = DateTime.now();
+    final diff = dt.difference(now);
+    if (diff.isNegative) return 'Ready now';
+    if (diff.inMinutes < 60) return 'in ${diff.inMinutes + 1} minutes';
+    if (diff.inHours < 24) {
+      final hrs = diff.inHours;
+      final mins = diff.inMinutes % 60;
+      return 'in $hrs hr${hrs > 1 ? 's' : ''} ${mins > 0 ? '$mins min' : ''}';
+    }
+    final days = diff.inDays;
+    return 'in $days day${days > 1 ? 's' : ''}';
   }
 
   (UserProgressData, Question) get _current => _queue[_currentIndex];
@@ -90,18 +117,68 @@ class _ReviewsScreenState extends ConsumerState<ReviewsScreen> {
 
     if (_queue.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Reviews')),
+        appBar: AppBar(title: const Text('SRS Reviews')),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(24),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.celebration_rounded, size: 64, color: SynapseColors.secondary),
-                const SizedBox(height: 16),
-                const Text('No reviews due!', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: SynapseColors.secondary.withAlpha(25),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.check_circle_outline_rounded, size: 56, color: SynapseColors.secondary),
+                ),
+                const SizedBox(height: 20),
+                const Text('All Caught Up!', style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
-                Text('Check back later — the SRS will queue them when ready.', textAlign: TextAlign.center, style: TextStyle(color: cs.onSurfaceVariant)),
+                Text(
+                  'No reviews currently due for this subject.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: cs.onSurfaceVariant, fontSize: 14),
+                ),
+                const SizedBox(height: 24),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                  decoration: BoxDecoration(
+                    color: cs.surfaceContainerHigh,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: cs.outlineVariant.withAlpha(50)),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.timer_outlined, size: 18, color: SynapseColors.apprentice),
+                          const SizedBox(width: 8),
+                          Text(
+                            _earliestUpcoming != null
+                              ? 'Next review due: ${_formatUpcomingTime(_earliestUpcoming!)}'
+                              : 'No upcoming reviews scheduled',
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                          ),
+                        ],
+                      ),
+                      if (_activeLearningCount > 0) ...[
+                        const SizedBox(height: 6),
+                        Text(
+                          '$_activeLearningCount items active in your SRS memory pipeline',
+                          style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 32),
+                OutlinedButton.icon(
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: const Icon(Icons.arrow_back_rounded, size: 18),
+                  label: const Text('Back to Pack Overview'),
+                ),
               ],
             ),
           ),
