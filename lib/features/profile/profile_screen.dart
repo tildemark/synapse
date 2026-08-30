@@ -60,11 +60,28 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
     }
   }
 
-  String _calculateScholarRank(int burnedCount) {
-    if (burnedCount >= 80) return 'Grandmaster Scholar 🌌';
-    if (burnedCount >= 40) return 'Master Practitioner 👑';
-    if (burnedCount >= 15) return 'Guru Scholar 🔮';
-    if (burnedCount >= 5) return 'Apprentice Adept ⚡';
+  String _calculateScholarRank({
+    required int certCount,
+    required int totalBurned,
+    required int totalReviews,
+    required int streakDays,
+  }) {
+    // 1. Comprehensive Academic & Competency Tiers (Never resets when new packs are installed)
+    if (certCount >= 5 || (totalBurned >= 500 && totalReviews >= 1000)) {
+      return 'Synapse Fellow 🎓✨';
+    }
+    if (certCount >= 3 || (totalBurned >= 300 && totalReviews >= 500)) {
+      return 'Senior Scholar 🏛️';
+    }
+    if (certCount >= 1 || totalBurned >= 150) {
+      return 'Certified Graduate 📜';
+    }
+    if (totalBurned >= 50 || totalReviews >= 100) {
+      return 'Journeyman Scholar ⚡';
+    }
+    if (totalReviews >= 20 || totalBurned >= 10) {
+      return 'Apprentice Scholar 📚';
+    }
     return 'Novice Scholar 🐣';
   }
 
@@ -248,7 +265,25 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
 
               final totalLearned = allProgress.where((p) => p.isLessonCompleted).length;
               final totalBurned = allProgress.where((p) => p.srsStage == 8).length;
-              final scholarRank = _calculateScholarRank(totalBurned);
+              
+              // Count total verified certificates across all packs
+              final certCount = (packsAsync.value ?? []).where((pack) {
+                final packQs = allQuestions.where((q) => q.packId == pack.packId).toList();
+                final burnedInPack = packQs.where((q) {
+                  final p = allProgress.where((item) => item.questionId == q.id).firstOrNull;
+                  return p != null && p.srsStage == 8;
+                }).length;
+                final isFullyBurned = packQs.isNotEmpty && burnedInPack == packQs.length;
+                final mockScore = settings.getMockExamScore(pack.packId);
+                return isFullyBurned || mockScore >= 70;
+              }).length;
+
+              final scholarRank = _calculateScholarRank(
+                certCount: certCount,
+                totalBurned: totalBurned,
+                totalReviews: settings.totalReviewsCount,
+                streakDays: settings.streakDays,
+              );
 
               return Column(
                 children: [
