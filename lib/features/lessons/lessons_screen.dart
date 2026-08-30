@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers.dart';
 import '../../db/app_database.dart';
+import '../../db/daos/progress_dao.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/question_image_card.dart';
 
@@ -95,26 +96,108 @@ class _LessonsScreenState extends ConsumerState<LessonsScreen> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     if (_questions.isEmpty) {
+      final db = ref.read(dbProvider);
       return Scaffold(
         appBar: AppBar(title: const Text('Lessons')),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.check_circle_rounded, size: 64, color: SynapseColors.secondary),
-                const SizedBox(height: 16),
-                const Text('No new lessons!', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 8),
-                Text(
-                  'All items are either in review or already mastered.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: cs.onSurfaceVariant),
+        body: FutureBuilder<(SrsStageCounts, DateTime?)>(
+          future: Future.wait([
+            db.progressDao.getStageCounts(widget.packId),
+            db.progressDao.getEarliestUpcomingReview(widget.packId),
+          ]).then((res) => (res[0] as SrsStageCounts, res[1] as DateTime?)),
+          builder: (context, snap) {
+            final counts = snap.data?.$1;
+            final earliest = snap.data?.$2;
+
+            String timingText = 'No reviews scheduled yet.';
+            if (earliest != null) {
+              final diff = earliest.difference(DateTime.now());
+              timingText = diff.isNegative
+                  ? 'Reviews are ready now!'
+                  : (diff.inMinutes < 60
+                      ? 'Next review session in ${diff.inMinutes + 1}m'
+                      : (diff.inHours < 24 ? 'Next review session in ${diff.inHours}h' : 'Next review session in ${diff.inDays}d'));
+            }
+
+            final totalActive = (counts?.apprentice ?? 0) + (counts?.guru ?? 0) + (counts?.master ?? 0);
+            final isCompletedAll = counts != null && counts.burned == counts.total && counts.total > 0;
+
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: SynapseColors.primary.withAlpha(25),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        isCompletedAll ? Icons.emoji_events_rounded : Icons.school_rounded,
+                        size: 56,
+                        color: isCompletedAll ? SynapseColors.burned : SynapseColors.primary,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      isCompletedAll ? 'Deck 100% Mastered!' : 'No New Lessons Available',
+                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      isCompletedAll
+                          ? 'You have burned every single card in this knowledge pack!'
+                          : 'All available cards are currently active in your Spaced Repetition queue or review pipeline.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: cs.onSurfaceVariant, fontSize: 13, height: 1.4),
+                    ),
+                    const SizedBox(height: 24),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                      decoration: BoxDecoration(
+                        color: cs.surfaceContainerHigh,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: cs.outlineVariant.withAlpha(50)),
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.timer_outlined, size: 18, color: SynapseColors.apprentice),
+                              const SizedBox(width: 8),
+                              Text(
+                                timingText,
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                              ),
+                            ],
+                          ),
+                          if (totalActive > 0) ...[
+                            const SizedBox(height: 6),
+                            Text(
+                              '$totalActive cards currently progressing through memory intervals',
+                              style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 28),
+                    OutlinedButton.icon(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: const Icon(Icons.arrow_back_rounded, size: 18),
+                      label: const Text('Return to Pack Dashboard'),
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       );
     }

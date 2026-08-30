@@ -250,22 +250,30 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
 
               return Column(
                 children: [
-                  // ─── Compact Pinned Scholar Header ──────────────────────────
+                  // ─── Scholar Profile Header Card ──────────────────────────
                   Container(
-                    margin: const EdgeInsets.fromLTRB(16, 8, 16, 10),
+                    margin: const EdgeInsets.fromLTRB(16, 12, 16, 12),
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
-                        colors: [Color(0xFF1C1C34), Color(0xFF141426)],
+                        colors: [Color(0xFF1E1E38), Color(0xFF131325)],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
                       borderRadius: BorderRadius.circular(18),
-                      border: Border.all(color: SynapseColors.primary.withAlpha(70)),
+                      border: Border.all(color: SynapseColors.primary.withAlpha(80)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withAlpha(40),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
                     child: Column(
                       children: [
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
                               width: 52,
@@ -293,16 +301,86 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
                                   if (_isEditing) ...[
                                     TextField(
                                       controller: _nameController,
-                                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                                      decoration: const InputDecoration(
-                                        labelText: 'Full Name',
+                                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),
+                                      decoration: InputDecoration(
+                                        labelText: 'Full Name (Used in Certificates)',
+                                        labelStyle: TextStyle(color: cs.primary, fontSize: 12),
                                         isDense: true,
-                                        contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                        filled: true,
+                                        fillColor: const Color(0xFF101020),
+                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8), borderSide: BorderSide(color: cs.primary)),
                                       ),
                                     ),
+                                    const SizedBox(height: 6),
+                                    TextField(
+                                      controller: _titleController,
+                                      style: const TextStyle(fontSize: 13, color: Colors.white),
+                                      decoration: InputDecoration(
+                                        labelText: 'Title / Affiliation',
+                                        labelStyle: TextStyle(color: cs.onSurfaceVariant, fontSize: 11),
+                                        isDense: true,
+                                        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                        filled: true,
+                                        fillColor: const Color(0xFF101020),
+                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        TextButton(
+                                          onPressed: () => setState(() => _isEditing = false),
+                                          child: const Text('Cancel', style: TextStyle(fontSize: 12)),
+                                        ),
+                                        const SizedBox(width: 6),
+                                        FilledButton(
+                                          onPressed: _saveProfile,
+                                          style: FilledButton.styleFrom(
+                                            backgroundColor: SynapseColors.secondary,
+                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                          ),
+                                          child: const Text('Save Name', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.black)),
+                                        ),
+                                      ],
+                                    ),
                                   ] else ...[
-                                    Text(settings.userName, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
-                                    Text(settings.userTitle, style: TextStyle(fontSize: 11, color: cs.onSurfaceVariant)),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            settings.userName.isNotEmpty ? settings.userName : 'Scholar',
+                                            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                                          ),
+                                        ),
+                                        InkWell(
+                                          onTap: () => setState(() => _isEditing = true),
+                                          borderRadius: BorderRadius.circular(8),
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                            decoration: BoxDecoration(
+                                              color: SynapseColors.primary.withAlpha(30),
+                                              borderRadius: BorderRadius.circular(8),
+                                              border: Border.all(color: SynapseColors.primary.withAlpha(80)),
+                                            ),
+                                            child: const Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Icon(Icons.edit, size: 12, color: SynapseColors.primary),
+                                                SizedBox(width: 4),
+                                                Text('Edit Name', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: SynapseColors.primary)),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Text(
+                                      settings.userTitle.isNotEmpty ? settings.userTitle : 'Independent Scholar',
+                                      style: TextStyle(fontSize: 12, color: cs.onSurfaceVariant),
+                                    ),
                                     const SizedBox(height: 4),
                                     Text(scholarRank, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: SynapseColors.burned)),
                                   ],
@@ -311,19 +389,21 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
                             ),
                           ],
                         ),
-                        const SizedBox(height: 12),
-                        // Mini stats ribbon
-                        Row(
-                          children: [
-                            _miniPill(Icons.whatshot_rounded, '${settings.streakDays}d Streak', const Color(0xFFF97316)),
-                            const SizedBox(width: 6),
-                            _miniPill(Icons.local_fire_department_rounded, '$totalBurned Burned', SynapseColors.burned),
-                            const SizedBox(width: 6),
-                            _miniPill(Icons.school_rounded, '$totalLearned Learned', SynapseColors.primary),
-                            const SizedBox(width: 6),
-                            _miniPill(Icons.verified_rounded, '${unlockedBadgeIds.length} Badges', SynapseColors.secondary),
-                          ],
-                        ),
+                        if (!_isEditing) ...[
+                          const SizedBox(height: 12),
+                          // Mini stats ribbon
+                          Row(
+                            children: [
+                              _miniPill(Icons.whatshot_rounded, '${settings.streakDays}d Streak', const Color(0xFFF97316)),
+                              const SizedBox(width: 6),
+                              _miniPill(Icons.local_fire_department_rounded, '$totalBurned Burned', SynapseColors.burned),
+                              const SizedBox(width: 6),
+                              _miniPill(Icons.school_rounded, '$totalLearned Learned', SynapseColors.primary),
+                              const SizedBox(width: 6),
+                              _miniPill(Icons.verified_rounded, '${unlockedBadgeIds.length} Badges', SynapseColors.secondary),
+                            ],
+                          ),
+                        ],
                       ],
                     ),
                   ),

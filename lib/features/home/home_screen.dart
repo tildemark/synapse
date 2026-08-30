@@ -156,13 +156,40 @@ class _PackCard extends ConsumerWidget {
     final db = ref.watch(dbProvider);
     final color = _parseColor(pack.color);
 
-    return FutureBuilder<SrsStageCounts>(
-      future: db.progressDao.getStageCounts(pack.packId),
+    return FutureBuilder<(SrsStageCounts, int, DateTime?)>(
+      future: Future.wait([
+        db.progressDao.getStageCounts(pack.packId),
+        db.progressDao.getDueReviewsForPack(pack.packId),
+        db.progressDao.getEarliestUpcomingReview(pack.packId),
+      ]).then((res) => (
+        res[0] as SrsStageCounts,
+        (res[1] as List<UserProgressData>).length,
+        res[2] as DateTime?,
+      )),
       builder: (context, snap) {
-        final counts = snap.data;
+        final counts = snap.data?.$1;
+        final dueCount = snap.data?.$2 ?? 0;
+        final earliestUpcoming = snap.data?.$3;
         final masteryPct = counts != null ? '${(counts.masteryRatio * 100).round()}%' : '—';
         final apprentice = counts?.apprentice ?? 0;
         final total = counts?.total ?? pack.questionCount;
+
+        String srsStatus = '';
+        if (dueCount > 0) {
+          srsStatus = '⚡ $dueCount reviews due now';
+        } else if (earliestUpcoming != null) {
+          final diff = earliestUpcoming.difference(DateTime.now());
+          final timeStr = diff.isNegative
+              ? 'due now'
+              : (diff.inMinutes < 60
+                  ? 'in ${diff.inMinutes + 1}m'
+                  : (diff.inHours < 24 ? 'in ${diff.inHours}h' : 'in ${diff.inDays}d'));
+          srsStatus = '⏳ Next review $timeStr';
+        } else if (counts != null && counts.available > 0) {
+          srsStatus = '📖 ${counts.available} new lessons ready';
+        } else if (counts != null && counts.burned == counts.total && counts.total > 0) {
+          srsStatus = '🏆 100% Mastered & Burned';
+        }
 
         return Container(
           decoration: BoxDecoration(
@@ -214,6 +241,21 @@ class _PackCard extends ConsumerWidget {
                         ),
                       ],
                     ),
+                    if (srsStatus.isNotEmpty) ...[
+                      const SizedBox(height: 10),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: color.withAlpha(25),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: color.withAlpha(50)),
+                        ),
+                        child: Text(
+                          srsStatus,
+                          style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: color),
+                        ),
+                      ),
+                    ],
                     const SizedBox(height: 14),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(6),

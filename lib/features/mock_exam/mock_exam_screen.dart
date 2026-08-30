@@ -156,8 +156,60 @@ class _MockExamScreenState extends ConsumerState<MockExamScreen> {
         title: Text('Mock Exam (${_currentIndex + 1}/${_questions.length})'),
         backgroundColor: SynapseColors.surface,
         actions: [
+          // Fast-Forward / Speed up timer button
+          IconButton(
+            icon: const Icon(Icons.fast_forward_rounded, size: 20),
+            color: SynapseColors.secondary,
+            tooltip: 'Fast-Forward Time (-1 min)',
+            onPressed: () {
+              if (_remainingSeconds > 60) {
+                setState(() => _remainingSeconds -= 60);
+              } else if (_remainingSeconds > 5) {
+                setState(() => _remainingSeconds = 5);
+              }
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Fast-forwarded timer by 1 minute ⏩'),
+                  duration: Duration(milliseconds: 900),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            },
+          ),
+          // Instant Finish / Submit button
+          IconButton(
+            icon: const Icon(Icons.check_circle_outline_rounded, size: 20),
+            color: SynapseColors.guru,
+            tooltip: 'Finish & Submit Exam Now',
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  backgroundColor: SynapseColors.card,
+                  title: const Text('Submit Exam?'),
+                  content: Text(
+                    'You have answered ${_userAnswers.length} of ${_questions.length} questions. Are you ready to submit and calculate your score?',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(ctx).pop(),
+                      child: const Text('Continue Test'),
+                    ),
+                    FilledButton(
+                      style: FilledButton.styleFrom(backgroundColor: SynapseColors.secondary),
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                        _submitExam();
+                      },
+                      child: const Text('Submit Now', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
           Container(
-            margin: const EdgeInsets.only(right: 16),
+            margin: const EdgeInsets.only(right: 14),
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
               color: _remainingSeconds < 120 ? Colors.red.withAlpha(30) : SynapseColors.primary.withAlpha(30),
