@@ -642,6 +642,76 @@ export default function StudioPage() {
                       />
                     </div>
 
+                    {/* Image / Diagram / Road Sign Attachment */}
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                        <label style={{ fontSize: '13px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          🖼️ Diagram / Road Sign / Image <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 400 }}>(Optional)</span>
+                        </label>
+                        <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Asset path, HTTPS URL, or direct upload</span>
+                      </div>
+                      <div style={{ display: 'flex', gap: '10px' }}>
+                        <input
+                          type="text"
+                          value={currentQ.imageUrl || ''}
+                          onChange={(e) => updateCurrentQuestion('imageUrl', e.target.value)}
+                          placeholder="e.g. assets/packs/lto/stop_sign.png or https://... or paste base64"
+                          style={{
+                            flex: 1,
+                            background: 'var(--bg-card-subtle)',
+                            border: '1px solid var(--border-card)',
+                            borderRadius: '10px',
+                            color: '#fff',
+                            padding: '10px 14px',
+                            fontSize: '13px',
+                            outline: 'none',
+                          }}
+                        />
+                        <label
+                          className="btn btn-secondary"
+                          style={{
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            padding: '0 14px',
+                            fontSize: '12px',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          <FileUp size={14} /> Upload Local
+                          <input
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                const reader = new FileReader();
+                                reader.onload = (event) => {
+                                  if (event.target?.result) {
+                                    updateCurrentQuestion('imageUrl', event.target.result as string);
+                                  }
+                                };
+                                reader.readAsDataURL(file);
+                              }
+                            }}
+                          />
+                        </label>
+                        {currentQ.imageUrl && (
+                          <button
+                            type="button"
+                            onClick={() => updateCurrentQuestion('imageUrl', '')}
+                            className="btn btn-secondary"
+                            style={{ padding: '0 10px', color: '#EF5350' }}
+                            title="Remove image"
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
                     {/* Choices A, B, C, D */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -1057,6 +1127,32 @@ export default function StudioPage() {
                 </div>
 
                 {/* Question Prompt */}
+                {currentQ?.imageUrl && (
+                  <div
+                    style={{
+                      width: '100%',
+                      maxHeight: '140px',
+                      marginBottom: '14px',
+                      background: 'rgba(0,0,0,0.5)',
+                      borderRadius: '12px',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      overflow: 'hidden',
+                      padding: '8px',
+                    }}
+                  >
+                    <img
+                      src={currentQ.imageUrl}
+                      alt="Question Diagram"
+                      style={{ maxHeight: '120px', maxWidth: '100%', objectFit: 'contain', borderRadius: '6px' }}
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = 'none';
+                      }}
+                    />
+                  </div>
+                )}
                 <div style={{ fontSize: '15px', fontWeight: 700, lineHeight: 1.5, marginBottom: '20px' }}>
                   {currentQ?.question || 'Your question prompt will appear here...'}
                 </div>
