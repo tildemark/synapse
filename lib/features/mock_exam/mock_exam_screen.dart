@@ -156,22 +156,60 @@ class _MockExamScreenState extends ConsumerState<MockExamScreen> {
         title: Text('Mock Exam (${_currentIndex + 1}/${_questions.length})'),
         backgroundColor: SynapseColors.surface,
         actions: [
-          // Fast-Forward / Speed up timer button
+          // Fast-Forward Auto-Answer All Questions (Testing & Rapid Completion Tool)
           IconButton(
-            icon: const Icon(Icons.fast_forward_rounded, size: 20),
+            icon: const Icon(Icons.fast_forward_rounded, size: 22),
             color: SynapseColors.secondary,
-            tooltip: 'Fast-Forward Time (-1 min)',
+            tooltip: 'Fast-Forward (Auto-Answer All)',
             onPressed: () {
-              if (_remainingSeconds > 60) {
-                setState(() => _remainingSeconds -= 60);
-              } else if (_remainingSeconds > 5) {
-                setState(() => _remainingSeconds = 5);
-              }
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Fast-forwarded timer by 1 minute ⏩'),
-                  duration: Duration(milliseconds: 900),
-                  behavior: SnackBarBehavior.floating,
+              showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  backgroundColor: SynapseColors.card,
+                  title: const Row(
+                    children: [
+                      Icon(Icons.fast_forward_rounded, color: SynapseColors.secondary),
+                      SizedBox(width: 8),
+                      Text('Fast-Forward Exam'),
+                    ],
+                  ),
+                  content: const Text(
+                    'Automatically fill and answer all questions in this mock exam to test scoring and certificate flows:',
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(ctx).pop(),
+                      child: const Text('Cancel'),
+                    ),
+                    OutlinedButton(
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                        // 80% passing simulation
+                        for (int i = 0; i < _questions.length; i++) {
+                          if (i % 5 != 0) {
+                            _userAnswers[i] = _questions[i].correctAnswer;
+                          } else {
+                            final wrongChoices = ['A', 'B', 'C', 'D'].where((c) => c != _questions[i].correctAnswer).toList();
+                            _userAnswers[i] = wrongChoices.first;
+                          }
+                        }
+                        _submitExam();
+                      },
+                      child: const Text('Pass (80% Score)'),
+                    ),
+                    FilledButton(
+                      style: FilledButton.styleFrom(backgroundColor: SynapseColors.secondary),
+                      onPressed: () {
+                        Navigator.of(ctx).pop();
+                        // 100% perfect score
+                        for (int i = 0; i < _questions.length; i++) {
+                          _userAnswers[i] = _questions[i].correctAnswer;
+                        }
+                        _submitExam();
+                      },
+                      child: const Text('Perfect (100% Score)', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+                    ),
+                  ],
                 ),
               );
             },
