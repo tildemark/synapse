@@ -703,7 +703,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
               final isCertificateUnlocked = isFullyBurned || isExamPassed;
               
               // Strategy 1 Deterministic Hash (includes actual scholar name)
-              final cleanPackCode = pack.packId == 'c_programming' ? 'CPROG' : pack.packId == 'html_fundamentals' ? 'HTML' : pack.packId.toUpperCase().replaceAll('_', '');
+              final cleanPackCode = pack.packId == 'c_programming'
+                  ? 'CPROG'
+                  : pack.packId == 'html_fundamentals'
+                      ? 'HTML'
+                      : pack.packId == 'css3_fundamentals'
+                          ? 'CSS3'
+                          : pack.packId == 'lto_drivers_exam_ph'
+                              ? 'LTOPH'
+                              : pack.packId.toUpperCase().replaceAll('_', '');
               final hashSeed = '${scholarName.trim().toLowerCase()}_${pack.packId}_2026';
               var hashVal = 0x811c9dc5;
               for (var i = 0; i < hashSeed.length; i++) {

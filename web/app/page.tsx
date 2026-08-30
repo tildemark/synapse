@@ -166,17 +166,17 @@ const OFFICIAL_PACKS = [
     name: 'C Systems Programming',
     subject: 'Computer Science',
     modulesCount: 15,
-    questionsCount: 101,
+    questionsCount: 249,
     color: '#3B82F6',
     iconLetter: 'C',
     level5Proofs: true,
     description: 'Comprehensive 15-module curriculum based on official W3Schools standards: Pointers, Memory Allocation (malloc/realloc), Structs, Enums, File I/O, Architecture, and Level-5 Undefined Behavior Diagnostics.',
-    award: 'SYN-CPROG-8F39 Verifiable Mastery Credential',
+    award: 'SYN-CPROG-8F39-VERIFIED Credential',
     status: 'Active & Bundled',
   },
   {
     id: 'html_fundamentals',
-    name: 'HTML5 & Web Architecture',
+    name: 'HTML5 & Web Semantics',
     subject: 'Web Development',
     modulesCount: 15,
     questionsCount: 138,
@@ -184,23 +184,39 @@ const OFFICIAL_PACKS = [
     iconLetter: '<>',
     level5Proofs: true,
     description: 'Full 15-module web foundations bank: Document Structure, Semantic HTML, Forms & Controls, Media & Streams, Canvas & SVG Graphics, Web Storage APIs, and WCAG/ARIA 2.1 Accessibility.',
-    award: 'SYN-HTML-9B41 Web Semantics Sovereign Credential',
+    award: 'SYN-HTML-9B41-VERIFIED Credential',
+    status: 'Active & Bundled',
+  },
+  {
+    id: 'css3_fundamentals',
+    name: 'CSS3 & Modern Stylesheets',
+    subject: 'Web Development',
+    modulesCount: 15,
+    questionsCount: 450,
+    color: '#2563EB',
+    iconLetter: 'CSS',
+    level5Proofs: true,
+    description: 'Complete 15-module CSS3 & W3Schools curriculum: Box model, Flexbox, CSS Grid, 2D/3D Transforms, Keyframe Animations, Container Queries, Cascade Layers & Responsive Architecture.',
+    award: 'SYN-CSS3-7E19-VERIFIED Credential',
+    status: 'Active & Bundled',
+  },
+  {
+    id: 'lto_drivers_exam_ph',
+    name: "LTO Driver's Licensing Reviewer",
+    subject: 'Traffic Laws & Safety',
+    modulesCount: 15,
+    questionsCount: 450,
+    color: '#10B981',
+    iconLetter: 'LTO',
+    level5Proofs: true,
+    description: 'Complete LTO & DPWH licensing curriculum: 15 modules covering priority & warning signs, pavement markings, right-of-way, RA 4136, RA 10586, and BLOWBAGETS safety inspection.',
+    award: 'SYN-LTOPH-4D21-VERIFIED Credential',
     status: 'Active & Bundled',
   },
 ];
 
 // ─── Upcoming Knowledge Packs Roadmap ──────────────────────────────────────────
 const UPCOMING_MODULES = [
-  {
-    id: 'css_mastery',
-    name: 'CSS3 & Modern Layouts',
-    category: 'Frontend Engineering',
-    color: '#264DE4',
-    icon: Palette,
-    modules: 'Flexbox, CSS Grid, Custom Properties, Animations, Subgrid, Media & Container Queries',
-    eta: 'Q3 2026',
-    badge: 'CSS Style Architect',
-  },
   {
     id: 'javascript_deep_dive',
     name: 'JavaScript (ES2026+)',
@@ -932,45 +948,26 @@ export default function HomePage() {
           </div>
 
           <div className="grid-3" style={{ marginBottom: '40px' }}>
-            {/* C Programming */}
-            <div className="card" style={{ borderColor: 'rgba(59, 130, 246, 0.4)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(59, 130, 246, 0.15)', color: '#3B82F6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '18px' }}>
-                  C
+            {OFFICIAL_PACKS.map((pack) => (
+              <div key={pack.id} className="card" style={{ borderColor: `${pack.color}66` }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 12, background: `${pack.color}22`, color: pack.color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: pack.iconLetter.length > 2 ? '14px' : '18px' }}>
+                    {pack.iconLetter}
+                  </div>
+                  <span className="badge badge-official" style={{ fontSize: '11px' }}>
+                    Official · Accredited
+                  </span>
                 </div>
-                <span className="badge badge-official" style={{ fontSize: '11px' }}>
-                  Official · Accredited
-                </span>
-              </div>
-              <h3 style={{ fontSize: '19px', marginBottom: '6px' }}>C Systems Programming</h3>
-              <p style={{ fontSize: '13px', color: 'var(--text-dim)', marginBottom: '14px' }}>Computer Science · 101 Questions (15 Modules)</p>
-              <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '18px', lineHeight: 1.6 }}>
-                Full curriculum: Syntax, Data Types, Control Flow, Loops, Arrays, Strings, Functions, Pointers, Structs, Memory Resizing, Architecture, and Level-5 Diagnostic Proofs.
-              </p>
-              <div style={{ fontSize: '12px', color: '#3B82F6', fontWeight: 700, padding: '8px 12px', borderRadius: '8px', background: 'rgba(59, 130, 246, 0.1)' }}>
-                Awards: C Mastery Certificate &amp; Official Badge
-              </div>
-            </div>
-
-            {/* HTML Fundamentals */}
-            <div className="card" style={{ borderColor: 'rgba(228, 77, 38, 0.4)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(228, 77, 38, 0.15)', color: '#E44D26', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '18px' }}>
-                  &lt;&gt;
+                <h3 style={{ fontSize: '19px', marginBottom: '6px' }}>{pack.name}</h3>
+                <p style={{ fontSize: '13px', color: 'var(--text-dim)', marginBottom: '14px' }}>{pack.subject} · {pack.questionsCount} Questions ({pack.modulesCount} Modules)</p>
+                <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '18px', lineHeight: 1.6 }}>
+                  {pack.description}
+                </p>
+                <div style={{ fontSize: '12px', color: pack.color, fontWeight: 700, padding: '8px 12px', borderRadius: '8px', background: `${pack.color}15` }}>
+                  Credential: {pack.award}
                 </div>
-                <span className="badge badge-official" style={{ fontSize: '11px' }}>
-                  Official · Accredited
-                </span>
               </div>
-              <h3 style={{ fontSize: '19px', marginBottom: '6px' }}>HTML5 &amp; Web Semantics</h3>
-              <p style={{ fontSize: '13px', color: 'var(--text-dim)', marginBottom: '14px' }}>Web Development · 138 Questions (15 Modules)</p>
-              <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '18px', lineHeight: 1.6 }}>
-                Document structure, text formatting, forms &amp; controls, tables, semantic layouts, media streams, graphics (Canvas/SVG), Web Storage, and WCAG accessibility.
-              </p>
-              <div style={{ fontSize: '12px', color: '#E44D26', fontWeight: 700, padding: '8px 12px', borderRadius: '8px', background: 'rgba(228, 77, 38, 0.1)' }}>
-                Awards: Web Semantics Sovereign Credential
-              </div>
-            </div>
+            ))}
 
             {/* Pack Studio Interactive Card */}
             <div className="card" style={{ borderColor: 'rgba(16, 185, 129, 0.4)', background: 'linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(20, 20, 36, 0.9) 100%)' }}>
@@ -1002,7 +999,7 @@ export default function HomePage() {
             </div>
             <h2 className="section-title">Upcoming Knowledge Packs &amp; Modules</h2>
             <p className="section-subtitle">
-              We are expanding Synapse with 10 upcoming specialized curricula spanning systems engineering, web standards, data structures, and cloud tooling.
+              We are expanding Synapse with 9 upcoming specialized curricula spanning systems engineering, web standards, data structures, and cloud tooling.
             </p>
           </div>
 
