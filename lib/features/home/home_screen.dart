@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers.dart';
@@ -8,6 +8,7 @@ import '../../theme/app_theme.dart';
 import '../packs/pack_browser_screen.dart';
 import '../packs/pack_detail_screen.dart';
 import '../settings/settings_screen.dart';
+import '../profile/profile_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -55,6 +56,13 @@ class HomeScreen extends ConsumerWidget {
                 ],
               ),
               actions: [
+                IconButton(
+                  icon: const Icon(Icons.account_circle_outlined),
+                  tooltip: 'Scholar Profile & Badges',
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (_) => const ProfileScreen()),
+                  ),
+                ),
                 IconButton(
                   icon: const Icon(Icons.settings_outlined),
                   tooltip: 'Settings & Tools',

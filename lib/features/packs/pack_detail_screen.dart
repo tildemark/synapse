@@ -12,6 +12,7 @@ import '../cram/cram_screen.dart';
 import '../drills/tag_drill_screen.dart';
 import '../mock_exam/mock_exam_screen.dart';
 import '../home/module_mastery_panel.dart';
+import '../../services/badge_service.dart';
 
 class PackDetailScreen extends ConsumerWidget {
   const PackDetailScreen({super.key, required this.pack});
@@ -62,6 +63,8 @@ class PackDetailScreen extends ConsumerWidget {
                       // SRS Donut
                       if (counts != null) ...[
                         _SrsDonutCard(counts: counts, color: color),
+                        const SizedBox(height: 16),
+                        _PackBadgeStrip(packId: pack.packId, color: color),
                         const SizedBox(height: 20),
                       ],
 
@@ -376,6 +379,127 @@ class _ActionButton extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+// ─── Pack Badge Strip ────────────────────────────────────────────────────────
+class _PackBadgeStrip extends ConsumerWidget {
+  const _PackBadgeStrip({required this.packId, required this.color});
+  final String packId;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cs = Theme.of(context).colorScheme;
+    final db = ref.watch(dbProvider);
+    final settings = ref.watch(settingsServiceProvider);
+
+    final badges = BadgeService.packBadges.where((b) => b.packId == packId).toList();
+    if (badges.isEmpty) return const SizedBox.shrink();
+
+    return FutureBuilder<Set<String>>(
+      future: BadgeService.evaluateUnlockedBadges(db: db, settings: settings),
+      builder: (context, snap) {
+        final unlocked = snap.data ?? {};
+
+        return Container(
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            color: cs.surfaceContainerHigh,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: cs.outlineVariant.withAlpha(50)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Subject Accreditation Badges',
+                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                  Text('${badges.where((b) => unlocked.contains(b.id)).length}/${badges.length} Unlocked',
+                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: color)),
+                ],
+              ),
+              const SizedBox(height: 10),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: badges.map((b) {
+                    final isUnlocked = unlocked.contains(b.id);
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: InkWell(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) => AlertDialog(
+                              backgroundColor: SynapseColors.card,
+                              title: Row(
+                                children: [
+                                  Icon(b.icon, color: isUnlocked ? b.color : Colors.grey),
+                                  const SizedBox(width: 8),
+                                  Expanded(child: Text(b.title, style: const TextStyle(fontSize: 16))),
+                                ],
+                              ),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(b.description, style: const TextStyle(fontSize: 13)),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    isUnlocked ? 'Status: Unlocked ✓' : 'Criteria: ${b.criteriaText}',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: isUnlocked ? SynapseColors.secondary : cs.onSurfaceVariant,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              actions: [
+                                TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('OK')),
+                              ],
+                            ),
+                          );
+                        },
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: isUnlocked ? b.color.withAlpha(25) : cs.surfaceContainerHighest,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: isUnlocked ? b.color.withAlpha(90) : cs.outlineVariant.withAlpha(40),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(b.icon, size: 14, color: isUnlocked ? b.color : Colors.grey),
+                              const SizedBox(width: 6),
+                              Text(
+                                b.title,
+                                style: TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: isUnlocked ? Colors.white : Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

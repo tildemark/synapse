@@ -52,9 +52,12 @@ class _ReviewsScreenState extends ConsumerState<ReviewsScreen> {
 
   Future<void> _next() async {
     final db = ref.read(dbProvider);
+    final settings = ref.read(settingsServiceProvider);
     final correct = _selectedAnswer == _current.$2.correctAnswer;
     if (correct) _correctCount++;
     await db.progressDao.recordAnswer(_current.$2.id, correct: correct);
+    await settings.incrementReviewsCount();
+    await settings.recordStudyEvent();
 
     if (_currentIndex < _queue.length - 1) {
       setState(() { _currentIndex++; _selectedAnswer = null; _answered = false; });

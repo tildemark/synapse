@@ -1,6 +1,18 @@
-# Synapse ⚡
+<div align="center">
+  <img src="assets/icons/logo512.png" width="120" height="120" alt="Synapse Logo" style="border-radius: 24px;" />
+  <h1>Synapse ⚡</h1>
+  <p><strong>Offline-First Spaced Repetition Engine for Engineering & Academic Mastery</strong></p>
+  <p>
+    <a href="http://sanchez.ph">Official Website</a> •
+    <a href="https://synapse.sanchez.ph">Web Ledger</a> •
+    <a href="https://synapse.sanchez.ph/verify">Verify Credential</a> •
+    <a href="https://synapse.sanchez.ph/studio">Pack Studio</a>
+  </p>
+</div>
 
-**Synapse** is an offline-first, multi-subject **Spaced Repetition System (SRS)** learning platform built for high-retention mastery across technical and academic domains.
+---
+
+**Synapse** is an academic-grade, offline-first **Spaced Repetition System (SRS)** learning platform built for high-retention mastery across technical and academic domains.
 
 Built with **Flutter**, **Drift (SQLite)**, and **Riverpod**, Synapse decouples learning mechanics from curriculum data. Install modular **Knowledge Packs** for any subject — Computer Science, Systems, Mathematics, Science, Productivity, and Web Development — and achieve permanent retention through an 8-stage SRS algorithm.
 
@@ -12,27 +24,34 @@ Built with **Flutter**, **Drift (SQLite)**, and **Riverpod**, Synapse decouples 
   - Progression across 9 distinct states: `Available (0)` $\rightarrow$ `Apprentice I–IV (1–4)` $\rightarrow$ `Guru I–II (5–6)` $\rightarrow$ `Master (7)` $\rightarrow$ `Burned (8)`.
   - Research-backed review intervals: `4h`, `8h`, `24h`, `48h`, `1w` (168h), `2w` (336h), and `1mo` (720h).
   - Penalty & demotion rules: Incorrect answers demote cards by 2 stages to reinforce struggling concepts.
+- **Verifiable Mastery Certificates with Dynamic QR Codes**:
+  - Zero-Knowledge cryptographic HMAC validation ($100\%$ offline-compatible with zero server database).
+  - One-tap publishing to **LinkedIn Licenses & Certifications** and **Facebook**.
 - **Modular Knowledge Packs**:
   - DLC-style modular pack architecture loaded directly into local SQLite.
   - Browse, install, inspect, and uninstall packs instantly with zero network dependency.
-- **Guided 2-Phase Lessons & Smart Reviews**:
-  - **Lesson Mode**: Interactive concept introduction and first-pass validation (promotes `Available` $\rightarrow$ `Apprentice I`).
-  - **Review Queue**: Adaptive SRS queue presenting cards exactly when memory decay occurs.
-- **Daily Pace & Apprentice Capacity Controls**:
-  - Configurable daily lesson caps (default 10) and Apprentice capacity limits (default 100) to prevent cognitive overload.
-- **Visual Mastery Analytics & Stage Donut**:
-  - Per-pack mastery percentages, stage distributions (Available / Learning / Mastered / Burned), and progress tracking.
-- **100% Offline-First Architecture**:
-  - Complete local persistence with SQLite (`drift`) and zero telemetry or cloud lock-in.
+- **Guided Sequential Module Progression**:
+  - Sequential curriculum mastery from Module 1 through 15 preventing knowledge gaps.
+- **Visual Mastery Analytics & Dossier**:
+  - Scholar Dossier, streak counters, circadian badges (Midnight Scholar, Dawn Reviewer), and stage distribution graphs.
+- **100% Offline-First Privacy**:
+  - Embedded SQLite database via Drift. Zero data collection, zero analytics SDKs, and zero telemetry.
 
 ---
 
 ## 📦 Bundled Knowledge Packs
 
-| Pack | Subject | Questions | Modules / Topics | Status |
-| :--- | :--- | :---: | :--- | :---: |
-| **C Programming** | Computer Science | 15 | Basics & Syntax, Pointers & Memory, Structures & Unions, File I/O, Standard Library | Bundled |
-| **HTML Fundamentals** | Web Development | 15 | Document Structure, Semantic HTML5, Forms, Media, SEO & Accessibility | Bundled |
+| Pack | Subject | Modules | Questions | Status | Credential |
+| :--- | :--- | :---: | :---: | :---: | :---: |
+| **C Systems Programming** | Computer Science | 15 | **101** | Active & Bundled | `SYN-CPROG-8F39-VERIFIED` |
+| **HTML5 Web Semantics** | Web Development | 15 | **138** | Active & Bundled | `SYN-HTML-9B41-VERIFIED` |
+
+---
+
+## 👨‍💻 Credits & Leadership
+
+- **Lead Developer & Architect**: Alfredo Sanchez Jr. ([http://sanchez.ph](http://sanchez.ph))
+- **Open Source License**: MIT License
 
 ---
 

@@ -83,13 +83,20 @@ class ProgressDao extends DatabaseAccessor<AppDatabase> with _$ProgressDaoMixin 
     );
   }
 
-  /// Returns questions available for lessons (Stage 0) for a given pack.
+  /// Returns questions available for lessons (Stage 0) for a given pack, ordered sequentially by module.
   Future<List<Question>> getAvailableForLessons(String packId, {int limit = 10}) async {
     final allQ = await (select(db.questions)..where((q) => q.packId.equals(packId))).get();
     final allP = await select(userProgress).get();
     final stageByQid = {for (final p in allP) p.questionId: p.srsStage};
 
-    return allQ
+    // Sort strictly by moduleNumber then question ID so curriculum unlocks topic by topic
+    final sortedQ = List<Question>.from(allQ)
+      ..sort((a, b) {
+        final modComp = a.moduleNumber.compareTo(b.moduleNumber);
+        return modComp != 0 ? modComp : a.id.compareTo(b.id);
+      });
+
+    return sortedQ
         .where((q) => (stageByQid[q.id] ?? 0) == 0)
         .take(limit)
         .toList();

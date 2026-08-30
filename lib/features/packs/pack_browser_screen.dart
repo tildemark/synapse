@@ -13,7 +13,7 @@ const _kAvailablePacks = [
     description: 'Master C fundamentals: pointers, memory management, structs, file I/O, and systems programming.',
     iconName: 'code',
     color: '#3B82F6',
-    questionCount: 15,
+    questionCount: 101,
     assetPath: 'assets/packs/pack_c_programming.json',
   ),
   _PackMeta(
@@ -23,7 +23,7 @@ const _kAvailablePacks = [
     description: 'Master modern HTML5 semantics, document structure, forms, media, accessibility, and SEO best practices.',
     iconName: 'code',
     color: '#E44D26',
-    questionCount: 15,
+    questionCount: 138,
     assetPath: 'assets/packs/pack_html.json',
   ),
 ];
