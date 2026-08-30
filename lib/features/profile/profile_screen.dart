@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -682,12 +683,16 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
                               final nameParam = hasConsent ? Uri.encodeComponent(scholarName) : 'Scholar';
                               final shareUrl = 'https://synapse.sanchez.ph/verify?id=$certSerial&name=$nameParam&pack=${Uri.encodeComponent(pack.name)}';
                               final uri = Uri.parse(shareUrl);
-                              if (await canLaunchUrl(uri)) {
-                                await launchUrl(uri, mode: LaunchMode.externalApplication);
-                              } else {
+                              try {
+                                final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+                                if (!launched) {
+                                  await launchUrl(uri, mode: LaunchMode.platformDefault);
+                                }
+                              } catch (_) {
+                                await Clipboard.setData(ClipboardData(text: shareUrl));
                                 if (mounted) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text('Could not open browser. URL copied:\n$shareUrl')),
+                                    SnackBar(content: Text('URL copied to clipboard:\n$shareUrl')),
                                   );
                                 }
                               }
@@ -697,15 +702,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
                           IconButton(
                             icon: const Icon(Icons.copy_rounded, size: 18, color: SynapseColors.secondary),
                             tooltip: 'Copy Verification Link',
-                            onPressed: () {
+                            onPressed: () async {
                               final nameParam = hasConsent ? Uri.encodeComponent(scholarName) : 'Scholar';
                               final shareUrl = 'https://synapse.sanchez.ph/verify?id=$certSerial&name=$nameParam&pack=${Uri.encodeComponent(pack.name)}';
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('Verification URL copied to clipboard:\n$shareUrl'),
-                                  behavior: SnackBarBehavior.floating,
-                                ),
-                              );
+                              await Clipboard.setData(ClipboardData(text: shareUrl));
+                              if (mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Verification URL copied to clipboard! ✓'),
+                                    behavior: SnackBarBehavior.floating,
+                                  ),
+                                );
+                              }
                             },
                           ),
                         ],
