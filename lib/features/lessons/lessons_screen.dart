@@ -142,8 +142,8 @@ class _LessonsScreenState extends ConsumerState<LessonsScreen> {
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -218,9 +218,10 @@ class _LessonsScreenState extends ConsumerState<LessonsScreen> {
                 );
               }),
               if (_answered) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 Container(
-                  padding: const EdgeInsets.all(14),
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: cs.surfaceContainerHigh,
                     borderRadius: BorderRadius.circular(12),
@@ -230,30 +231,32 @@ class _LessonsScreenState extends ConsumerState<LessonsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Explanation', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 6),
                       Text(_current.explanation, style: TextStyle(fontSize: 13, color: cs.onSurfaceVariant, height: 1.4)),
                     ],
                   ),
                 ),
               ],
-              const Spacer(),
-              if (_answered)
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    onPressed: _next,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: SynapseColors.primary,
-                      minimumSize: const Size.fromHeight(52),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                    ),
-                    child: Text(_currentIndex < _questions.length - 1 ? 'Next' : 'Finish'),
-                  ),
-                ),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: _answered
+          ? SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+                child: FilledButton(
+                  onPressed: _next,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: SynapseColors.primary,
+                    minimumSize: const Size.fromHeight(52),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  ),
+                  child: Text(_currentIndex < _questions.length - 1 ? 'Next' : 'Finish'),
+                ),
+              ),
+            )
+          : null,
     );
   }
 }

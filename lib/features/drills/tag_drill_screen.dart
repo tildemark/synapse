@@ -261,9 +261,10 @@ class _TagDrillScreenState extends ConsumerState<TagDrillScreen> {
                       );
                     }),
                     if (_answered) ...[
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 12),
                       Container(
-                        padding: const EdgeInsets.all(14),
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           color: cs.surfaceContainerHigh,
                           borderRadius: BorderRadius.circular(12),
@@ -274,7 +275,7 @@ class _TagDrillScreenState extends ConsumerState<TagDrillScreen> {
                           children: [
                             const Text('Explanation',
                                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                            const SizedBox(height: 4),
+                            const SizedBox(height: 6),
                             Text(_current.explanation,
                                 style: TextStyle(
                                     fontSize: 13, color: cs.onSurfaceVariant, height: 1.4)),
@@ -282,22 +283,6 @@ class _TagDrillScreenState extends ConsumerState<TagDrillScreen> {
                         ),
                       ),
                     ],
-                    const Spacer(),
-                    if (_answered)
-                      SizedBox(
-                        width: double.infinity,
-                        child: FilledButton(
-                          onPressed: _next,
-                          style: FilledButton.styleFrom(
-                            backgroundColor: SynapseColors.secondary,
-                            foregroundColor: Colors.white,
-                            minimumSize: const Size.fromHeight(52),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14)),
-                          ),
-                          child: Text(_currentIndex < _drillQueue.length - 1 ? 'Next Drill Question' : 'Finish Drill'),
-                        ),
-                      ),
                   ],
                 ),
               ),
@@ -305,6 +290,24 @@ class _TagDrillScreenState extends ConsumerState<TagDrillScreen> {
           ],
         ),
       ),
+      bottomNavigationBar: _answered
+          ? SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+                child: FilledButton(
+                  onPressed: _next,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: SynapseColors.secondary,
+                    foregroundColor: Colors.white,
+                    minimumSize: const Size.fromHeight(52),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14)),
+                  ),
+                  child: Text(_currentIndex < _drillQueue.length - 1 ? 'Next Drill Question' : 'Finish Drill'),
+                ),
+              ),
+            )
+          : null,
     );
   }
 }

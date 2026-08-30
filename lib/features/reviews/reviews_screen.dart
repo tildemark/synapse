@@ -209,8 +209,8 @@ class _ReviewsScreenState extends ConsumerState<ReviewsScreen> {
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -232,14 +232,20 @@ class _ReviewsScreenState extends ConsumerState<ReviewsScreen> {
                       color: cs.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Text(question.moduleName, style: TextStyle(fontSize: 11, color: cs.onSurfaceVariant)),
+                    child: Text(
+                      question.moduleName,
+                      style: TextStyle(fontSize: 11, color: cs.onSurfaceVariant, fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ],
               ),
               const SizedBox(height: 16),
               if (question.imageUrl != null && question.imageUrl!.isNotEmpty)
                 QuestionImageCard(imageUrl: question.imageUrl!),
-              Text(question.question, style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, height: 1.4)),
+              Text(
+                question.question,
+                style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600, height: 1.4),
+              ),
               const SizedBox(height: 24),
               ...choices.map((c) {
                 final letter = c.$1;
@@ -285,9 +291,10 @@ class _ReviewsScreenState extends ConsumerState<ReviewsScreen> {
                 );
               }),
               if (_answered) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 Container(
-                  padding: const EdgeInsets.all(14),
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: cs.surfaceContainerHigh,
                     borderRadius: BorderRadius.circular(12),
@@ -297,30 +304,32 @@ class _ReviewsScreenState extends ConsumerState<ReviewsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Explanation', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 6),
                       Text(question.explanation, style: TextStyle(fontSize: 13, color: cs.onSurfaceVariant, height: 1.4)),
                     ],
                   ),
                 ),
               ],
-              const Spacer(),
-              if (_answered)
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    onPressed: _next,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: stageColor,
-                      minimumSize: const Size.fromHeight(52),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                    ),
-                    child: Text(_currentIndex < _queue.length - 1 ? 'Next Review' : 'Finish'),
-                  ),
-                ),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: _answered
+          ? SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+                child: FilledButton(
+                  onPressed: _next,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: stageColor,
+                    minimumSize: const Size.fromHeight(52),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  ),
+                  child: Text(_currentIndex < _queue.length - 1 ? 'Next Review' : 'Finish'),
+                ),
+              ),
+            )
+          : null,
     );
   }
 

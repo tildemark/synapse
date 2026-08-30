@@ -140,8 +140,8 @@ class _CramScreenState extends ConsumerState<CramScreen> {
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -228,9 +228,10 @@ class _CramScreenState extends ConsumerState<CramScreen> {
                 );
               }),
               if (_answered) ...[
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 Container(
-                  padding: const EdgeInsets.all(14),
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: cs.surfaceContainerHigh,
                     borderRadius: BorderRadius.circular(12),
@@ -241,7 +242,7 @@ class _CramScreenState extends ConsumerState<CramScreen> {
                     children: [
                       const Text('Explanation',
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 6),
                       Text(_current.explanation,
                           style: TextStyle(
                               fontSize: 13, color: cs.onSurfaceVariant, height: 1.4)),
@@ -249,25 +250,27 @@ class _CramScreenState extends ConsumerState<CramScreen> {
                   ),
                 ),
               ],
-              const Spacer(),
-              if (_answered)
-                SizedBox(
-                  width: double.infinity,
-                  child: FilledButton(
-                    onPressed: _next,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: SynapseColors.burned,
-                      minimumSize: const Size.fromHeight(52),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(14)),
-                    ),
-                    child: Text(_currentIndex < _questions.length - 1 ? 'Next Question' : 'Finish Cram'),
-                  ),
-                ),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: _answered
+          ? SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
+                child: FilledButton(
+                  onPressed: _next,
+                  style: FilledButton.styleFrom(
+                    backgroundColor: SynapseColors.burned,
+                    minimumSize: const Size.fromHeight(52),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14)),
+                  ),
+                  child: Text(_currentIndex < _questions.length - 1 ? 'Next Question' : 'Finish Cram'),
+                ),
+              ),
+            )
+          : null,
     );
   }
 }
