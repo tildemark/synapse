@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers.dart';
 import '../../theme/app_theme.dart';
+import '../../constants/app_version.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -201,7 +202,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Synapse v1.0.0', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                const Text('Synapse ${AppVersion.versionTag}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                 const SizedBox(height: 4),
                 Text('Universal Spaced Repetition Platform for mastering any knowledge domain.',
                     style: TextStyle(color: cs.onSurfaceVariant, fontSize: 13)),

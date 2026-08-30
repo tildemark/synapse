@@ -7,6 +7,7 @@ import '../../providers.dart';
 import '../../db/app_database.dart';
 import '../../theme/app_theme.dart';
 import '../../services/badge_service.dart';
+import '../../constants/app_version.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -114,7 +115,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
               ),
             ),
             const SizedBox(width: 12),
-            const Text('About Synapse', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            const Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('About Synapse', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                  Text(
+                    'Release ${AppVersion.versionTag} (Build ${AppVersion.buildNumber})',
+                    style: TextStyle(fontSize: 11, color: SynapseColors.secondary, fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
         content: SingleChildScrollView(
@@ -131,6 +143,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
               _creditRow(Icons.person_rounded, 'Lead Developer', 'Alfredo Sanchez Jr', Colors.white),
               const SizedBox(height: 8),
               _creditRow(Icons.language_rounded, 'Official Website', 'http://sanchez.ph', SynapseColors.primary),
+              const SizedBox(height: 8),
+              _creditRow(Icons.tag_rounded, 'App Version', '${AppVersion.versionTag} (${AppVersion.releaseDate})', SynapseColors.secondary),
               const SizedBox(height: 8),
               _creditRow(Icons.psychology_rounded, 'Cognitive Architecture', '8-Stage Ebbinghaus Leitner Engine', SynapseColors.burned),
               
@@ -175,7 +189,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
               showLicensePage(
                 context: context,
                 applicationName: 'Synapse',
-                applicationVersion: 'v1.0.0',
+                applicationVersion: AppVersion.versionTag,
                 applicationLegalese: '© 2026 Alfredo Sanchez Jr. Distributed under the MIT License.',
               );
             },
