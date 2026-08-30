@@ -320,13 +320,13 @@ function CertificateContent() {
               {studentName || 'Distinguished Scholar'}
             </div>
             <p className="cert-body-text">
-              has satisfied all rigorous requirements and demonstrated verified 100% active recall retention across all core modules in the curriculum of:
+              has satisfied all rigorous requirements and demonstrated verified competency and mastery in the comprehensive curriculum and official examination of:
             </p>
             <div className="cert-course-name" style={{ color: course.color }}>
               {course.title}
             </div>
             <p className="cert-body-subtext">
-              All {course.questionsCount} curriculum questions were successfully promoted through the 8-Stage Leitner active recall hierarchy (Apprentice → Guru → Master → Burned) in accordance with Ebbinghaus memory stabilization standards.
+              Validated through the official Mock Competency Examination (Passing Score &ge; 70%) and Ebbinghaus active recall spaced repetition standards across all {course.questionsCount} syllabus questions.
             </p>
           </div>
 

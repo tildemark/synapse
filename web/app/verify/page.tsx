@@ -247,7 +247,7 @@ function VerifyContent() {
               <span>Official Credential Authenticated &amp; Mathematically Valid</span>
             </div>
             <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '20px' }}>
-              This certification record is cryptographically validated. The signature matches the scholar identity (&quot;{scholarName}&quot;) and confirms sustained 100% active recall retention across all mandatory syllabus modules.
+              This certification record is cryptographically validated. The signature matches the scholar identity (&quot;{scholarName}&quot;) and confirms verified competency in the official mock examination and sustained active recall retention across all mandatory syllabus modules.
             </p>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
