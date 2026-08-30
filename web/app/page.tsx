@@ -45,6 +45,8 @@ import {
   Users,
 } from 'lucide-react';
 
+import { SYNAPSE_VERSION_TAG, SYNAPSE_DOWNLOADS } from './config/version';
+
 // ─── SRS Stages & Cognitive Intervals ──────────────────────────────────────────
 const SRS_STAGES = [
   {
@@ -453,7 +455,7 @@ export default function HomePage() {
 
           <div className="hero-cta-group">
             <a href="#downloads" className="btn btn-primary" style={{ padding: '14px 28px', fontSize: '15px' }}>
-              <Download size={18} /> Download Synapse v1.0.0
+              <Download size={18} /> Download Synapse {SYNAPSE_VERSION_TAG}
             </a>
             <Link href="/certificate" className="btn btn-gold" style={{ padding: '14px 26px', fontSize: '15px' }}>
               <Award size={18} /> View Sample Certificate &amp; Share
@@ -1114,7 +1116,7 @@ export default function HomePage() {
           <div className="download-box">
             <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto' }}>
               <h2 style={{ fontSize: '30px', fontWeight: 800, marginBottom: '8px' }}>
-                Download Synapse v1.0.0
+                Download Synapse {SYNAPSE_VERSION_TAG}
               </h2>
               <p style={{ color: 'var(--text-muted)', fontSize: '15px' }}>
                 100% free, open-source under MIT, self-contained with embedded native SQLite engine.
@@ -1139,7 +1141,7 @@ export default function HomePage() {
                   </p>
                 </div>
                 <a
-                  href="https://github.com/tildemark/synapse/releases/latest/download/synapse_v1.0.0_android.apk"
+                  href={SYNAPSE_DOWNLOADS.android}
                   className="btn btn-emerald"
                   style={{ width: '100%', justifyContent: 'center' }}
                 >
@@ -1164,7 +1166,7 @@ export default function HomePage() {
                   </p>
                 </div>
                 <a
-                  href="https://github.com/tildemark/synapse/releases/latest/download/synapse_v1.0.0_windows_x64.zip"
+                  href={SYNAPSE_DOWNLOADS.windows}
                   className="btn btn-primary"
                   style={{ width: '100%', justifyContent: 'center' }}
                 >

@@ -23,6 +23,7 @@ import {
 
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import { SYNAPSE_VERSION_TAG } from '../config/version';
 
 const OFFICIAL_COURSES = [
   {
@@ -307,7 +308,7 @@ function CertificateContent() {
               SYNAPSE ACADEMIC INSTITUTE
             </h2>
             <p className="cert-subtitle">
-              Cognitive Retention &amp; Spaced Repetition Registry &bull; Protocol v1.0.0
+              Cognitive Retention &amp; Spaced Repetition Registry &bull; Protocol {SYNAPSE_VERSION_TAG}
             </p>
           </div>
 
