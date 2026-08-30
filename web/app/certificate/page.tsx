@@ -21,6 +21,9 @@ import {
   QrCode,
 } from 'lucide-react';
 
+import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
+
 const OFFICIAL_COURSES = [
   {
     id: 'c_programming',
@@ -28,7 +31,7 @@ const OFFICIAL_COURSES = [
     code: 'CS-101-C',
     domain: 'Computer Science',
     modulesCount: 15,
-    questionsCount: 101,
+    questionsCount: 249,
     color: '#3B82F6',
   },
   {
@@ -41,22 +44,22 @@ const OFFICIAL_COURSES = [
     color: '#E44D26',
   },
   {
-    id: 'docker_essentials',
-    title: 'Docker & Containerization Infrastructure',
-    code: 'SYS-201-DOCKER',
-    domain: 'DevOps & Systems',
-    modulesCount: 3,
-    questionsCount: 12,
-    color: '#10B981',
+    id: 'css3_fundamentals',
+    title: 'CSS3 & Modern Stylesheets',
+    code: 'WEB-103-CSS',
+    domain: 'Web Development',
+    modulesCount: 15,
+    questionsCount: 450,
+    color: '#2563EB',
   },
   {
-    id: 'linear_algebra',
-    title: 'Linear Algebra & Vector Mathematics',
-    code: 'MTH-202-LA',
-    domain: 'Mathematics',
-    modulesCount: 3,
-    questionsCount: 15,
-    color: '#F59E0B',
+    id: 'lto_drivers_exam_ph',
+    title: "LTO Driver's Licensing Reviewer",
+    code: 'GOV-301-LTO',
+    domain: 'Traffic Laws & Safety',
+    modulesCount: 15,
+    questionsCount: 450,
+    color: '#10B981',
   },
 ];
 
@@ -70,17 +73,42 @@ function computeChecksum(name: string, packId: string): string {
   return ((hash >>> 0) & 0xffff).toString(16).toUpperCase().padStart(4, '0');
 }
 
-export default function CertificatePage() {
-  const [studentName, setStudentName] = useState('Dr. Alex Mercer');
-  const [selectedCourseId, setSelectedCourseId] = useState('c_programming');
+function CertificateContent() {
+  const searchParams = useSearchParams();
+  const urlName = searchParams.get('name');
+  const urlId = searchParams.get('id');
+  const urlPack = searchParams.get('pack');
+
+  // Determine initial course from URL if provided
+  const initialCourse = OFFICIAL_COURSES.find((c) => {
+    if (urlPack && c.title.toLowerCase().includes(urlPack.toLowerCase())) return true;
+    if (urlId) {
+      const parts = urlId.toUpperCase().split('-');
+      if (parts.length > 1) {
+        if (parts[1] === 'CPROG' && c.id === 'c_programming') return true;
+        if (parts[1] === 'HTML' && c.id === 'html_fundamentals') return true;
+        if (parts[1] === 'CSS3' && c.id === 'css3_fundamentals') return true;
+        if (parts[1] === 'LTOPH' && c.id === 'lto_drivers_exam_ph') return true;
+      }
+    }
+    return false;
+  }) || OFFICIAL_COURSES[0];
+
+  const [studentName, setStudentName] = useState(urlName || 'Distinguished Scholar');
+  const [selectedCourseId, setSelectedCourseId] = useState(initialCourse.id);
   const [issueDate, setIssueDate] = useState('August 30, 2026');
   const [copied, setCopied] = useState(false);
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>('');
 
+  // Synchronize state if URL query params arrive dynamically
+  useEffect(() => {
+    if (urlName) setStudentName(urlName);
+  }, [urlName]);
+
   const course = OFFICIAL_COURSES.find((c) => c.id === selectedCourseId) || OFFICIAL_COURSES[0];
-  const cleanCode = selectedCourseId === 'c_programming' ? 'CPROG' : selectedCourseId === 'html_fundamentals' ? 'HTML' : selectedCourseId.toUpperCase().slice(0, 5);
+  const cleanCode = selectedCourseId === 'c_programming' ? 'CPROG' : selectedCourseId === 'html_fundamentals' ? 'HTML' : selectedCourseId === 'css3_fundamentals' ? 'CSS3' : selectedCourseId === 'lto_drivers_exam_ph' ? 'LTOPH' : selectedCourseId.toUpperCase().slice(0, 5);
   const checksum = computeChecksum(studentName, selectedCourseId);
-  const certSerial = `SYN-${cleanCode}-${checksum}-VERIFIED`;
+  const certSerial = urlId && urlId.startsWith('SYN-') ? urlId : `SYN-${cleanCode}-${checksum}-VERIFIED`;
 
   const verificationUrl = `https://synapse.sanchez.ph/verify?id=${encodeURIComponent(certSerial)}&name=${encodeURIComponent(
     studentName
@@ -260,8 +288,8 @@ export default function CertificatePage() {
           <div className="cert-corner-decor cert-br" />
 
           {/* Certificate Header */}
-          <div style={{ textAlign: 'center', marginBottom: '28px' }}>
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '14px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '12px' }}>
               <div style={{ padding: '6px', background: 'rgba(255, 255, 255, 0.06)', borderRadius: '16px', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
                 <Image
                   src="/logo512.png"
@@ -272,43 +300,43 @@ export default function CertificatePage() {
                 />
               </div>
             </div>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '5px 16px', borderRadius: '100px', background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.4)', color: '#F59E0B', fontSize: '12px', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '14px' }}>
+            <div className="cert-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '5px 16px', borderRadius: '100px', background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.4)', color: '#F59E0B', fontSize: '12px', fontWeight: 800, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '12px' }}>
               <Award size={15} /> Official Verified Credential
             </div>
-            <h2 style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.02em', background: 'linear-gradient(135deg, #FFFFFF 0%, #F59E0B 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '4px' }}>
+            <h2 className="cert-title" style={{ fontSize: '32px', fontWeight: 800, letterSpacing: '-0.02em', background: 'linear-gradient(135deg, #FFFFFF 0%, #F59E0B 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '4px' }}>
               SYNAPSE ACADEMIC INSTITUTE
             </h2>
-            <p style={{ fontSize: '13px', color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+            <p className="cert-subtitle" style={{ fontSize: '12px', color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
               Cognitive Retention &amp; Spaced Repetition Registry &bull; Protocol v1.0.0
             </p>
           </div>
 
           {/* Recipient */}
-          <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 30px' }}>
-            <p style={{ fontSize: '14px', color: 'var(--text-muted)', fontStyle: 'italic', marginBottom: '8px' }}>
+          <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 24px' }}>
+            <p className="cert-body-intro" style={{ fontSize: '14px', color: 'var(--text-muted)', fontStyle: 'italic', marginBottom: '6px' }}>
               This certifies that
             </p>
-            <div style={{ fontSize: '36px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em', borderBottom: '2px solid rgba(245, 158, 11, 0.5)', paddingBottom: '8px', marginBottom: '16px' }}>
+            <div className="cert-student-name" style={{ fontSize: '34px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em', borderBottom: '2px solid rgba(245, 158, 11, 0.5)', paddingBottom: '6px', marginBottom: '14px' }}>
               {studentName || 'Distinguished Scholar'}
             </div>
-            <p style={{ fontSize: '15px', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '10px' }}>
+            <p className="cert-body-text" style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.5, marginBottom: '8px' }}>
               has satisfied all rigorous requirements and demonstrated verified 100% active recall retention across all core modules in the curriculum of:
             </p>
-            <div style={{ fontSize: '26px', fontWeight: 800, color: course.color, marginBottom: '12px' }}>
+            <div className="cert-course-name" style={{ fontSize: '24px', fontWeight: 800, color: course.color, marginBottom: '10px' }}>
               {course.title}
             </div>
-            <p style={{ fontSize: '13px', color: 'var(--text-dim)', lineHeight: 1.6 }}>
+            <p className="cert-body-subtext" style={{ fontSize: '12px', color: 'var(--text-dim)', lineHeight: 1.5 }}>
               All {course.questionsCount} curriculum questions were successfully promoted through the 8-Stage Leitner active recall hierarchy (Apprentice → Guru → Master → Burned) in accordance with Ebbinghaus memory stabilization standards.
             </p>
           </div>
 
           {/* Verification Bar with Live QR Code */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '20px', borderTop: '1px solid rgba(245, 158, 11, 0.2)', borderBottom: '1px solid rgba(245, 158, 11, 0.2)', padding: '24px 20px', margin: '0 auto 30px', maxWidth: '850px' }}>
+          <div className="cert-verify-bar" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '20px', borderTop: '1px solid rgba(245, 158, 11, 0.2)', borderBottom: '1px solid rgba(245, 158, 11, 0.2)', padding: '20px 20px', margin: '0 auto 24px', maxWidth: '850px' }}>
             <div style={{ textAlign: 'left', minWidth: '180px' }}>
-              <div style={{ fontSize: '11px', color: 'var(--text-dim)', textTransform: 'uppercase', fontWeight: 700 }}>Credential Serial</div>
-              <div className="mono-font" style={{ fontSize: '13px', fontWeight: 700, color: '#F59E0B', marginTop: '3px' }}>{certSerial}</div>
-              <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>Curriculum: {course.code}</div>
-              <div style={{ fontSize: '11px', color: '#10B981', fontWeight: 600, marginTop: '4px' }}>Status: Authenticated ✓</div>
+              <div className="cert-meta-label" style={{ fontSize: '11px', color: 'var(--text-dim)', textTransform: 'uppercase', fontWeight: 700 }}>Credential Serial</div>
+              <div className="mono-font cert-serial" style={{ fontSize: '13px', fontWeight: 700, color: '#F59E0B', marginTop: '3px' }}>{certSerial}</div>
+              <div className="cert-meta-desc" style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px' }}>Curriculum: {course.code} &bull; {issueDate}</div>
+              <div className="cert-status-tag" style={{ fontSize: '11px', color: '#10B981', fontWeight: 600, marginTop: '4px' }}>Status: Authenticated ✓</div>
             </div>
 
             {/* Center Seal */}
@@ -321,6 +349,7 @@ export default function CertificatePage() {
               href={verificationUrl}
               target="_blank"
               rel="noopener noreferrer"
+              className="cert-qr-link"
               title="Click or scan to verify on Synapse Ledger"
               style={{
                 display: 'flex',
@@ -356,21 +385,21 @@ export default function CertificatePage() {
           </div>
 
           {/* Signatures & Academic Accreditation Footer */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', maxWidth: '780px', margin: '0 auto', fontSize: '12px', color: 'var(--text-muted)', flexWrap: 'wrap', gap: '20px' }}>
-            <div style={{ minWidth: '220px' }}>
-              <div style={{ fontFamily: 'var(--font-mono, monospace)', color: '#D8B4FE', fontWeight: 700, fontSize: '14px', marginBottom: '2px' }}>
+          <div className="cert-signatures-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', maxWidth: '780px', margin: '0 auto', fontSize: '12px', color: 'var(--text-muted)', flexWrap: 'wrap', gap: '20px' }}>
+            <div className="cert-sig-left" style={{ minWidth: '220px' }}>
+              <div className="cert-sig-name-left" style={{ fontFamily: 'var(--font-mono, monospace)', color: '#D8B4FE', fontWeight: 700, fontSize: '14px', marginBottom: '2px' }}>
                 Alfredo Sanchez Jr.
               </div>
-              <div style={{ borderTop: '1px solid rgba(255,255,255,0.25)', paddingTop: '4px', color: 'var(--text-dim)' }}>
+              <div className="cert-sig-line-left" style={{ borderTop: '1px solid rgba(255,255,255,0.25)', paddingTop: '4px', color: 'var(--text-dim)' }}>
                 Lead Architect &amp; Creator &bull; <a href="http://sanchez.ph" target="_blank" rel="noopener noreferrer" style={{ color: '#D8B4FE', textDecoration: 'none' }}>sanchez.ph</a>
               </div>
             </div>
 
-            <div style={{ textAlign: 'right', minWidth: '220px' }}>
-              <div style={{ fontFamily: 'var(--font-mono, monospace)', color: '#10B981', fontWeight: 700, fontSize: '14px', marginBottom: '2px' }}>
+            <div className="cert-sig-right" style={{ textAlign: 'right', minWidth: '220px' }}>
+              <div className="cert-sig-name-right" style={{ fontFamily: 'var(--font-mono, monospace)', color: '#10B981', fontWeight: 700, fontSize: '14px', marginBottom: '2px' }}>
                 Synapse Academic Board
               </div>
-              <div style={{ borderTop: '1px solid rgba(255,255,255,0.25)', paddingTop: '4px', color: 'var(--text-dim)' }}>
+              <div className="cert-sig-line-right" style={{ borderTop: '1px solid rgba(255,255,255,0.25)', paddingTop: '4px', color: 'var(--text-dim)' }}>
                 Office of Curriculum &amp; Assessment
               </div>
             </div>
@@ -420,5 +449,13 @@ export default function CertificatePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CertificatePage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--bg-main)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>Loading Academic Certificate...</div>}>
+      <CertificateContent />
+    </Suspense>
   );
 }

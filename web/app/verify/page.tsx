@@ -325,7 +325,11 @@ function VerifyContent() {
           </ul>
 
           <div style={{ marginTop: '24px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-            <Link href="/certificate" className="btn btn-gold" style={{ padding: '10px 20px', fontSize: '13px' }}>
+            <Link
+              href={`/certificate?name=${encodeURIComponent(scholarName)}&id=${encodeURIComponent(inputSerial)}&pack=${encodeURIComponent(validationResult.packInfo?.name || urlPack)}`}
+              className="btn btn-gold"
+              style={{ padding: '10px 20px', fontSize: '13px' }}
+            >
               <Award size={15} /> View Certificate Canvas
             </Link>
             <Link href="/" className="btn btn-secondary" style={{ padding: '10px 20px', fontSize: '13px' }}>

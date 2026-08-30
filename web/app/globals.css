@@ -690,24 +690,24 @@ a {
 }
 
 /* ==========================================================================
-   High-Precision Academic Certificate Print Engine
+   High-Precision Academic Certificate Print Engine (Ink-Friendly A4 Landscape)
    ========================================================================== */
 @media print {
   @page {
-    size: landscape A4;
-    margin: 0;
+    size: A4 landscape;
+    margin: 8mm 10mm;
   }
 
   html, body {
-    background: #0B0B14 !important;
-    color: #FFFFFF !important;
+    background: #FFFFFF !important;
+    color: #111827 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     margin: 0 !important;
     padding: 0 !important;
   }
 
-  /* Hide all UI chrome, controls, buttons, forms, and background effects */
+  /* Hide all UI chrome, navigation, headers, and buttons */
   .no-print,
   .glow-backdrop,
   .academic-grid-pattern,
@@ -720,32 +720,125 @@ a {
     display: none !important;
   }
 
-  /* Expand certificate frame to full landscape page */
+  /* Full container print expansion */
   .container {
     max-width: 100% !important;
     padding: 0 !important;
     margin: 0 !important;
   }
 
+  /* Ink-Friendly White / Ivory Parchment Frame */
   .cert-frame {
     margin: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
+    width: 100% !important;
+    height: 100% !important;
     max-width: none !important;
-    border-radius: 0 !important;
-    border: none !important;
+    background: #FFFEFA !important;
+    color: #111827 !important;
+    border: 3px double #D97706 !important;
+    border-radius: 12px !important;
     box-shadow: none !important;
     box-sizing: border-box !important;
-    padding: 36px 48px !important;
+    padding: 24px 36px !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
     page-break-inside: avoid !important;
   }
 
-  /* Ensure high-contrast elements and QR code render cleanly */
+  .cert-corner-decor {
+    border-color: #D97706 !important;
+  }
+
+  .cert-badge {
+    background: #FEF3C7 !important;
+    border: 1px solid #D97706 !important;
+    color: #92400E !important;
+  }
+
+  .cert-title {
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+    color: #1E1B4B !important;
+  }
+
+  .cert-subtitle {
+    color: #6B7280 !important;
+  }
+
+  .cert-body-intro {
+    color: #4B5563 !important;
+  }
+
+  .cert-student-name {
+    color: #0F172A !important;
+    border-bottom: 2px solid #D97706 !important;
+  }
+
+  .cert-body-text {
+    color: #374151 !important;
+  }
+
+  .cert-course-name {
+    color: #1D4ED8 !important;
+  }
+
+  .cert-body-subtext {
+    color: #6B7280 !important;
+  }
+
+  .cert-verify-bar {
+    border-top: 1px solid #E5E7EB !important;
+    border-bottom: 1px solid #E5E7EB !important;
+    background: #F9FAFB !important;
+    border-radius: 8px !important;
+  }
+
+  .cert-meta-label {
+    color: #6B7280 !important;
+  }
+
+  .cert-serial {
+    color: #B45309 !important;
+  }
+
+  .cert-meta-desc {
+    color: #4B5563 !important;
+  }
+
+  .cert-status-tag {
+    color: #059669 !important;
+  }
+
   .cert-seal {
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%) !important;
+    border: 2px solid #92400E !important;
+    color: #000000 !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+  }
+
+  .cert-qr-link {
+    background: #FFFFFF !important;
+    border: 1px solid #D1D5DB !important;
+  }
+
+  .cert-sig-name-left {
+    color: #4338CA !important;
+  }
+
+  .cert-sig-line-left {
+    border-top: 1px solid #9CA3AF !important;
+    color: #6B7280 !important;
+  }
+
+  .cert-sig-name-right {
+    color: #047857 !important;
+  }
+
+  .cert-sig-line-right {
+    border-top: 1px solid #9CA3AF !important;
+    color: #6B7280 !important;
   }
 }
