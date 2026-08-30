@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../providers.dart';
 import '../../db/app_database.dart';
@@ -574,6 +575,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
 
               final isFullyBurned = packQs.isNotEmpty && burnedInPack == packQs.length;
               
+              final mockScore = settings.getMockExamScore(pack.packId);
+              final isExamPassed = mockScore >= 70;
+              final isCertificateUnlocked = isFullyBurned || isExamPassed;
+              
               // Strategy 1 Deterministic Hash (includes actual scholar name)
               final cleanPackCode = pack.packId == 'c_programming' ? 'CPROG' : pack.packId == 'html_fundamentals' ? 'HTML' : pack.packId.toUpperCase().replaceAll('_', '');
               final hashSeed = '${scholarName.trim().toLowerCase()}_${pack.packId}_2026';
@@ -592,8 +597,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
                   color: cs.surfaceContainerHigh,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: isFullyBurned ? SynapseColors.burned.withAlpha(120) : cs.outlineVariant.withAlpha(40),
-                    width: isFullyBurned ? 1.5 : 1.0,
+                    color: isCertificateUnlocked ? SynapseColors.burned.withAlpha(120) : cs.outlineVariant.withAlpha(40),
+                    width: isCertificateUnlocked ? 1.5 : 1.0,
                   ),
                 ),
                 child: Column(
@@ -604,12 +609,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
                         Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: isFullyBurned ? SynapseColors.burned.withAlpha(30) : cs.surfaceContainerHighest,
+                            color: isCertificateUnlocked ? SynapseColors.burned.withAlpha(30) : cs.surfaceContainerHighest,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Icon(
-                            isFullyBurned ? Icons.card_membership_rounded : Icons.lock_outline_rounded,
-                            color: isFullyBurned ? SynapseColors.burned : Colors.grey,
+                            isCertificateUnlocked ? Icons.card_membership_rounded : Icons.lock_outline_rounded,
+                            color: isCertificateUnlocked ? SynapseColors.burned : Colors.grey,
                             size: 24,
                           ),
                         ),
@@ -620,10 +625,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
                             children: [
                               Text(pack.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
                               Text(
-                                isFullyBurned ? certSerial : '$burnedInPack / ${packQs.length} Cards Burned',
+                                isCertificateUnlocked
+                                    ? certSerial
+                                    : '$burnedInPack / ${packQs.length} Cards Burned · Exam: ${mockScore >= 0 ? "$mockScore%" : "Unattempted"}',
                                 style: TextStyle(
                                   fontSize: 11,
-                                  color: isFullyBurned ? SynapseColors.burned : cs.onSurfaceVariant,
+                                  color: isCertificateUnlocked ? SynapseColors.burned : cs.onSurfaceVariant,
                                 ),
                               ),
                             ],
@@ -632,44 +639,74 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                           decoration: BoxDecoration(
-                            color: isFullyBurned ? SynapseColors.secondary.withAlpha(25) : cs.surfaceContainerHighest,
+                            color: isCertificateUnlocked ? SynapseColors.secondary.withAlpha(25) : cs.surfaceContainerHighest,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
-                            isFullyBurned ? 'Mastered ✓' : '${packQs.isNotEmpty ? ((burnedInPack / packQs.length) * 100).round() : 0}%',
+                            isCertificateUnlocked ? 'Verified ✓' : '${packQs.isNotEmpty ? ((burnedInPack / packQs.length) * 100).round() : 0}%',
                             style: TextStyle(
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
-                              color: isFullyBurned ? SynapseColors.secondary : cs.onSurfaceVariant,
+                              color: isCertificateUnlocked ? SynapseColors.secondary : cs.onSurfaceVariant,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    if (isFullyBurned) ...[
+                    if (isCertificateUnlocked) ...[
                       const SizedBox(height: 12),
                       const Divider(height: 1),
                       const SizedBox(height: 8),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Recipient: $scholarName',
-                            style: TextStyle(fontSize: 11, color: cs.onSurfaceVariant),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Recipient: $scholarName',
+                                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: cs.onSurface),
+                                ),
+                                Text(
+                                  isFullyBurned ? 'Unlocked via 100% SRS Burned' : 'Unlocked via Mock Exam ($mockScore%)',
+                                  style: TextStyle(fontSize: 10, color: cs.onSurfaceVariant),
+                                ),
+                              ],
+                            ),
                           ),
-                          TextButton.icon(
+                          // Open in Browser button
+                          IconButton(
+                            icon: const Icon(Icons.open_in_browser_rounded, size: 20, color: SynapseColors.primary),
+                            tooltip: 'Open Verification Web Page',
+                            onPressed: () async {
+                              final nameParam = hasConsent ? Uri.encodeComponent(scholarName) : 'Scholar';
+                              final shareUrl = 'https://synapse.sanchez.ph/verify?id=$certSerial&name=$nameParam&pack=${Uri.encodeComponent(pack.name)}';
+                              final uri = Uri.parse(shareUrl);
+                              if (await canLaunchUrl(uri)) {
+                                await launchUrl(uri, mode: LaunchMode.externalApplication);
+                              } else {
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Could not open browser. URL copied:\n$shareUrl')),
+                                  );
+                                }
+                              }
+                            },
+                          ),
+                          // Copy URL button
+                          IconButton(
+                            icon: const Icon(Icons.copy_rounded, size: 18, color: SynapseColors.secondary),
+                            tooltip: 'Copy Verification Link',
                             onPressed: () {
                               final nameParam = hasConsent ? Uri.encodeComponent(scholarName) : 'Scholar';
                               final shareUrl = 'https://synapse.sanchez.ph/verify?id=$certSerial&name=$nameParam&pack=${Uri.encodeComponent(pack.name)}';
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('Verification URL copied:\n$shareUrl'),
+                                  content: Text('Verification URL copied to clipboard:\n$shareUrl'),
                                   behavior: SnackBarBehavior.floating,
                                 ),
                               );
                             },
-                            icon: const Icon(Icons.share_rounded, size: 14),
-                            label: const Text('Share / Verify', style: TextStyle(fontSize: 12)),
                           ),
                         ],
                       ),

@@ -72,7 +72,7 @@ class PackDetailScreen extends ConsumerWidget {
                     children: [
                       // SRS Donut
                       if (counts != null) ...[
-                        _SrsDonutCard(counts: counts, color: color),
+                        _SrsDonutCard(counts: counts, color: color, packId: pack.packId),
                         const SizedBox(height: 16),
                         _PackBadgeStrip(packId: pack.packId, color: color),
                         const SizedBox(height: 20),
@@ -208,15 +208,17 @@ class PackDetailScreen extends ConsumerWidget {
   }
 }
 
-// ─── SRS Donut Card ────────────────────────────────────────────────────────────
-class _SrsDonutCard extends StatelessWidget {
-  const _SrsDonutCard({required this.counts, required this.color});
+class _SrsDonutCard extends ConsumerWidget {
+  const _SrsDonutCard({required this.counts, required this.color, required this.packId});
   final SrsStageCounts counts;
   final Color color;
+  final String packId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final cs = Theme.of(context).colorScheme;
+    final settings = ref.watch(settingsServiceProvider);
+    final mockScore = settings.getMockExamScore(packId);
     final total = counts.total;
     final segments = <(int, Color, String)>[
       (counts.available, const Color(0xFF64748B), 'Available'),
@@ -233,44 +235,87 @@ class _SrsDonutCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: cs.outlineVariant.withAlpha(60)),
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 100,
-            height: 100,
-            child: CustomPaint(
-              painter: _DonutPainter(counts: counts, total: total),
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('${(counts.masteryRatio * 100).round()}%',
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                    const Text('mastery', style: TextStyle(fontSize: 9, color: Colors.grey)),
-                  ],
+          Row(
+            children: [
+              SizedBox(
+                width: 100,
+                height: 100,
+                child: CustomPaint(
+                  painter: _DonutPainter(counts: counts, total: total),
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('${(counts.masteryRatio * 100).round()}%',
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                        const Text('mastery', style: TextStyle(fontSize: 9, color: Colors.grey)),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: segments
+                      .map((s) => Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: Row(
+                              children: [
+                                Container(width: 9, height: 9, decoration: BoxDecoration(color: s.$2, shape: BoxShape.circle)),
+                                const SizedBox(width: 8),
+                                Text(s.$3, style: const TextStyle(fontSize: 11)),
+                                const Spacer(),
+                                Text('${s.$1}', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ))
+                      .toList(),
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: segments
-                  .map((s) => Padding(
-                        padding: const EdgeInsets.only(bottom: 6),
-                        child: Row(
-                          children: [
-                            Container(width: 10, height: 10, decoration: BoxDecoration(color: s.$2, shape: BoxShape.circle)),
-                            const SizedBox(width: 8),
-                            Text(s.$3, style: const TextStyle(fontSize: 12)),
-                            const Spacer(),
-                            Text('${s.$1}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                      ))
-                  .toList(),
-            ),
+          const SizedBox(height: 14),
+          const Divider(height: 1),
+          const SizedBox(height: 10),
+          // Mock Exam Status Ribbon
+          Row(
+            children: [
+              Icon(
+                mockScore >= 70 ? Icons.verified_rounded : (mockScore >= 0 ? Icons.alarm_on_rounded : Icons.timer_outlined),
+                size: 16,
+                color: mockScore >= 70 ? SynapseColors.secondary : (mockScore >= 0 ? Colors.orange : SynapseColors.guru),
+              ),
+              const SizedBox(width: 8),
+              const Text('Mock Exam Status:', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+              const Spacer(),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: mockScore >= 70
+                      ? SynapseColors.secondary.withAlpha(25)
+                      : (mockScore >= 0 ? Colors.orange.withAlpha(25) : cs.surfaceContainerHighest),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: mockScore >= 70
+                        ? SynapseColors.secondary.withAlpha(80)
+                        : (mockScore >= 0 ? Colors.orange.withAlpha(80) : cs.outlineVariant.withAlpha(40)),
+                  ),
+                ),
+                child: Text(
+                  mockScore >= 0 ? '$mockScore% (${mockScore >= 70 ? "Passed ✓" : "Needs Review"})' : 'Not Attempted',
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    color: mockScore >= 70 ? SynapseColors.secondary : (mockScore >= 0 ? Colors.orange : cs.onSurfaceVariant),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

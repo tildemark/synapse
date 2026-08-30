@@ -24,10 +24,11 @@ dependencies:
   # Vectors & Graphics
   flutter_svg: ^2.0.10+1
 
-  # Storage
+  # Storage & Utilities
   shared_preferences: ^2.3.2
   path_provider: ^2.1.4
   path: ^1.9.1
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:

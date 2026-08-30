@@ -95,6 +95,15 @@ class SettingsService {
   bool get hasOfficialPackIntegration => _prefs.getBool(_kHasOfficialPack) ?? false;
   Future<void> setOfficialPackIntegration() => _prefs.setBool(_kHasOfficialPack, true);
 
+  // Mock Exam Score tracking per packId
+  int getMockExamScore(String packId) => _prefs.getInt('mock_exam_score_$packId') ?? -1;
+  Future<void> setMockExamScore(String packId, int pct) async {
+    final cur = getMockExamScore(packId);
+    if (pct > cur) {
+      await _prefs.setInt('mock_exam_score_$packId', pct);
+    }
+  }
+
   /// Records a study event to update streaks and circadian achievements.
   Future<void> recordStudyEvent() async {
     final now = DateTime.now();

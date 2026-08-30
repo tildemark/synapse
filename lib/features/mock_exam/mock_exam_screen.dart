@@ -83,6 +83,12 @@ class _MockExamScreenState extends ConsumerState<MockExamScreen> {
     final pct = _questions.isNotEmpty ? ((correct / _questions.length) * 100).round() : 0;
     final passed = pct >= 70;
 
+    final settings = ref.read(settingsServiceProvider);
+    settings.setMockExamScore(widget.packId, pct);
+    if (pct == 100) {
+      settings.setValedictorian();
+    }
+
     showDialog(
       context: context,
       barrierDismissible: false,
