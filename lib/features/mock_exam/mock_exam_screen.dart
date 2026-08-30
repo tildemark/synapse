@@ -68,7 +68,7 @@ class _MockExamScreenState extends ConsumerState<MockExamScreen> {
     });
   }
 
-  void _submitExam() {
+  Future<void> _submitExam() async {
     _timer?.cancel();
     int correct = 0;
     for (int i = 0; i < _questions.length; i++) {
@@ -84,10 +84,12 @@ class _MockExamScreenState extends ConsumerState<MockExamScreen> {
     final passed = pct >= 70;
 
     final settings = ref.read(settingsServiceProvider);
-    settings.setMockExamScore(widget.packId, pct);
+    await settings.setMockExamScore(widget.packId, pct);
     if (pct == 100) {
-      settings.setValedictorian();
+      await settings.setValedictorian();
     }
+
+    if (!mounted) return;
 
     showDialog(
       context: context,

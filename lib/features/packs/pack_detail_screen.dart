@@ -158,7 +158,10 @@ class PackDetailScreen extends ConsumerWidget {
                               color: SynapseColors.guru,
                               onTap: () => Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => MockExamScreen(packId: pack.packId, packName: pack.name),
-                              )),
+                              )).then((_) {
+                                ref.invalidate(settingsServiceProvider);
+                                ref.invalidate(installedPacksProvider);
+                              }),
                             ),
                           ),
                         ],
