@@ -1175,11 +1175,15 @@ export default function HomePage() {
         <footer className="footer">
           <div className="footer-grid">
             <div>
-              <div className="brand" style={{ marginBottom: '12px' }}>
-                <div className="brand-icon">
-                  <Zap size={18} />
-                </div>
-                Synapse
+              <div className="brand" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
+                <img
+                  src="/logo512.png"
+                  alt="Synapse Logo"
+                  width={28}
+                  height={28}
+                  style={{ borderRadius: 6, objectFit: 'contain' }}
+                />
+                <span style={{ fontWeight: 800, fontSize: '18px', letterSpacing: '-0.02em' }}>Synapse</span>
               </div>
               <p style={{ fontSize: '14px', color: 'var(--text-muted)', maxWidth: '340px', lineHeight: 1.6 }}>
                 Open-source, domain-agnostic spaced repetition learning platform. Built with Flutter, Riverpod, and Drift SQLite.

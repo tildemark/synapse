@@ -448,16 +448,25 @@ export default function StudioPage() {
             <Link href="/" className="btn btn-secondary" style={{ padding: '8px 14px' }}>
               <ArrowLeft size={16} /> Home
             </Link>
-            <div>
-              <h1 style={{ fontSize: '24px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '10px' }}>
-                ⚡ Synapse Pack Studio
-                <span style={{ fontSize: '11px', fontWeight: 700, padding: '3px 8px', borderRadius: '6px', background: 'rgba(16, 185, 129, 0.2)', color: '#10B981' }}>
-                  Interactive Builder
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <img
+                src="/logo512.png"
+                alt="Synapse Logo"
+                width={36}
+                height={36}
+                style={{ borderRadius: 8, objectFit: 'contain' }}
+              />
+              <div>
+                <h1 style={{ fontSize: '24px', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  Synapse Pack Studio
+                  <span style={{ fontSize: '11px', fontWeight: 700, padding: '3px 8px', borderRadius: '6px', background: 'rgba(16, 185, 129, 0.2)', color: '#10B981' }}>
+                    Interactive Builder
+                  </span>
+                </h1>
+                <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+                  Author &amp; validate custom multiple-choice subject curricula with zero JSON coding
                 </span>
-              </h1>
-              <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-                Author &amp; validate custom multiple-choice subject curricula with zero JSON coding
-              </span>
+              </div>
             </div>
           </div>
 

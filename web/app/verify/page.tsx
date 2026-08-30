@@ -150,9 +150,13 @@ function VerifyContent() {
 
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '28px' }}>
-          <div style={{ width: 48, height: 48, borderRadius: 14, background: 'rgba(16, 185, 129, 0.18)', color: '#10B981', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <ShieldCheck size={28} />
-          </div>
+          <img
+            src="/logo512.png"
+            alt="Synapse Logo"
+            width={48}
+            height={48}
+            style={{ borderRadius: 12, objectFit: 'contain' }}
+          />
           <div>
             <h1 style={{ fontSize: '28px', fontWeight: 800, letterSpacing: '-0.01em' }}>
               Credential Verification Ledger
