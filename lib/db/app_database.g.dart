@@ -11,190 +11,135 @@ class $PacksTable extends Packs with TableInfo<$PacksTable, Pack> {
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-    'id',
-    aliasedName,
-    false,
-    hasAutoIncrement: true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
-  );
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
   static const VerificationMeta _packIdMeta = const VerificationMeta('packId');
   @override
   late final GeneratedColumn<String> packId = GeneratedColumn<String>(
-    'pack_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
-  );
+      'pack_id', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
-    'name',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _subjectMeta = const VerificationMeta(
-    'subject',
-  );
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _subjectMeta =
+      const VerificationMeta('subject');
   @override
   late final GeneratedColumn<String> subject = GeneratedColumn<String>(
-    'subject',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _iconNameMeta = const VerificationMeta(
-    'iconName',
-  );
+      'subject', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _iconNameMeta =
+      const VerificationMeta('iconName');
   @override
   late final GeneratedColumn<String> iconName = GeneratedColumn<String>(
-    'icon_name',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    defaultValue: const Constant('science'),
-  );
+      'icon_name', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('science'));
   static const VerificationMeta _colorMeta = const VerificationMeta('color');
   @override
   late final GeneratedColumn<String> color = GeneratedColumn<String>(
-    'color',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    defaultValue: const Constant('#6C63FF'),
-  );
-  static const VerificationMeta _versionMeta = const VerificationMeta(
-    'version',
-  );
+      'color', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('#6C63FF'));
+  static const VerificationMeta _versionMeta =
+      const VerificationMeta('version');
   @override
   late final GeneratedColumn<int> version = GeneratedColumn<int>(
-    'version',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultValue: const Constant(1),
-  );
-  static const VerificationMeta _questionCountMeta = const VerificationMeta(
-    'questionCount',
-  );
+      'version', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(1));
+  static const VerificationMeta _questionCountMeta =
+      const VerificationMeta('questionCount');
   @override
   late final GeneratedColumn<int> questionCount = GeneratedColumn<int>(
-    'question_count',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultValue: const Constant(0),
-  );
-  static const VerificationMeta _installedAtMeta = const VerificationMeta(
-    'installedAt',
-  );
+      'question_count', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _installedAtMeta =
+      const VerificationMeta('installedAt');
   @override
   late final GeneratedColumn<DateTime> installedAt = GeneratedColumn<DateTime>(
-    'installed_at',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
-  );
+      'installed_at', aliasedName, false,
+      type: DriftSqlType.dateTime,
+      requiredDuringInsert: false,
+      defaultValue: currentDateAndTime);
   @override
   List<GeneratedColumn> get $columns => [
-    id,
-    packId,
-    name,
-    subject,
-    iconName,
-    color,
-    version,
-    questionCount,
-    installedAt,
-  ];
+        id,
+        packId,
+        name,
+        subject,
+        iconName,
+        color,
+        version,
+        questionCount,
+        installedAt
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'packs';
   @override
-  VerificationContext validateIntegrity(
-    Insertable<Pack> instance, {
-    bool isInserting = false,
-  }) {
+  VerificationContext validateIntegrity(Insertable<Pack> instance,
+      {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('pack_id')) {
-      context.handle(
-        _packIdMeta,
-        packId.isAcceptableOrUnknown(data['pack_id']!, _packIdMeta),
-      );
+      context.handle(_packIdMeta,
+          packId.isAcceptableOrUnknown(data['pack_id']!, _packIdMeta));
     } else if (isInserting) {
       context.missing(_packIdMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
-        _nameMeta,
-        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
-      );
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('subject')) {
-      context.handle(
-        _subjectMeta,
-        subject.isAcceptableOrUnknown(data['subject']!, _subjectMeta),
-      );
+      context.handle(_subjectMeta,
+          subject.isAcceptableOrUnknown(data['subject']!, _subjectMeta));
     } else if (isInserting) {
       context.missing(_subjectMeta);
     }
     if (data.containsKey('icon_name')) {
-      context.handle(
-        _iconNameMeta,
-        iconName.isAcceptableOrUnknown(data['icon_name']!, _iconNameMeta),
-      );
+      context.handle(_iconNameMeta,
+          iconName.isAcceptableOrUnknown(data['icon_name']!, _iconNameMeta));
     }
     if (data.containsKey('color')) {
       context.handle(
-        _colorMeta,
-        color.isAcceptableOrUnknown(data['color']!, _colorMeta),
-      );
+          _colorMeta, color.isAcceptableOrUnknown(data['color']!, _colorMeta));
     }
     if (data.containsKey('version')) {
-      context.handle(
-        _versionMeta,
-        version.isAcceptableOrUnknown(data['version']!, _versionMeta),
-      );
+      context.handle(_versionMeta,
+          version.isAcceptableOrUnknown(data['version']!, _versionMeta));
     }
     if (data.containsKey('question_count')) {
       context.handle(
-        _questionCountMeta,
-        questionCount.isAcceptableOrUnknown(
-          data['question_count']!,
           _questionCountMeta,
-        ),
-      );
+          questionCount.isAcceptableOrUnknown(
+              data['question_count']!, _questionCountMeta));
     }
     if (data.containsKey('installed_at')) {
       context.handle(
-        _installedAtMeta,
-        installedAt.isAcceptableOrUnknown(
-          data['installed_at']!,
           _installedAtMeta,
-        ),
-      );
+          installedAt.isAcceptableOrUnknown(
+              data['installed_at']!, _installedAtMeta));
     }
     return context;
   }
@@ -205,42 +150,24 @@ class $PacksTable extends Packs with TableInfo<$PacksTable, Pack> {
   Pack map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Pack(
-      id: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}id'],
-      )!,
-      packId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}pack_id'],
-      )!,
-      name: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}name'],
-      )!,
-      subject: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}subject'],
-      )!,
-      iconName: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}icon_name'],
-      )!,
-      color: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}color'],
-      )!,
-      version: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}version'],
-      )!,
-      questionCount: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}question_count'],
-      )!,
-      installedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}installed_at'],
-      )!,
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      packId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}pack_id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      subject: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}subject'])!,
+      iconName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}icon_name'])!,
+      color: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}color'])!,
+      version: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}version'])!,
+      questionCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}question_count'])!,
+      installedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}installed_at'])!,
     );
   }
 
@@ -260,17 +187,16 @@ class Pack extends DataClass implements Insertable<Pack> {
   final int version;
   final int questionCount;
   final DateTime installedAt;
-  const Pack({
-    required this.id,
-    required this.packId,
-    required this.name,
-    required this.subject,
-    required this.iconName,
-    required this.color,
-    required this.version,
-    required this.questionCount,
-    required this.installedAt,
-  });
+  const Pack(
+      {required this.id,
+      required this.packId,
+      required this.name,
+      required this.subject,
+      required this.iconName,
+      required this.color,
+      required this.version,
+      required this.questionCount,
+      required this.installedAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -300,10 +226,8 @@ class Pack extends DataClass implements Insertable<Pack> {
     );
   }
 
-  factory Pack.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
+  factory Pack.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Pack(
       id: serializer.fromJson<int>(json['id']),
@@ -333,27 +257,27 @@ class Pack extends DataClass implements Insertable<Pack> {
     };
   }
 
-  Pack copyWith({
-    int? id,
-    String? packId,
-    String? name,
-    String? subject,
-    String? iconName,
-    String? color,
-    int? version,
-    int? questionCount,
-    DateTime? installedAt,
-  }) => Pack(
-    id: id ?? this.id,
-    packId: packId ?? this.packId,
-    name: name ?? this.name,
-    subject: subject ?? this.subject,
-    iconName: iconName ?? this.iconName,
-    color: color ?? this.color,
-    version: version ?? this.version,
-    questionCount: questionCount ?? this.questionCount,
-    installedAt: installedAt ?? this.installedAt,
-  );
+  Pack copyWith(
+          {int? id,
+          String? packId,
+          String? name,
+          String? subject,
+          String? iconName,
+          String? color,
+          int? version,
+          int? questionCount,
+          DateTime? installedAt}) =>
+      Pack(
+        id: id ?? this.id,
+        packId: packId ?? this.packId,
+        name: name ?? this.name,
+        subject: subject ?? this.subject,
+        iconName: iconName ?? this.iconName,
+        color: color ?? this.color,
+        version: version ?? this.version,
+        questionCount: questionCount ?? this.questionCount,
+        installedAt: installedAt ?? this.installedAt,
+      );
   Pack copyWithCompanion(PacksCompanion data) {
     return Pack(
       id: data.id.present ? data.id.value : this.id,
@@ -366,9 +290,8 @@ class Pack extends DataClass implements Insertable<Pack> {
       questionCount: data.questionCount.present
           ? data.questionCount.value
           : this.questionCount,
-      installedAt: data.installedAt.present
-          ? data.installedAt.value
-          : this.installedAt,
+      installedAt:
+          data.installedAt.present ? data.installedAt.value : this.installedAt,
     );
   }
 
@@ -389,17 +312,8 @@ class Pack extends DataClass implements Insertable<Pack> {
   }
 
   @override
-  int get hashCode => Object.hash(
-    id,
-    packId,
-    name,
-    subject,
-    iconName,
-    color,
-    version,
-    questionCount,
-    installedAt,
-  );
+  int get hashCode => Object.hash(id, packId, name, subject, iconName, color,
+      version, questionCount, installedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -446,9 +360,9 @@ class PacksCompanion extends UpdateCompanion<Pack> {
     this.version = const Value.absent(),
     this.questionCount = const Value.absent(),
     this.installedAt = const Value.absent(),
-  }) : packId = Value(packId),
-       name = Value(name),
-       subject = Value(subject);
+  })  : packId = Value(packId),
+        name = Value(name),
+        subject = Value(subject);
   static Insertable<Pack> custom({
     Expression<int>? id,
     Expression<String>? packId,
@@ -473,17 +387,16 @@ class PacksCompanion extends UpdateCompanion<Pack> {
     });
   }
 
-  PacksCompanion copyWith({
-    Value<int>? id,
-    Value<String>? packId,
-    Value<String>? name,
-    Value<String>? subject,
-    Value<String>? iconName,
-    Value<String>? color,
-    Value<int>? version,
-    Value<int>? questionCount,
-    Value<DateTime>? installedAt,
-  }) {
+  PacksCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? packId,
+      Value<String>? name,
+      Value<String>? subject,
+      Value<String>? iconName,
+      Value<String>? color,
+      Value<int>? version,
+      Value<int>? questionCount,
+      Value<DateTime>? installedAt}) {
     return PacksCompanion(
       id: id ?? this.id,
       packId: packId ?? this.packId,
@@ -556,261 +469,180 @@ class $QuestionsTable extends Questions
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-    'id',
-    aliasedName,
-    false,
-    hasAutoIncrement: true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
-  );
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
   static const VerificationMeta _packIdMeta = const VerificationMeta('packId');
   @override
   late final GeneratedColumn<String> packId = GeneratedColumn<String>(
-    'pack_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _questionMeta = const VerificationMeta(
-    'question',
-  );
+      'pack_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _questionMeta =
+      const VerificationMeta('question');
   @override
   late final GeneratedColumn<String> question = GeneratedColumn<String>(
-    'question',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _choiceAMeta = const VerificationMeta(
-    'choiceA',
-  );
+      'question', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _choiceAMeta =
+      const VerificationMeta('choiceA');
   @override
   late final GeneratedColumn<String> choiceA = GeneratedColumn<String>(
-    'choice_a',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _choiceBMeta = const VerificationMeta(
-    'choiceB',
-  );
+      'choice_a', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _choiceBMeta =
+      const VerificationMeta('choiceB');
   @override
   late final GeneratedColumn<String> choiceB = GeneratedColumn<String>(
-    'choice_b',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _choiceCMeta = const VerificationMeta(
-    'choiceC',
-  );
+      'choice_b', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _choiceCMeta =
+      const VerificationMeta('choiceC');
   @override
   late final GeneratedColumn<String> choiceC = GeneratedColumn<String>(
-    'choice_c',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _choiceDMeta = const VerificationMeta(
-    'choiceD',
-  );
+      'choice_c', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _choiceDMeta =
+      const VerificationMeta('choiceD');
   @override
   late final GeneratedColumn<String> choiceD = GeneratedColumn<String>(
-    'choice_d',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _correctAnswerMeta = const VerificationMeta(
-    'correctAnswer',
-  );
+      'choice_d', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _correctAnswerMeta =
+      const VerificationMeta('correctAnswer');
   @override
   late final GeneratedColumn<String> correctAnswer = GeneratedColumn<String>(
-    'correct_answer',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _explanationMeta = const VerificationMeta(
-    'explanation',
-  );
+      'correct_answer', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _explanationMeta =
+      const VerificationMeta('explanation');
   @override
   late final GeneratedColumn<String> explanation = GeneratedColumn<String>(
-    'explanation',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _difficultyLevelMeta = const VerificationMeta(
-    'difficultyLevel',
-  );
+      'explanation', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _difficultyLevelMeta =
+      const VerificationMeta('difficultyLevel');
   @override
   late final GeneratedColumn<int> difficultyLevel = GeneratedColumn<int>(
-    'difficulty_level',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultValue: const Constant(1),
-  );
-  static const VerificationMeta _moduleNumberMeta = const VerificationMeta(
-    'moduleNumber',
-  );
+      'difficulty_level', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(1));
+  static const VerificationMeta _moduleNumberMeta =
+      const VerificationMeta('moduleNumber');
   @override
   late final GeneratedColumn<int> moduleNumber = GeneratedColumn<int>(
-    'module_number',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultValue: const Constant(1),
-  );
-  static const VerificationMeta _moduleNameMeta = const VerificationMeta(
-    'moduleName',
-  );
+      'module_number', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(1));
+  static const VerificationMeta _moduleNameMeta =
+      const VerificationMeta('moduleName');
   @override
   late final GeneratedColumn<String> moduleName = GeneratedColumn<String>(
-    'module_name',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    defaultValue: const Constant('General'),
-  );
+      'module_name', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('General'));
   @override
   List<GeneratedColumn> get $columns => [
-    id,
-    packId,
-    question,
-    choiceA,
-    choiceB,
-    choiceC,
-    choiceD,
-    correctAnswer,
-    explanation,
-    difficultyLevel,
-    moduleNumber,
-    moduleName,
-  ];
+        id,
+        packId,
+        question,
+        choiceA,
+        choiceB,
+        choiceC,
+        choiceD,
+        correctAnswer,
+        explanation,
+        difficultyLevel,
+        moduleNumber,
+        moduleName
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'questions';
   @override
-  VerificationContext validateIntegrity(
-    Insertable<Question> instance, {
-    bool isInserting = false,
-  }) {
+  VerificationContext validateIntegrity(Insertable<Question> instance,
+      {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('pack_id')) {
-      context.handle(
-        _packIdMeta,
-        packId.isAcceptableOrUnknown(data['pack_id']!, _packIdMeta),
-      );
+      context.handle(_packIdMeta,
+          packId.isAcceptableOrUnknown(data['pack_id']!, _packIdMeta));
     } else if (isInserting) {
       context.missing(_packIdMeta);
     }
     if (data.containsKey('question')) {
-      context.handle(
-        _questionMeta,
-        question.isAcceptableOrUnknown(data['question']!, _questionMeta),
-      );
+      context.handle(_questionMeta,
+          question.isAcceptableOrUnknown(data['question']!, _questionMeta));
     } else if (isInserting) {
       context.missing(_questionMeta);
     }
     if (data.containsKey('choice_a')) {
-      context.handle(
-        _choiceAMeta,
-        choiceA.isAcceptableOrUnknown(data['choice_a']!, _choiceAMeta),
-      );
+      context.handle(_choiceAMeta,
+          choiceA.isAcceptableOrUnknown(data['choice_a']!, _choiceAMeta));
     } else if (isInserting) {
       context.missing(_choiceAMeta);
     }
     if (data.containsKey('choice_b')) {
-      context.handle(
-        _choiceBMeta,
-        choiceB.isAcceptableOrUnknown(data['choice_b']!, _choiceBMeta),
-      );
+      context.handle(_choiceBMeta,
+          choiceB.isAcceptableOrUnknown(data['choice_b']!, _choiceBMeta));
     } else if (isInserting) {
       context.missing(_choiceBMeta);
     }
     if (data.containsKey('choice_c')) {
-      context.handle(
-        _choiceCMeta,
-        choiceC.isAcceptableOrUnknown(data['choice_c']!, _choiceCMeta),
-      );
+      context.handle(_choiceCMeta,
+          choiceC.isAcceptableOrUnknown(data['choice_c']!, _choiceCMeta));
     } else if (isInserting) {
       context.missing(_choiceCMeta);
     }
     if (data.containsKey('choice_d')) {
-      context.handle(
-        _choiceDMeta,
-        choiceD.isAcceptableOrUnknown(data['choice_d']!, _choiceDMeta),
-      );
+      context.handle(_choiceDMeta,
+          choiceD.isAcceptableOrUnknown(data['choice_d']!, _choiceDMeta));
     } else if (isInserting) {
       context.missing(_choiceDMeta);
     }
     if (data.containsKey('correct_answer')) {
       context.handle(
-        _correctAnswerMeta,
-        correctAnswer.isAcceptableOrUnknown(
-          data['correct_answer']!,
           _correctAnswerMeta,
-        ),
-      );
+          correctAnswer.isAcceptableOrUnknown(
+              data['correct_answer']!, _correctAnswerMeta));
     } else if (isInserting) {
       context.missing(_correctAnswerMeta);
     }
     if (data.containsKey('explanation')) {
       context.handle(
-        _explanationMeta,
-        explanation.isAcceptableOrUnknown(
-          data['explanation']!,
           _explanationMeta,
-        ),
-      );
+          explanation.isAcceptableOrUnknown(
+              data['explanation']!, _explanationMeta));
     } else if (isInserting) {
       context.missing(_explanationMeta);
     }
     if (data.containsKey('difficulty_level')) {
       context.handle(
-        _difficultyLevelMeta,
-        difficultyLevel.isAcceptableOrUnknown(
-          data['difficulty_level']!,
           _difficultyLevelMeta,
-        ),
-      );
+          difficultyLevel.isAcceptableOrUnknown(
+              data['difficulty_level']!, _difficultyLevelMeta));
     }
     if (data.containsKey('module_number')) {
       context.handle(
-        _moduleNumberMeta,
-        moduleNumber.isAcceptableOrUnknown(
-          data['module_number']!,
           _moduleNumberMeta,
-        ),
-      );
+          moduleNumber.isAcceptableOrUnknown(
+              data['module_number']!, _moduleNumberMeta));
     }
     if (data.containsKey('module_name')) {
       context.handle(
-        _moduleNameMeta,
-        moduleName.isAcceptableOrUnknown(data['module_name']!, _moduleNameMeta),
-      );
+          _moduleNameMeta,
+          moduleName.isAcceptableOrUnknown(
+              data['module_name']!, _moduleNameMeta));
     }
     return context;
   }
@@ -821,54 +653,30 @@ class $QuestionsTable extends Questions
   Question map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Question(
-      id: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}id'],
-      )!,
-      packId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}pack_id'],
-      )!,
-      question: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}question'],
-      )!,
-      choiceA: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}choice_a'],
-      )!,
-      choiceB: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}choice_b'],
-      )!,
-      choiceC: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}choice_c'],
-      )!,
-      choiceD: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}choice_d'],
-      )!,
-      correctAnswer: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}correct_answer'],
-      )!,
-      explanation: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}explanation'],
-      )!,
-      difficultyLevel: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}difficulty_level'],
-      )!,
-      moduleNumber: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}module_number'],
-      )!,
-      moduleName: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}module_name'],
-      )!,
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      packId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}pack_id'])!,
+      question: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}question'])!,
+      choiceA: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}choice_a'])!,
+      choiceB: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}choice_b'])!,
+      choiceC: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}choice_c'])!,
+      choiceD: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}choice_d'])!,
+      correctAnswer: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}correct_answer'])!,
+      explanation: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}explanation'])!,
+      difficultyLevel: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}difficulty_level'])!,
+      moduleNumber: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}module_number'])!,
+      moduleName: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}module_name'])!,
     );
   }
 
@@ -891,20 +699,19 @@ class Question extends DataClass implements Insertable<Question> {
   final int difficultyLevel;
   final int moduleNumber;
   final String moduleName;
-  const Question({
-    required this.id,
-    required this.packId,
-    required this.question,
-    required this.choiceA,
-    required this.choiceB,
-    required this.choiceC,
-    required this.choiceD,
-    required this.correctAnswer,
-    required this.explanation,
-    required this.difficultyLevel,
-    required this.moduleNumber,
-    required this.moduleName,
-  });
+  const Question(
+      {required this.id,
+      required this.packId,
+      required this.question,
+      required this.choiceA,
+      required this.choiceB,
+      required this.choiceC,
+      required this.choiceD,
+      required this.correctAnswer,
+      required this.explanation,
+      required this.difficultyLevel,
+      required this.moduleNumber,
+      required this.moduleName});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -940,10 +747,8 @@ class Question extends DataClass implements Insertable<Question> {
     );
   }
 
-  factory Question.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
+  factory Question.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Question(
       id: serializer.fromJson<int>(json['id']),
@@ -979,33 +784,33 @@ class Question extends DataClass implements Insertable<Question> {
     };
   }
 
-  Question copyWith({
-    int? id,
-    String? packId,
-    String? question,
-    String? choiceA,
-    String? choiceB,
-    String? choiceC,
-    String? choiceD,
-    String? correctAnswer,
-    String? explanation,
-    int? difficultyLevel,
-    int? moduleNumber,
-    String? moduleName,
-  }) => Question(
-    id: id ?? this.id,
-    packId: packId ?? this.packId,
-    question: question ?? this.question,
-    choiceA: choiceA ?? this.choiceA,
-    choiceB: choiceB ?? this.choiceB,
-    choiceC: choiceC ?? this.choiceC,
-    choiceD: choiceD ?? this.choiceD,
-    correctAnswer: correctAnswer ?? this.correctAnswer,
-    explanation: explanation ?? this.explanation,
-    difficultyLevel: difficultyLevel ?? this.difficultyLevel,
-    moduleNumber: moduleNumber ?? this.moduleNumber,
-    moduleName: moduleName ?? this.moduleName,
-  );
+  Question copyWith(
+          {int? id,
+          String? packId,
+          String? question,
+          String? choiceA,
+          String? choiceB,
+          String? choiceC,
+          String? choiceD,
+          String? correctAnswer,
+          String? explanation,
+          int? difficultyLevel,
+          int? moduleNumber,
+          String? moduleName}) =>
+      Question(
+        id: id ?? this.id,
+        packId: packId ?? this.packId,
+        question: question ?? this.question,
+        choiceA: choiceA ?? this.choiceA,
+        choiceB: choiceB ?? this.choiceB,
+        choiceC: choiceC ?? this.choiceC,
+        choiceD: choiceD ?? this.choiceD,
+        correctAnswer: correctAnswer ?? this.correctAnswer,
+        explanation: explanation ?? this.explanation,
+        difficultyLevel: difficultyLevel ?? this.difficultyLevel,
+        moduleNumber: moduleNumber ?? this.moduleNumber,
+        moduleName: moduleName ?? this.moduleName,
+      );
   Question copyWithCompanion(QuestionsCompanion data) {
     return Question(
       id: data.id.present ? data.id.value : this.id,
@@ -1018,18 +823,16 @@ class Question extends DataClass implements Insertable<Question> {
       correctAnswer: data.correctAnswer.present
           ? data.correctAnswer.value
           : this.correctAnswer,
-      explanation: data.explanation.present
-          ? data.explanation.value
-          : this.explanation,
+      explanation:
+          data.explanation.present ? data.explanation.value : this.explanation,
       difficultyLevel: data.difficultyLevel.present
           ? data.difficultyLevel.value
           : this.difficultyLevel,
       moduleNumber: data.moduleNumber.present
           ? data.moduleNumber.value
           : this.moduleNumber,
-      moduleName: data.moduleName.present
-          ? data.moduleName.value
-          : this.moduleName,
+      moduleName:
+          data.moduleName.present ? data.moduleName.value : this.moduleName,
     );
   }
 
@@ -1054,19 +857,18 @@ class Question extends DataClass implements Insertable<Question> {
 
   @override
   int get hashCode => Object.hash(
-    id,
-    packId,
-    question,
-    choiceA,
-    choiceB,
-    choiceC,
-    choiceD,
-    correctAnswer,
-    explanation,
-    difficultyLevel,
-    moduleNumber,
-    moduleName,
-  );
+      id,
+      packId,
+      question,
+      choiceA,
+      choiceB,
+      choiceC,
+      choiceD,
+      correctAnswer,
+      explanation,
+      difficultyLevel,
+      moduleNumber,
+      moduleName);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1125,14 +927,14 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
     this.difficultyLevel = const Value.absent(),
     this.moduleNumber = const Value.absent(),
     this.moduleName = const Value.absent(),
-  }) : packId = Value(packId),
-       question = Value(question),
-       choiceA = Value(choiceA),
-       choiceB = Value(choiceB),
-       choiceC = Value(choiceC),
-       choiceD = Value(choiceD),
-       correctAnswer = Value(correctAnswer),
-       explanation = Value(explanation);
+  })  : packId = Value(packId),
+        question = Value(question),
+        choiceA = Value(choiceA),
+        choiceB = Value(choiceB),
+        choiceC = Value(choiceC),
+        choiceD = Value(choiceD),
+        correctAnswer = Value(correctAnswer),
+        explanation = Value(explanation);
   static Insertable<Question> custom({
     Expression<int>? id,
     Expression<String>? packId,
@@ -1163,20 +965,19 @@ class QuestionsCompanion extends UpdateCompanion<Question> {
     });
   }
 
-  QuestionsCompanion copyWith({
-    Value<int>? id,
-    Value<String>? packId,
-    Value<String>? question,
-    Value<String>? choiceA,
-    Value<String>? choiceB,
-    Value<String>? choiceC,
-    Value<String>? choiceD,
-    Value<String>? correctAnswer,
-    Value<String>? explanation,
-    Value<int>? difficultyLevel,
-    Value<int>? moduleNumber,
-    Value<String>? moduleName,
-  }) {
+  QuestionsCompanion copyWith(
+      {Value<int>? id,
+      Value<String>? packId,
+      Value<String>? question,
+      Value<String>? choiceA,
+      Value<String>? choiceB,
+      Value<String>? choiceC,
+      Value<String>? choiceD,
+      Value<String>? correctAnswer,
+      Value<String>? explanation,
+      Value<int>? difficultyLevel,
+      Value<int>? moduleNumber,
+      Value<String>? moduleName}) {
     return QuestionsCompanion(
       id: id ?? this.id,
       packId: packId ?? this.packId,
@@ -1264,111 +1065,76 @@ class $UserProgressTable extends UserProgress
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-    'id',
-    aliasedName,
-    false,
-    hasAutoIncrement: true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
-  );
-  static const VerificationMeta _questionIdMeta = const VerificationMeta(
-    'questionId',
-  );
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _questionIdMeta =
+      const VerificationMeta('questionId');
   @override
   late final GeneratedColumn<int> questionId = GeneratedColumn<int>(
-    'question_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
-  );
-  static const VerificationMeta _srsStageMeta = const VerificationMeta(
-    'srsStage',
-  );
+      'question_id', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
+  static const VerificationMeta _srsStageMeta =
+      const VerificationMeta('srsStage');
   @override
   late final GeneratedColumn<int> srsStage = GeneratedColumn<int>(
-    'srs_stage',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultValue: const Constant(0),
-  );
-  static const VerificationMeta _nextReviewTimeMeta = const VerificationMeta(
-    'nextReviewTime',
-  );
+      'srs_stage', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _nextReviewTimeMeta =
+      const VerificationMeta('nextReviewTime');
   @override
   late final GeneratedColumn<DateTime> nextReviewTime =
-      GeneratedColumn<DateTime>(
-        'next_review_time',
-        aliasedName,
-        true,
-        type: DriftSqlType.dateTime,
-        requiredDuringInsert: false,
-      );
-  static const VerificationMeta _mistakeCountMeta = const VerificationMeta(
-    'mistakeCount',
-  );
+      GeneratedColumn<DateTime>('next_review_time', aliasedName, true,
+          type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _mistakeCountMeta =
+      const VerificationMeta('mistakeCount');
   @override
   late final GeneratedColumn<int> mistakeCount = GeneratedColumn<int>(
-    'mistake_count',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultValue: const Constant(0),
-  );
-  static const VerificationMeta _isLessonCompletedMeta = const VerificationMeta(
-    'isLessonCompleted',
-  );
+      'mistake_count', aliasedName, false,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultValue: const Constant(0));
+  static const VerificationMeta _isLessonCompletedMeta =
+      const VerificationMeta('isLessonCompleted');
   @override
   late final GeneratedColumn<bool> isLessonCompleted = GeneratedColumn<bool>(
-    'is_lesson_completed',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("is_lesson_completed" IN (0, 1))',
-    ),
-    defaultValue: const Constant(false),
-  );
-  static const VerificationMeta _lastReviewedAtMeta = const VerificationMeta(
-    'lastReviewedAt',
-  );
+      'is_lesson_completed', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: false,
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'CHECK ("is_lesson_completed" IN (0, 1))'),
+      defaultValue: const Constant(false));
+  static const VerificationMeta _lastReviewedAtMeta =
+      const VerificationMeta('lastReviewedAt');
   @override
   late final GeneratedColumn<DateTime> lastReviewedAt =
-      GeneratedColumn<DateTime>(
-        'last_reviewed_at',
-        aliasedName,
-        true,
-        type: DriftSqlType.dateTime,
-        requiredDuringInsert: false,
-      );
+      GeneratedColumn<DateTime>('last_reviewed_at', aliasedName, true,
+          type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns => [
-    id,
-    questionId,
-    srsStage,
-    nextReviewTime,
-    mistakeCount,
-    isLessonCompleted,
-    lastReviewedAt,
-  ];
+        id,
+        questionId,
+        srsStage,
+        nextReviewTime,
+        mistakeCount,
+        isLessonCompleted,
+        lastReviewedAt
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'user_progress';
   @override
-  VerificationContext validateIntegrity(
-    Insertable<UserProgressData> instance, {
-    bool isInserting = false,
-  }) {
+  VerificationContext validateIntegrity(Insertable<UserProgressData> instance,
+      {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -1376,53 +1142,39 @@ class $UserProgressTable extends UserProgress
     }
     if (data.containsKey('question_id')) {
       context.handle(
-        _questionIdMeta,
-        questionId.isAcceptableOrUnknown(data['question_id']!, _questionIdMeta),
-      );
+          _questionIdMeta,
+          questionId.isAcceptableOrUnknown(
+              data['question_id']!, _questionIdMeta));
     } else if (isInserting) {
       context.missing(_questionIdMeta);
     }
     if (data.containsKey('srs_stage')) {
-      context.handle(
-        _srsStageMeta,
-        srsStage.isAcceptableOrUnknown(data['srs_stage']!, _srsStageMeta),
-      );
+      context.handle(_srsStageMeta,
+          srsStage.isAcceptableOrUnknown(data['srs_stage']!, _srsStageMeta));
     }
     if (data.containsKey('next_review_time')) {
       context.handle(
-        _nextReviewTimeMeta,
-        nextReviewTime.isAcceptableOrUnknown(
-          data['next_review_time']!,
           _nextReviewTimeMeta,
-        ),
-      );
+          nextReviewTime.isAcceptableOrUnknown(
+              data['next_review_time']!, _nextReviewTimeMeta));
     }
     if (data.containsKey('mistake_count')) {
       context.handle(
-        _mistakeCountMeta,
-        mistakeCount.isAcceptableOrUnknown(
-          data['mistake_count']!,
           _mistakeCountMeta,
-        ),
-      );
+          mistakeCount.isAcceptableOrUnknown(
+              data['mistake_count']!, _mistakeCountMeta));
     }
     if (data.containsKey('is_lesson_completed')) {
       context.handle(
-        _isLessonCompletedMeta,
-        isLessonCompleted.isAcceptableOrUnknown(
-          data['is_lesson_completed']!,
           _isLessonCompletedMeta,
-        ),
-      );
+          isLessonCompleted.isAcceptableOrUnknown(
+              data['is_lesson_completed']!, _isLessonCompletedMeta));
     }
     if (data.containsKey('last_reviewed_at')) {
       context.handle(
-        _lastReviewedAtMeta,
-        lastReviewedAt.isAcceptableOrUnknown(
-          data['last_reviewed_at']!,
           _lastReviewedAtMeta,
-        ),
-      );
+          lastReviewedAt.isAcceptableOrUnknown(
+              data['last_reviewed_at']!, _lastReviewedAtMeta));
     }
     return context;
   }
@@ -1433,34 +1185,20 @@ class $UserProgressTable extends UserProgress
   UserProgressData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return UserProgressData(
-      id: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}id'],
-      )!,
-      questionId: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}question_id'],
-      )!,
-      srsStage: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}srs_stage'],
-      )!,
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      questionId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}question_id'])!,
+      srsStage: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}srs_stage'])!,
       nextReviewTime: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}next_review_time'],
-      ),
-      mistakeCount: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}mistake_count'],
-      )!,
+          DriftSqlType.dateTime, data['${effectivePrefix}next_review_time']),
+      mistakeCount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}mistake_count'])!,
       isLessonCompleted: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}is_lesson_completed'],
-      )!,
+          DriftSqlType.bool, data['${effectivePrefix}is_lesson_completed'])!,
       lastReviewedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}last_reviewed_at'],
-      ),
+          DriftSqlType.dateTime, data['${effectivePrefix}last_reviewed_at']),
     );
   }
 
@@ -1479,15 +1217,14 @@ class UserProgressData extends DataClass
   final int mistakeCount;
   final bool isLessonCompleted;
   final DateTime? lastReviewedAt;
-  const UserProgressData({
-    required this.id,
-    required this.questionId,
-    required this.srsStage,
-    this.nextReviewTime,
-    required this.mistakeCount,
-    required this.isLessonCompleted,
-    this.lastReviewedAt,
-  });
+  const UserProgressData(
+      {required this.id,
+      required this.questionId,
+      required this.srsStage,
+      this.nextReviewTime,
+      required this.mistakeCount,
+      required this.isLessonCompleted,
+      this.lastReviewedAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1521,10 +1258,8 @@ class UserProgressData extends DataClass
     );
   }
 
-  factory UserProgressData.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
+  factory UserProgressData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return UserProgressData(
       id: serializer.fromJson<int>(json['id']),
@@ -1550,33 +1285,30 @@ class UserProgressData extends DataClass
     };
   }
 
-  UserProgressData copyWith({
-    int? id,
-    int? questionId,
-    int? srsStage,
-    Value<DateTime?> nextReviewTime = const Value.absent(),
-    int? mistakeCount,
-    bool? isLessonCompleted,
-    Value<DateTime?> lastReviewedAt = const Value.absent(),
-  }) => UserProgressData(
-    id: id ?? this.id,
-    questionId: questionId ?? this.questionId,
-    srsStage: srsStage ?? this.srsStage,
-    nextReviewTime: nextReviewTime.present
-        ? nextReviewTime.value
-        : this.nextReviewTime,
-    mistakeCount: mistakeCount ?? this.mistakeCount,
-    isLessonCompleted: isLessonCompleted ?? this.isLessonCompleted,
-    lastReviewedAt: lastReviewedAt.present
-        ? lastReviewedAt.value
-        : this.lastReviewedAt,
-  );
+  UserProgressData copyWith(
+          {int? id,
+          int? questionId,
+          int? srsStage,
+          Value<DateTime?> nextReviewTime = const Value.absent(),
+          int? mistakeCount,
+          bool? isLessonCompleted,
+          Value<DateTime?> lastReviewedAt = const Value.absent()}) =>
+      UserProgressData(
+        id: id ?? this.id,
+        questionId: questionId ?? this.questionId,
+        srsStage: srsStage ?? this.srsStage,
+        nextReviewTime:
+            nextReviewTime.present ? nextReviewTime.value : this.nextReviewTime,
+        mistakeCount: mistakeCount ?? this.mistakeCount,
+        isLessonCompleted: isLessonCompleted ?? this.isLessonCompleted,
+        lastReviewedAt:
+            lastReviewedAt.present ? lastReviewedAt.value : this.lastReviewedAt,
+      );
   UserProgressData copyWithCompanion(UserProgressCompanion data) {
     return UserProgressData(
       id: data.id.present ? data.id.value : this.id,
-      questionId: data.questionId.present
-          ? data.questionId.value
-          : this.questionId,
+      questionId:
+          data.questionId.present ? data.questionId.value : this.questionId,
       srsStage: data.srsStage.present ? data.srsStage.value : this.srsStage,
       nextReviewTime: data.nextReviewTime.present
           ? data.nextReviewTime.value
@@ -1608,15 +1340,8 @@ class UserProgressData extends DataClass
   }
 
   @override
-  int get hashCode => Object.hash(
-    id,
-    questionId,
-    srsStage,
-    nextReviewTime,
-    mistakeCount,
-    isLessonCompleted,
-    lastReviewedAt,
-  );
+  int get hashCode => Object.hash(id, questionId, srsStage, nextReviewTime,
+      mistakeCount, isLessonCompleted, lastReviewedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1676,15 +1401,14 @@ class UserProgressCompanion extends UpdateCompanion<UserProgressData> {
     });
   }
 
-  UserProgressCompanion copyWith({
-    Value<int>? id,
-    Value<int>? questionId,
-    Value<int>? srsStage,
-    Value<DateTime?>? nextReviewTime,
-    Value<int>? mistakeCount,
-    Value<bool>? isLessonCompleted,
-    Value<DateTime?>? lastReviewedAt,
-  }) {
+  UserProgressCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? questionId,
+      Value<int>? srsStage,
+      Value<DateTime?>? nextReviewTime,
+      Value<int>? mistakeCount,
+      Value<bool>? isLessonCompleted,
+      Value<DateTime?>? lastReviewedAt}) {
     return UserProgressCompanion(
       id: id ?? this.id,
       questionId: questionId ?? this.questionId,
@@ -1746,26 +1470,19 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
-    'id',
-    aliasedName,
-    false,
-    hasAutoIncrement: true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'PRIMARY KEY AUTOINCREMENT',
-    ),
-  );
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
-    'name',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
-  );
+      'name', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
   @override
   List<GeneratedColumn> get $columns => [id, name];
   @override
@@ -1774,10 +1491,8 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
   String get actualTableName => $name;
   static const String $name = 'tags';
   @override
-  VerificationContext validateIntegrity(
-    Insertable<Tag> instance, {
-    bool isInserting = false,
-  }) {
+  VerificationContext validateIntegrity(Insertable<Tag> instance,
+      {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -1785,9 +1500,7 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
     }
     if (data.containsKey('name')) {
       context.handle(
-        _nameMeta,
-        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
-      );
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
@@ -1800,14 +1513,10 @@ class $TagsTable extends Tags with TableInfo<$TagsTable, Tag> {
   Tag map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Tag(
-      id: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}id'],
-      )!,
-      name: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}name'],
-      )!,
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
     );
   }
 
@@ -1830,13 +1539,14 @@ class Tag extends DataClass implements Insertable<Tag> {
   }
 
   TagsCompanion toCompanion(bool nullToAbsent) {
-    return TagsCompanion(id: Value(id), name: Value(name));
+    return TagsCompanion(
+      id: Value(id),
+      name: Value(name),
+    );
   }
 
-  factory Tag.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
+  factory Tag.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Tag(
       id: serializer.fromJson<int>(json['id']),
@@ -1852,8 +1562,10 @@ class Tag extends DataClass implements Insertable<Tag> {
     };
   }
 
-  Tag copyWith({int? id, String? name}) =>
-      Tag(id: id ?? this.id, name: name ?? this.name);
+  Tag copyWith({int? id, String? name}) => Tag(
+        id: id ?? this.id,
+        name: name ?? this.name,
+      );
   Tag copyWithCompanion(TagsCompanion data) {
     return Tag(
       id: data.id.present ? data.id.value : this.id,
@@ -1885,8 +1597,10 @@ class TagsCompanion extends UpdateCompanion<Tag> {
     this.id = const Value.absent(),
     this.name = const Value.absent(),
   });
-  TagsCompanion.insert({this.id = const Value.absent(), required String name})
-    : name = Value(name);
+  TagsCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+  }) : name = Value(name);
   static Insertable<Tag> custom({
     Expression<int>? id,
     Expression<String>? name,
@@ -1898,7 +1612,10 @@ class TagsCompanion extends UpdateCompanion<Tag> {
   }
 
   TagsCompanion copyWith({Value<int>? id, Value<String>? name}) {
-    return TagsCompanion(id: id ?? this.id, name: name ?? this.name);
+    return TagsCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+    );
   }
 
   @override
@@ -1929,26 +1646,17 @@ class $QuestionTagsTable extends QuestionTags
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $QuestionTagsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _questionIdMeta = const VerificationMeta(
-    'questionId',
-  );
+  static const VerificationMeta _questionIdMeta =
+      const VerificationMeta('questionId');
   @override
   late final GeneratedColumn<int> questionId = GeneratedColumn<int>(
-    'question_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
+      'question_id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
   static const VerificationMeta _tagIdMeta = const VerificationMeta('tagId');
   @override
   late final GeneratedColumn<int> tagId = GeneratedColumn<int>(
-    'tag_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
+      'tag_id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [questionId, tagId];
   @override
@@ -1957,25 +1665,21 @@ class $QuestionTagsTable extends QuestionTags
   String get actualTableName => $name;
   static const String $name = 'question_tags';
   @override
-  VerificationContext validateIntegrity(
-    Insertable<QuestionTag> instance, {
-    bool isInserting = false,
-  }) {
+  VerificationContext validateIntegrity(Insertable<QuestionTag> instance,
+      {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('question_id')) {
       context.handle(
-        _questionIdMeta,
-        questionId.isAcceptableOrUnknown(data['question_id']!, _questionIdMeta),
-      );
+          _questionIdMeta,
+          questionId.isAcceptableOrUnknown(
+              data['question_id']!, _questionIdMeta));
     } else if (isInserting) {
       context.missing(_questionIdMeta);
     }
     if (data.containsKey('tag_id')) {
       context.handle(
-        _tagIdMeta,
-        tagId.isAcceptableOrUnknown(data['tag_id']!, _tagIdMeta),
-      );
+          _tagIdMeta, tagId.isAcceptableOrUnknown(data['tag_id']!, _tagIdMeta));
     } else if (isInserting) {
       context.missing(_tagIdMeta);
     }
@@ -1988,14 +1692,10 @@ class $QuestionTagsTable extends QuestionTags
   QuestionTag map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return QuestionTag(
-      questionId: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}question_id'],
-      )!,
-      tagId: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}tag_id'],
-      )!,
+      questionId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}question_id'])!,
+      tagId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}tag_id'])!,
     );
   }
 
@@ -2024,10 +1724,8 @@ class QuestionTag extends DataClass implements Insertable<QuestionTag> {
     );
   }
 
-  factory QuestionTag.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
+  factory QuestionTag.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return QuestionTag(
       questionId: serializer.fromJson<int>(json['questionId']),
@@ -2044,14 +1742,13 @@ class QuestionTag extends DataClass implements Insertable<QuestionTag> {
   }
 
   QuestionTag copyWith({int? questionId, int? tagId}) => QuestionTag(
-    questionId: questionId ?? this.questionId,
-    tagId: tagId ?? this.tagId,
-  );
+        questionId: questionId ?? this.questionId,
+        tagId: tagId ?? this.tagId,
+      );
   QuestionTag copyWithCompanion(QuestionTagsCompanion data) {
     return QuestionTag(
-      questionId: data.questionId.present
-          ? data.questionId.value
-          : this.questionId,
+      questionId:
+          data.questionId.present ? data.questionId.value : this.questionId,
       tagId: data.tagId.present ? data.tagId.value : this.tagId,
     );
   }
@@ -2088,8 +1785,8 @@ class QuestionTagsCompanion extends UpdateCompanion<QuestionTag> {
     required int questionId,
     required int tagId,
     this.rowid = const Value.absent(),
-  }) : questionId = Value(questionId),
-       tagId = Value(tagId);
+  })  : questionId = Value(questionId),
+        tagId = Value(tagId);
   static Insertable<QuestionTag> custom({
     Expression<int>? questionId,
     Expression<int>? tagId,
@@ -2102,11 +1799,8 @@ class QuestionTagsCompanion extends UpdateCompanion<QuestionTag> {
     });
   }
 
-  QuestionTagsCompanion copyWith({
-    Value<int>? questionId,
-    Value<int>? tagId,
-    Value<int>? rowid,
-  }) {
+  QuestionTagsCompanion copyWith(
+      {Value<int>? questionId, Value<int>? tagId, Value<int>? rowid}) {
     return QuestionTagsCompanion(
       questionId: questionId ?? this.questionId,
       tagId: tagId ?? this.tagId,
@@ -2154,39 +1848,32 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [
-    packs,
-    questions,
-    userProgress,
-    tags,
-    questionTags,
-  ];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [packs, questions, userProgress, tags, questionTags];
 }
 
-typedef $$PacksTableCreateCompanionBuilder =
-    PacksCompanion Function({
-      Value<int> id,
-      required String packId,
-      required String name,
-      required String subject,
-      Value<String> iconName,
-      Value<String> color,
-      Value<int> version,
-      Value<int> questionCount,
-      Value<DateTime> installedAt,
-    });
-typedef $$PacksTableUpdateCompanionBuilder =
-    PacksCompanion Function({
-      Value<int> id,
-      Value<String> packId,
-      Value<String> name,
-      Value<String> subject,
-      Value<String> iconName,
-      Value<String> color,
-      Value<int> version,
-      Value<int> questionCount,
-      Value<DateTime> installedAt,
-    });
+typedef $$PacksTableCreateCompanionBuilder = PacksCompanion Function({
+  Value<int> id,
+  required String packId,
+  required String name,
+  required String subject,
+  Value<String> iconName,
+  Value<String> color,
+  Value<int> version,
+  Value<int> questionCount,
+  Value<DateTime> installedAt,
+});
+typedef $$PacksTableUpdateCompanionBuilder = PacksCompanion Function({
+  Value<int> id,
+  Value<String> packId,
+  Value<String> name,
+  Value<String> subject,
+  Value<String> iconName,
+  Value<String> color,
+  Value<int> version,
+  Value<int> questionCount,
+  Value<DateTime> installedAt,
+});
 
 class $$PacksTableFilterComposer extends Composer<_$AppDatabase, $PacksTable> {
   $$PacksTableFilterComposer({
@@ -2197,49 +1884,31 @@ class $$PacksTableFilterComposer extends Composer<_$AppDatabase, $PacksTable> {
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.id, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get packId => $composableBuilder(
-    column: $table.packId,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.packId, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get name => $composableBuilder(
-    column: $table.name,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.name, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get subject => $composableBuilder(
-    column: $table.subject,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.subject, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get iconName => $composableBuilder(
-    column: $table.iconName,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.iconName, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get color => $composableBuilder(
-    column: $table.color,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.color, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<int> get version => $composableBuilder(
-    column: $table.version,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.version, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<int> get questionCount => $composableBuilder(
-    column: $table.questionCount,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.questionCount, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<DateTime> get installedAt => $composableBuilder(
-    column: $table.installedAt,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.installedAt, builder: (column) => ColumnFilters(column));
 }
 
 class $$PacksTableOrderingComposer
@@ -2252,49 +1921,32 @@ class $$PacksTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.id, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get packId => $composableBuilder(
-    column: $table.packId,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.packId, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get name => $composableBuilder(
-    column: $table.name,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.name, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get subject => $composableBuilder(
-    column: $table.subject,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.subject, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get iconName => $composableBuilder(
-    column: $table.iconName,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.iconName, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get color => $composableBuilder(
-    column: $table.color,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.color, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<int> get version => $composableBuilder(
-    column: $table.version,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.version, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<int> get questionCount => $composableBuilder(
-    column: $table.questionCount,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.questionCount,
+      builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<DateTime> get installedAt => $composableBuilder(
-    column: $table.installedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.installedAt, builder: (column) => ColumnOrderings(column));
 }
 
 class $$PacksTableAnnotationComposer
@@ -2328,34 +1980,26 @@ class $$PacksTableAnnotationComposer
       $composableBuilder(column: $table.version, builder: (column) => column);
 
   GeneratedColumn<int> get questionCount => $composableBuilder(
-    column: $table.questionCount,
-    builder: (column) => column,
-  );
+      column: $table.questionCount, builder: (column) => column);
 
   GeneratedColumn<DateTime> get installedAt => $composableBuilder(
-    column: $table.installedAt,
-    builder: (column) => column,
-  );
+      column: $table.installedAt, builder: (column) => column);
 }
 
-class $$PacksTableTableManager
-    extends
-        RootTableManager<
-          _$AppDatabase,
-          $PacksTable,
-          Pack,
-          $$PacksTableFilterComposer,
-          $$PacksTableOrderingComposer,
-          $$PacksTableAnnotationComposer,
-          $$PacksTableCreateCompanionBuilder,
-          $$PacksTableUpdateCompanionBuilder,
-          (Pack, BaseReferences<_$AppDatabase, $PacksTable, Pack>),
-          Pack,
-          PrefetchHooks Function()
-        > {
+class $$PacksTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $PacksTable,
+    Pack,
+    $$PacksTableFilterComposer,
+    $$PacksTableOrderingComposer,
+    $$PacksTableAnnotationComposer,
+    $$PacksTableCreateCompanionBuilder,
+    $$PacksTableUpdateCompanionBuilder,
+    (Pack, BaseReferences<_$AppDatabase, $PacksTable, Pack>),
+    Pack,
+    PrefetchHooks Function()> {
   $$PacksTableTableManager(_$AppDatabase db, $PacksTable table)
-    : super(
-        TableManagerState(
+      : super(TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -2364,102 +2008,97 @@ class $$PacksTableTableManager
               $$PacksTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$PacksTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback:
-              ({
-                Value<int> id = const Value.absent(),
-                Value<String> packId = const Value.absent(),
-                Value<String> name = const Value.absent(),
-                Value<String> subject = const Value.absent(),
-                Value<String> iconName = const Value.absent(),
-                Value<String> color = const Value.absent(),
-                Value<int> version = const Value.absent(),
-                Value<int> questionCount = const Value.absent(),
-                Value<DateTime> installedAt = const Value.absent(),
-              }) => PacksCompanion(
-                id: id,
-                packId: packId,
-                name: name,
-                subject: subject,
-                iconName: iconName,
-                color: color,
-                version: version,
-                questionCount: questionCount,
-                installedAt: installedAt,
-              ),
-          createCompanionCallback:
-              ({
-                Value<int> id = const Value.absent(),
-                required String packId,
-                required String name,
-                required String subject,
-                Value<String> iconName = const Value.absent(),
-                Value<String> color = const Value.absent(),
-                Value<int> version = const Value.absent(),
-                Value<int> questionCount = const Value.absent(),
-                Value<DateTime> installedAt = const Value.absent(),
-              }) => PacksCompanion.insert(
-                id: id,
-                packId: packId,
-                name: name,
-                subject: subject,
-                iconName: iconName,
-                color: color,
-                version: version,
-                questionCount: questionCount,
-                installedAt: installedAt,
-              ),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> packId = const Value.absent(),
+            Value<String> name = const Value.absent(),
+            Value<String> subject = const Value.absent(),
+            Value<String> iconName = const Value.absent(),
+            Value<String> color = const Value.absent(),
+            Value<int> version = const Value.absent(),
+            Value<int> questionCount = const Value.absent(),
+            Value<DateTime> installedAt = const Value.absent(),
+          }) =>
+              PacksCompanion(
+            id: id,
+            packId: packId,
+            name: name,
+            subject: subject,
+            iconName: iconName,
+            color: color,
+            version: version,
+            questionCount: questionCount,
+            installedAt: installedAt,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String packId,
+            required String name,
+            required String subject,
+            Value<String> iconName = const Value.absent(),
+            Value<String> color = const Value.absent(),
+            Value<int> version = const Value.absent(),
+            Value<int> questionCount = const Value.absent(),
+            Value<DateTime> installedAt = const Value.absent(),
+          }) =>
+              PacksCompanion.insert(
+            id: id,
+            packId: packId,
+            name: name,
+            subject: subject,
+            iconName: iconName,
+            color: color,
+            version: version,
+            questionCount: questionCount,
+            installedAt: installedAt,
+          ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ),
-      );
+        ));
 }
 
-typedef $$PacksTableProcessedTableManager =
-    ProcessedTableManager<
-      _$AppDatabase,
-      $PacksTable,
-      Pack,
-      $$PacksTableFilterComposer,
-      $$PacksTableOrderingComposer,
-      $$PacksTableAnnotationComposer,
-      $$PacksTableCreateCompanionBuilder,
-      $$PacksTableUpdateCompanionBuilder,
-      (Pack, BaseReferences<_$AppDatabase, $PacksTable, Pack>),
-      Pack,
-      PrefetchHooks Function()
-    >;
-typedef $$QuestionsTableCreateCompanionBuilder =
-    QuestionsCompanion Function({
-      Value<int> id,
-      required String packId,
-      required String question,
-      required String choiceA,
-      required String choiceB,
-      required String choiceC,
-      required String choiceD,
-      required String correctAnswer,
-      required String explanation,
-      Value<int> difficultyLevel,
-      Value<int> moduleNumber,
-      Value<String> moduleName,
-    });
-typedef $$QuestionsTableUpdateCompanionBuilder =
-    QuestionsCompanion Function({
-      Value<int> id,
-      Value<String> packId,
-      Value<String> question,
-      Value<String> choiceA,
-      Value<String> choiceB,
-      Value<String> choiceC,
-      Value<String> choiceD,
-      Value<String> correctAnswer,
-      Value<String> explanation,
-      Value<int> difficultyLevel,
-      Value<int> moduleNumber,
-      Value<String> moduleName,
-    });
+typedef $$PacksTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $PacksTable,
+    Pack,
+    $$PacksTableFilterComposer,
+    $$PacksTableOrderingComposer,
+    $$PacksTableAnnotationComposer,
+    $$PacksTableCreateCompanionBuilder,
+    $$PacksTableUpdateCompanionBuilder,
+    (Pack, BaseReferences<_$AppDatabase, $PacksTable, Pack>),
+    Pack,
+    PrefetchHooks Function()>;
+typedef $$QuestionsTableCreateCompanionBuilder = QuestionsCompanion Function({
+  Value<int> id,
+  required String packId,
+  required String question,
+  required String choiceA,
+  required String choiceB,
+  required String choiceC,
+  required String choiceD,
+  required String correctAnswer,
+  required String explanation,
+  Value<int> difficultyLevel,
+  Value<int> moduleNumber,
+  Value<String> moduleName,
+});
+typedef $$QuestionsTableUpdateCompanionBuilder = QuestionsCompanion Function({
+  Value<int> id,
+  Value<String> packId,
+  Value<String> question,
+  Value<String> choiceA,
+  Value<String> choiceB,
+  Value<String> choiceC,
+  Value<String> choiceD,
+  Value<String> correctAnswer,
+  Value<String> explanation,
+  Value<int> difficultyLevel,
+  Value<int> moduleNumber,
+  Value<String> moduleName,
+});
 
 class $$QuestionsTableFilterComposer
     extends Composer<_$AppDatabase, $QuestionsTable> {
@@ -2471,64 +2110,41 @@ class $$QuestionsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.id, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get packId => $composableBuilder(
-    column: $table.packId,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.packId, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get question => $composableBuilder(
-    column: $table.question,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.question, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get choiceA => $composableBuilder(
-    column: $table.choiceA,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.choiceA, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get choiceB => $composableBuilder(
-    column: $table.choiceB,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.choiceB, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get choiceC => $composableBuilder(
-    column: $table.choiceC,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.choiceC, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get choiceD => $composableBuilder(
-    column: $table.choiceD,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.choiceD, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get correctAnswer => $composableBuilder(
-    column: $table.correctAnswer,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.correctAnswer, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get explanation => $composableBuilder(
-    column: $table.explanation,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.explanation, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<int> get difficultyLevel => $composableBuilder(
-    column: $table.difficultyLevel,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.difficultyLevel,
+      builder: (column) => ColumnFilters(column));
 
   ColumnFilters<int> get moduleNumber => $composableBuilder(
-    column: $table.moduleNumber,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.moduleNumber, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get moduleName => $composableBuilder(
-    column: $table.moduleName,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.moduleName, builder: (column) => ColumnFilters(column));
 }
 
 class $$QuestionsTableOrderingComposer
@@ -2541,64 +2157,43 @@ class $$QuestionsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.id, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get packId => $composableBuilder(
-    column: $table.packId,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.packId, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get question => $composableBuilder(
-    column: $table.question,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.question, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get choiceA => $composableBuilder(
-    column: $table.choiceA,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.choiceA, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get choiceB => $composableBuilder(
-    column: $table.choiceB,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.choiceB, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get choiceC => $composableBuilder(
-    column: $table.choiceC,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.choiceC, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get choiceD => $composableBuilder(
-    column: $table.choiceD,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.choiceD, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get correctAnswer => $composableBuilder(
-    column: $table.correctAnswer,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.correctAnswer,
+      builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get explanation => $composableBuilder(
-    column: $table.explanation,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.explanation, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<int> get difficultyLevel => $composableBuilder(
-    column: $table.difficultyLevel,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.difficultyLevel,
+      builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<int> get moduleNumber => $composableBuilder(
-    column: $table.moduleNumber,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.moduleNumber,
+      builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get moduleName => $composableBuilder(
-    column: $table.moduleName,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.moduleName, builder: (column) => ColumnOrderings(column));
 }
 
 class $$QuestionsTableAnnotationComposer
@@ -2632,49 +2227,35 @@ class $$QuestionsTableAnnotationComposer
       $composableBuilder(column: $table.choiceD, builder: (column) => column);
 
   GeneratedColumn<String> get correctAnswer => $composableBuilder(
-    column: $table.correctAnswer,
-    builder: (column) => column,
-  );
+      column: $table.correctAnswer, builder: (column) => column);
 
   GeneratedColumn<String> get explanation => $composableBuilder(
-    column: $table.explanation,
-    builder: (column) => column,
-  );
+      column: $table.explanation, builder: (column) => column);
 
   GeneratedColumn<int> get difficultyLevel => $composableBuilder(
-    column: $table.difficultyLevel,
-    builder: (column) => column,
-  );
+      column: $table.difficultyLevel, builder: (column) => column);
 
   GeneratedColumn<int> get moduleNumber => $composableBuilder(
-    column: $table.moduleNumber,
-    builder: (column) => column,
-  );
+      column: $table.moduleNumber, builder: (column) => column);
 
   GeneratedColumn<String> get moduleName => $composableBuilder(
-    column: $table.moduleName,
-    builder: (column) => column,
-  );
+      column: $table.moduleName, builder: (column) => column);
 }
 
-class $$QuestionsTableTableManager
-    extends
-        RootTableManager<
-          _$AppDatabase,
-          $QuestionsTable,
-          Question,
-          $$QuestionsTableFilterComposer,
-          $$QuestionsTableOrderingComposer,
-          $$QuestionsTableAnnotationComposer,
-          $$QuestionsTableCreateCompanionBuilder,
-          $$QuestionsTableUpdateCompanionBuilder,
-          (Question, BaseReferences<_$AppDatabase, $QuestionsTable, Question>),
-          Question,
-          PrefetchHooks Function()
-        > {
+class $$QuestionsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $QuestionsTable,
+    Question,
+    $$QuestionsTableFilterComposer,
+    $$QuestionsTableOrderingComposer,
+    $$QuestionsTableAnnotationComposer,
+    $$QuestionsTableCreateCompanionBuilder,
+    $$QuestionsTableUpdateCompanionBuilder,
+    (Question, BaseReferences<_$AppDatabase, $QuestionsTable, Question>),
+    Question,
+    PrefetchHooks Function()> {
   $$QuestionsTableTableManager(_$AppDatabase db, $QuestionsTable table)
-    : super(
-        TableManagerState(
+      : super(TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -2683,104 +2264,101 @@ class $$QuestionsTableTableManager
               $$QuestionsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$QuestionsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback:
-              ({
-                Value<int> id = const Value.absent(),
-                Value<String> packId = const Value.absent(),
-                Value<String> question = const Value.absent(),
-                Value<String> choiceA = const Value.absent(),
-                Value<String> choiceB = const Value.absent(),
-                Value<String> choiceC = const Value.absent(),
-                Value<String> choiceD = const Value.absent(),
-                Value<String> correctAnswer = const Value.absent(),
-                Value<String> explanation = const Value.absent(),
-                Value<int> difficultyLevel = const Value.absent(),
-                Value<int> moduleNumber = const Value.absent(),
-                Value<String> moduleName = const Value.absent(),
-              }) => QuestionsCompanion(
-                id: id,
-                packId: packId,
-                question: question,
-                choiceA: choiceA,
-                choiceB: choiceB,
-                choiceC: choiceC,
-                choiceD: choiceD,
-                correctAnswer: correctAnswer,
-                explanation: explanation,
-                difficultyLevel: difficultyLevel,
-                moduleNumber: moduleNumber,
-                moduleName: moduleName,
-              ),
-          createCompanionCallback:
-              ({
-                Value<int> id = const Value.absent(),
-                required String packId,
-                required String question,
-                required String choiceA,
-                required String choiceB,
-                required String choiceC,
-                required String choiceD,
-                required String correctAnswer,
-                required String explanation,
-                Value<int> difficultyLevel = const Value.absent(),
-                Value<int> moduleNumber = const Value.absent(),
-                Value<String> moduleName = const Value.absent(),
-              }) => QuestionsCompanion.insert(
-                id: id,
-                packId: packId,
-                question: question,
-                choiceA: choiceA,
-                choiceB: choiceB,
-                choiceC: choiceC,
-                choiceD: choiceD,
-                correctAnswer: correctAnswer,
-                explanation: explanation,
-                difficultyLevel: difficultyLevel,
-                moduleNumber: moduleNumber,
-                moduleName: moduleName,
-              ),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> packId = const Value.absent(),
+            Value<String> question = const Value.absent(),
+            Value<String> choiceA = const Value.absent(),
+            Value<String> choiceB = const Value.absent(),
+            Value<String> choiceC = const Value.absent(),
+            Value<String> choiceD = const Value.absent(),
+            Value<String> correctAnswer = const Value.absent(),
+            Value<String> explanation = const Value.absent(),
+            Value<int> difficultyLevel = const Value.absent(),
+            Value<int> moduleNumber = const Value.absent(),
+            Value<String> moduleName = const Value.absent(),
+          }) =>
+              QuestionsCompanion(
+            id: id,
+            packId: packId,
+            question: question,
+            choiceA: choiceA,
+            choiceB: choiceB,
+            choiceC: choiceC,
+            choiceD: choiceD,
+            correctAnswer: correctAnswer,
+            explanation: explanation,
+            difficultyLevel: difficultyLevel,
+            moduleNumber: moduleNumber,
+            moduleName: moduleName,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String packId,
+            required String question,
+            required String choiceA,
+            required String choiceB,
+            required String choiceC,
+            required String choiceD,
+            required String correctAnswer,
+            required String explanation,
+            Value<int> difficultyLevel = const Value.absent(),
+            Value<int> moduleNumber = const Value.absent(),
+            Value<String> moduleName = const Value.absent(),
+          }) =>
+              QuestionsCompanion.insert(
+            id: id,
+            packId: packId,
+            question: question,
+            choiceA: choiceA,
+            choiceB: choiceB,
+            choiceC: choiceC,
+            choiceD: choiceD,
+            correctAnswer: correctAnswer,
+            explanation: explanation,
+            difficultyLevel: difficultyLevel,
+            moduleNumber: moduleNumber,
+            moduleName: moduleName,
+          ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ),
-      );
+        ));
 }
 
-typedef $$QuestionsTableProcessedTableManager =
-    ProcessedTableManager<
-      _$AppDatabase,
-      $QuestionsTable,
-      Question,
-      $$QuestionsTableFilterComposer,
-      $$QuestionsTableOrderingComposer,
-      $$QuestionsTableAnnotationComposer,
-      $$QuestionsTableCreateCompanionBuilder,
-      $$QuestionsTableUpdateCompanionBuilder,
-      (Question, BaseReferences<_$AppDatabase, $QuestionsTable, Question>),
-      Question,
-      PrefetchHooks Function()
-    >;
-typedef $$UserProgressTableCreateCompanionBuilder =
-    UserProgressCompanion Function({
-      Value<int> id,
-      required int questionId,
-      Value<int> srsStage,
-      Value<DateTime?> nextReviewTime,
-      Value<int> mistakeCount,
-      Value<bool> isLessonCompleted,
-      Value<DateTime?> lastReviewedAt,
-    });
-typedef $$UserProgressTableUpdateCompanionBuilder =
-    UserProgressCompanion Function({
-      Value<int> id,
-      Value<int> questionId,
-      Value<int> srsStage,
-      Value<DateTime?> nextReviewTime,
-      Value<int> mistakeCount,
-      Value<bool> isLessonCompleted,
-      Value<DateTime?> lastReviewedAt,
-    });
+typedef $$QuestionsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $QuestionsTable,
+    Question,
+    $$QuestionsTableFilterComposer,
+    $$QuestionsTableOrderingComposer,
+    $$QuestionsTableAnnotationComposer,
+    $$QuestionsTableCreateCompanionBuilder,
+    $$QuestionsTableUpdateCompanionBuilder,
+    (Question, BaseReferences<_$AppDatabase, $QuestionsTable, Question>),
+    Question,
+    PrefetchHooks Function()>;
+typedef $$UserProgressTableCreateCompanionBuilder = UserProgressCompanion
+    Function({
+  Value<int> id,
+  required int questionId,
+  Value<int> srsStage,
+  Value<DateTime?> nextReviewTime,
+  Value<int> mistakeCount,
+  Value<bool> isLessonCompleted,
+  Value<DateTime?> lastReviewedAt,
+});
+typedef $$UserProgressTableUpdateCompanionBuilder = UserProgressCompanion
+    Function({
+  Value<int> id,
+  Value<int> questionId,
+  Value<int> srsStage,
+  Value<DateTime?> nextReviewTime,
+  Value<int> mistakeCount,
+  Value<bool> isLessonCompleted,
+  Value<DateTime?> lastReviewedAt,
+});
 
 class $$UserProgressTableFilterComposer
     extends Composer<_$AppDatabase, $UserProgressTable> {
@@ -2792,39 +2370,28 @@ class $$UserProgressTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.id, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<int> get questionId => $composableBuilder(
-    column: $table.questionId,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.questionId, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<int> get srsStage => $composableBuilder(
-    column: $table.srsStage,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.srsStage, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<DateTime> get nextReviewTime => $composableBuilder(
-    column: $table.nextReviewTime,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.nextReviewTime,
+      builder: (column) => ColumnFilters(column));
 
   ColumnFilters<int> get mistakeCount => $composableBuilder(
-    column: $table.mistakeCount,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.mistakeCount, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<bool> get isLessonCompleted => $composableBuilder(
-    column: $table.isLessonCompleted,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.isLessonCompleted,
+      builder: (column) => ColumnFilters(column));
 
   ColumnFilters<DateTime> get lastReviewedAt => $composableBuilder(
-    column: $table.lastReviewedAt,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.lastReviewedAt,
+      builder: (column) => ColumnFilters(column));
 }
 
 class $$UserProgressTableOrderingComposer
@@ -2837,39 +2404,29 @@ class $$UserProgressTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.id, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<int> get questionId => $composableBuilder(
-    column: $table.questionId,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.questionId, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<int> get srsStage => $composableBuilder(
-    column: $table.srsStage,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.srsStage, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<DateTime> get nextReviewTime => $composableBuilder(
-    column: $table.nextReviewTime,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.nextReviewTime,
+      builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<int> get mistakeCount => $composableBuilder(
-    column: $table.mistakeCount,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.mistakeCount,
+      builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<bool> get isLessonCompleted => $composableBuilder(
-    column: $table.isLessonCompleted,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.isLessonCompleted,
+      builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<DateTime> get lastReviewedAt => $composableBuilder(
-    column: $table.lastReviewedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.lastReviewedAt,
+      builder: (column) => ColumnOrderings(column));
 }
 
 class $$UserProgressTableAnnotationComposer
@@ -2885,55 +2442,41 @@ class $$UserProgressTableAnnotationComposer
       $composableBuilder(column: $table.id, builder: (column) => column);
 
   GeneratedColumn<int> get questionId => $composableBuilder(
-    column: $table.questionId,
-    builder: (column) => column,
-  );
+      column: $table.questionId, builder: (column) => column);
 
   GeneratedColumn<int> get srsStage =>
       $composableBuilder(column: $table.srsStage, builder: (column) => column);
 
   GeneratedColumn<DateTime> get nextReviewTime => $composableBuilder(
-    column: $table.nextReviewTime,
-    builder: (column) => column,
-  );
+      column: $table.nextReviewTime, builder: (column) => column);
 
   GeneratedColumn<int> get mistakeCount => $composableBuilder(
-    column: $table.mistakeCount,
-    builder: (column) => column,
-  );
+      column: $table.mistakeCount, builder: (column) => column);
 
   GeneratedColumn<bool> get isLessonCompleted => $composableBuilder(
-    column: $table.isLessonCompleted,
-    builder: (column) => column,
-  );
+      column: $table.isLessonCompleted, builder: (column) => column);
 
   GeneratedColumn<DateTime> get lastReviewedAt => $composableBuilder(
-    column: $table.lastReviewedAt,
-    builder: (column) => column,
-  );
+      column: $table.lastReviewedAt, builder: (column) => column);
 }
 
-class $$UserProgressTableTableManager
-    extends
-        RootTableManager<
-          _$AppDatabase,
-          $UserProgressTable,
-          UserProgressData,
-          $$UserProgressTableFilterComposer,
-          $$UserProgressTableOrderingComposer,
-          $$UserProgressTableAnnotationComposer,
-          $$UserProgressTableCreateCompanionBuilder,
-          $$UserProgressTableUpdateCompanionBuilder,
-          (
-            UserProgressData,
-            BaseReferences<_$AppDatabase, $UserProgressTable, UserProgressData>,
-          ),
-          UserProgressData,
-          PrefetchHooks Function()
-        > {
+class $$UserProgressTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $UserProgressTable,
+    UserProgressData,
+    $$UserProgressTableFilterComposer,
+    $$UserProgressTableOrderingComposer,
+    $$UserProgressTableAnnotationComposer,
+    $$UserProgressTableCreateCompanionBuilder,
+    $$UserProgressTableUpdateCompanionBuilder,
+    (
+      UserProgressData,
+      BaseReferences<_$AppDatabase, $UserProgressTable, UserProgressData>
+    ),
+    UserProgressData,
+    PrefetchHooks Function()> {
   $$UserProgressTableTableManager(_$AppDatabase db, $UserProgressTable table)
-    : super(
-        TableManagerState(
+      : super(TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -2942,71 +2485,72 @@ class $$UserProgressTableTableManager
               $$UserProgressTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$UserProgressTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback:
-              ({
-                Value<int> id = const Value.absent(),
-                Value<int> questionId = const Value.absent(),
-                Value<int> srsStage = const Value.absent(),
-                Value<DateTime?> nextReviewTime = const Value.absent(),
-                Value<int> mistakeCount = const Value.absent(),
-                Value<bool> isLessonCompleted = const Value.absent(),
-                Value<DateTime?> lastReviewedAt = const Value.absent(),
-              }) => UserProgressCompanion(
-                id: id,
-                questionId: questionId,
-                srsStage: srsStage,
-                nextReviewTime: nextReviewTime,
-                mistakeCount: mistakeCount,
-                isLessonCompleted: isLessonCompleted,
-                lastReviewedAt: lastReviewedAt,
-              ),
-          createCompanionCallback:
-              ({
-                Value<int> id = const Value.absent(),
-                required int questionId,
-                Value<int> srsStage = const Value.absent(),
-                Value<DateTime?> nextReviewTime = const Value.absent(),
-                Value<int> mistakeCount = const Value.absent(),
-                Value<bool> isLessonCompleted = const Value.absent(),
-                Value<DateTime?> lastReviewedAt = const Value.absent(),
-              }) => UserProgressCompanion.insert(
-                id: id,
-                questionId: questionId,
-                srsStage: srsStage,
-                nextReviewTime: nextReviewTime,
-                mistakeCount: mistakeCount,
-                isLessonCompleted: isLessonCompleted,
-                lastReviewedAt: lastReviewedAt,
-              ),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int> questionId = const Value.absent(),
+            Value<int> srsStage = const Value.absent(),
+            Value<DateTime?> nextReviewTime = const Value.absent(),
+            Value<int> mistakeCount = const Value.absent(),
+            Value<bool> isLessonCompleted = const Value.absent(),
+            Value<DateTime?> lastReviewedAt = const Value.absent(),
+          }) =>
+              UserProgressCompanion(
+            id: id,
+            questionId: questionId,
+            srsStage: srsStage,
+            nextReviewTime: nextReviewTime,
+            mistakeCount: mistakeCount,
+            isLessonCompleted: isLessonCompleted,
+            lastReviewedAt: lastReviewedAt,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required int questionId,
+            Value<int> srsStage = const Value.absent(),
+            Value<DateTime?> nextReviewTime = const Value.absent(),
+            Value<int> mistakeCount = const Value.absent(),
+            Value<bool> isLessonCompleted = const Value.absent(),
+            Value<DateTime?> lastReviewedAt = const Value.absent(),
+          }) =>
+              UserProgressCompanion.insert(
+            id: id,
+            questionId: questionId,
+            srsStage: srsStage,
+            nextReviewTime: nextReviewTime,
+            mistakeCount: mistakeCount,
+            isLessonCompleted: isLessonCompleted,
+            lastReviewedAt: lastReviewedAt,
+          ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ),
-      );
+        ));
 }
 
-typedef $$UserProgressTableProcessedTableManager =
-    ProcessedTableManager<
-      _$AppDatabase,
-      $UserProgressTable,
+typedef $$UserProgressTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $UserProgressTable,
+    UserProgressData,
+    $$UserProgressTableFilterComposer,
+    $$UserProgressTableOrderingComposer,
+    $$UserProgressTableAnnotationComposer,
+    $$UserProgressTableCreateCompanionBuilder,
+    $$UserProgressTableUpdateCompanionBuilder,
+    (
       UserProgressData,
-      $$UserProgressTableFilterComposer,
-      $$UserProgressTableOrderingComposer,
-      $$UserProgressTableAnnotationComposer,
-      $$UserProgressTableCreateCompanionBuilder,
-      $$UserProgressTableUpdateCompanionBuilder,
-      (
-        UserProgressData,
-        BaseReferences<_$AppDatabase, $UserProgressTable, UserProgressData>,
-      ),
-      UserProgressData,
-      PrefetchHooks Function()
-    >;
-typedef $$TagsTableCreateCompanionBuilder =
-    TagsCompanion Function({Value<int> id, required String name});
-typedef $$TagsTableUpdateCompanionBuilder =
-    TagsCompanion Function({Value<int> id, Value<String> name});
+      BaseReferences<_$AppDatabase, $UserProgressTable, UserProgressData>
+    ),
+    UserProgressData,
+    PrefetchHooks Function()>;
+typedef $$TagsTableCreateCompanionBuilder = TagsCompanion Function({
+  Value<int> id,
+  required String name,
+});
+typedef $$TagsTableUpdateCompanionBuilder = TagsCompanion Function({
+  Value<int> id,
+  Value<String> name,
+});
 
 class $$TagsTableFilterComposer extends Composer<_$AppDatabase, $TagsTable> {
   $$TagsTableFilterComposer({
@@ -3017,14 +2561,10 @@ class $$TagsTableFilterComposer extends Composer<_$AppDatabase, $TagsTable> {
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.id, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get name => $composableBuilder(
-    column: $table.name,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.name, builder: (column) => ColumnFilters(column));
 }
 
 class $$TagsTableOrderingComposer extends Composer<_$AppDatabase, $TagsTable> {
@@ -3036,14 +2576,10 @@ class $$TagsTableOrderingComposer extends Composer<_$AppDatabase, $TagsTable> {
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.id, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get name => $composableBuilder(
-    column: $table.name,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.name, builder: (column) => ColumnOrderings(column));
 }
 
 class $$TagsTableAnnotationComposer
@@ -3062,24 +2598,20 @@ class $$TagsTableAnnotationComposer
       $composableBuilder(column: $table.name, builder: (column) => column);
 }
 
-class $$TagsTableTableManager
-    extends
-        RootTableManager<
-          _$AppDatabase,
-          $TagsTable,
-          Tag,
-          $$TagsTableFilterComposer,
-          $$TagsTableOrderingComposer,
-          $$TagsTableAnnotationComposer,
-          $$TagsTableCreateCompanionBuilder,
-          $$TagsTableUpdateCompanionBuilder,
-          (Tag, BaseReferences<_$AppDatabase, $TagsTable, Tag>),
-          Tag,
-          PrefetchHooks Function()
-        > {
+class $$TagsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $TagsTable,
+    Tag,
+    $$TagsTableFilterComposer,
+    $$TagsTableOrderingComposer,
+    $$TagsTableAnnotationComposer,
+    $$TagsTableCreateCompanionBuilder,
+    $$TagsTableUpdateCompanionBuilder,
+    (Tag, BaseReferences<_$AppDatabase, $TagsTable, Tag>),
+    Tag,
+    PrefetchHooks Function()> {
   $$TagsTableTableManager(_$AppDatabase db, $TagsTable table)
-    : super(
-        TableManagerState(
+      : super(TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -3088,48 +2620,53 @@ class $$TagsTableTableManager
               $$TagsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$TagsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback:
-              ({
-                Value<int> id = const Value.absent(),
-                Value<String> name = const Value.absent(),
-              }) => TagsCompanion(id: id, name: name),
-          createCompanionCallback:
-              ({Value<int> id = const Value.absent(), required String name}) =>
-                  TagsCompanion.insert(id: id, name: name),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<String> name = const Value.absent(),
+          }) =>
+              TagsCompanion(
+            id: id,
+            name: name,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required String name,
+          }) =>
+              TagsCompanion.insert(
+            id: id,
+            name: name,
+          ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ),
-      );
+        ));
 }
 
-typedef $$TagsTableProcessedTableManager =
-    ProcessedTableManager<
-      _$AppDatabase,
-      $TagsTable,
-      Tag,
-      $$TagsTableFilterComposer,
-      $$TagsTableOrderingComposer,
-      $$TagsTableAnnotationComposer,
-      $$TagsTableCreateCompanionBuilder,
-      $$TagsTableUpdateCompanionBuilder,
-      (Tag, BaseReferences<_$AppDatabase, $TagsTable, Tag>),
-      Tag,
-      PrefetchHooks Function()
-    >;
-typedef $$QuestionTagsTableCreateCompanionBuilder =
-    QuestionTagsCompanion Function({
-      required int questionId,
-      required int tagId,
-      Value<int> rowid,
-    });
-typedef $$QuestionTagsTableUpdateCompanionBuilder =
-    QuestionTagsCompanion Function({
-      Value<int> questionId,
-      Value<int> tagId,
-      Value<int> rowid,
-    });
+typedef $$TagsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $TagsTable,
+    Tag,
+    $$TagsTableFilterComposer,
+    $$TagsTableOrderingComposer,
+    $$TagsTableAnnotationComposer,
+    $$TagsTableCreateCompanionBuilder,
+    $$TagsTableUpdateCompanionBuilder,
+    (Tag, BaseReferences<_$AppDatabase, $TagsTable, Tag>),
+    Tag,
+    PrefetchHooks Function()>;
+typedef $$QuestionTagsTableCreateCompanionBuilder = QuestionTagsCompanion
+    Function({
+  required int questionId,
+  required int tagId,
+  Value<int> rowid,
+});
+typedef $$QuestionTagsTableUpdateCompanionBuilder = QuestionTagsCompanion
+    Function({
+  Value<int> questionId,
+  Value<int> tagId,
+  Value<int> rowid,
+});
 
 class $$QuestionTagsTableFilterComposer
     extends Composer<_$AppDatabase, $QuestionTagsTable> {
@@ -3141,14 +2678,10 @@ class $$QuestionTagsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get questionId => $composableBuilder(
-    column: $table.questionId,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.questionId, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<int> get tagId => $composableBuilder(
-    column: $table.tagId,
-    builder: (column) => ColumnFilters(column),
-  );
+      column: $table.tagId, builder: (column) => ColumnFilters(column));
 }
 
 class $$QuestionTagsTableOrderingComposer
@@ -3161,14 +2694,10 @@ class $$QuestionTagsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get questionId => $composableBuilder(
-    column: $table.questionId,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.questionId, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<int> get tagId => $composableBuilder(
-    column: $table.tagId,
-    builder: (column) => ColumnOrderings(column),
-  );
+      column: $table.tagId, builder: (column) => ColumnOrderings(column));
 }
 
 class $$QuestionTagsTableAnnotationComposer
@@ -3181,35 +2710,29 @@ class $$QuestionTagsTableAnnotationComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   GeneratedColumn<int> get questionId => $composableBuilder(
-    column: $table.questionId,
-    builder: (column) => column,
-  );
+      column: $table.questionId, builder: (column) => column);
 
   GeneratedColumn<int> get tagId =>
       $composableBuilder(column: $table.tagId, builder: (column) => column);
 }
 
-class $$QuestionTagsTableTableManager
-    extends
-        RootTableManager<
-          _$AppDatabase,
-          $QuestionTagsTable,
-          QuestionTag,
-          $$QuestionTagsTableFilterComposer,
-          $$QuestionTagsTableOrderingComposer,
-          $$QuestionTagsTableAnnotationComposer,
-          $$QuestionTagsTableCreateCompanionBuilder,
-          $$QuestionTagsTableUpdateCompanionBuilder,
-          (
-            QuestionTag,
-            BaseReferences<_$AppDatabase, $QuestionTagsTable, QuestionTag>,
-          ),
-          QuestionTag,
-          PrefetchHooks Function()
-        > {
+class $$QuestionTagsTableTableManager extends RootTableManager<
+    _$AppDatabase,
+    $QuestionTagsTable,
+    QuestionTag,
+    $$QuestionTagsTableFilterComposer,
+    $$QuestionTagsTableOrderingComposer,
+    $$QuestionTagsTableAnnotationComposer,
+    $$QuestionTagsTableCreateCompanionBuilder,
+    $$QuestionTagsTableUpdateCompanionBuilder,
+    (
+      QuestionTag,
+      BaseReferences<_$AppDatabase, $QuestionTagsTable, QuestionTag>
+    ),
+    QuestionTag,
+    PrefetchHooks Function()> {
   $$QuestionTagsTableTableManager(_$AppDatabase db, $QuestionTagsTable table)
-    : super(
-        TableManagerState(
+      : super(TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -3218,51 +2741,48 @@ class $$QuestionTagsTableTableManager
               $$QuestionTagsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$QuestionTagsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback:
-              ({
-                Value<int> questionId = const Value.absent(),
-                Value<int> tagId = const Value.absent(),
-                Value<int> rowid = const Value.absent(),
-              }) => QuestionTagsCompanion(
-                questionId: questionId,
-                tagId: tagId,
-                rowid: rowid,
-              ),
-          createCompanionCallback:
-              ({
-                required int questionId,
-                required int tagId,
-                Value<int> rowid = const Value.absent(),
-              }) => QuestionTagsCompanion.insert(
-                questionId: questionId,
-                tagId: tagId,
-                rowid: rowid,
-              ),
+          updateCompanionCallback: ({
+            Value<int> questionId = const Value.absent(),
+            Value<int> tagId = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              QuestionTagsCompanion(
+            questionId: questionId,
+            tagId: tagId,
+            rowid: rowid,
+          ),
+          createCompanionCallback: ({
+            required int questionId,
+            required int tagId,
+            Value<int> rowid = const Value.absent(),
+          }) =>
+              QuestionTagsCompanion.insert(
+            questionId: questionId,
+            tagId: tagId,
+            rowid: rowid,
+          ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
               .toList(),
           prefetchHooksCallback: null,
-        ),
-      );
+        ));
 }
 
-typedef $$QuestionTagsTableProcessedTableManager =
-    ProcessedTableManager<
-      _$AppDatabase,
-      $QuestionTagsTable,
+typedef $$QuestionTagsTableProcessedTableManager = ProcessedTableManager<
+    _$AppDatabase,
+    $QuestionTagsTable,
+    QuestionTag,
+    $$QuestionTagsTableFilterComposer,
+    $$QuestionTagsTableOrderingComposer,
+    $$QuestionTagsTableAnnotationComposer,
+    $$QuestionTagsTableCreateCompanionBuilder,
+    $$QuestionTagsTableUpdateCompanionBuilder,
+    (
       QuestionTag,
-      $$QuestionTagsTableFilterComposer,
-      $$QuestionTagsTableOrderingComposer,
-      $$QuestionTagsTableAnnotationComposer,
-      $$QuestionTagsTableCreateCompanionBuilder,
-      $$QuestionTagsTableUpdateCompanionBuilder,
-      (
-        QuestionTag,
-        BaseReferences<_$AppDatabase, $QuestionTagsTable, QuestionTag>,
-      ),
-      QuestionTag,
-      PrefetchHooks Function()
-    >;
+      BaseReferences<_$AppDatabase, $QuestionTagsTable, QuestionTag>
+    ),
+    QuestionTag,
+    PrefetchHooks Function()>;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;
