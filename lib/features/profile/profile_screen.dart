@@ -466,7 +466,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
   Widget _miniPill(IconData icon, String text, Color c) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 2),
         decoration: BoxDecoration(
           color: c.withAlpha(20),
           borderRadius: BorderRadius.circular(8),
@@ -474,10 +474,18 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 12, color: c),
-            const SizedBox(width: 4),
-            Text(text, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: c), maxLines: 1),
+            Icon(icon, size: 11, color: c),
+            const SizedBox(width: 2),
+            Flexible(
+              child: Text(
+                text,
+                style: TextStyle(fontSize: 9.5, fontWeight: FontWeight.bold, color: c),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
       ),
