@@ -27,6 +27,16 @@ const _kAvailablePacks = [
     assetPath: 'assets/packs/pack_html.json',
   ),
   _PackMeta(
+    packId: 'css3_fundamentals',
+    name: 'CSS3 & Modern Stylesheets',
+    subject: 'Web Development',
+    description: 'Master complete CSS3 & W3Schools curriculum: Box model, Flexbox, CSS Grid, 2D/3D Transforms, Animations, Container Queries & Modern Cascade Layers.',
+    iconName: 'style',
+    color: '#2563EB',
+    questionCount: 450,
+    assetPath: 'assets/packs/pack_css.json',
+  ),
+  _PackMeta(
     packId: 'lto_drivers_exam_ph',
     name: "LTO Driver's Exam",
     subject: 'Philippine Traffic Laws & Safety',
