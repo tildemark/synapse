@@ -28,18 +28,14 @@ class HomeScreen extends ConsumerWidget {
               backgroundColor: SynapseColors.surface,
               title: Row(
                 children: [
-                  Container(
-                    width: 32,
-                    height: 32,
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [SynapseColors.primary, Color(0xFF9B59B6)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      'assets/icons/logo512.png',
+                      width: 32,
+                      height: 32,
+                      fit: BoxFit.cover,
                     ),
-                    child: const Icon(Icons.bolt, color: Colors.white, size: 20),
                   ),
                   const SizedBox(width: 10),
                   Text(
@@ -293,8 +289,16 @@ class _EmptyPackCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          const Icon(Icons.bolt, size: 48, color: SynapseColors.primary),
-          const SizedBox(height: 12),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(14),
+            child: Image.asset(
+              'assets/icons/logo512.png',
+              width: 56,
+              height: 56,
+              fit: BoxFit.cover,
+            ),
+          ),
+          const SizedBox(height: 14),
           const Text('No Knowledge Packs Installed',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17), textAlign: TextAlign.center),
           const SizedBox(height: 6),
