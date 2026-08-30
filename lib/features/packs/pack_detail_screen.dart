@@ -147,7 +147,13 @@ class PackDetailScreen extends ConsumerWidget {
                           Expanded(
                             child: _ActionButton(
                               label: 'Mock Exam',
-                              subtitle: 'Timed test',
+                              subtitle: () {
+                                final settings = ref.watch(settingsServiceProvider);
+                                final score = settings.getMockExamScore(pack.packId);
+                                if (score >= 70) return 'Passed ($score% ✓)';
+                                if (score >= 0) return 'Best: $score%';
+                                return 'Qualify: ≥70%';
+                              }(),
                               icon: Icons.timer_rounded,
                               color: SynapseColors.guru,
                               onTap: () => Navigator.of(context).push(MaterialPageRoute(

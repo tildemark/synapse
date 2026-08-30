@@ -516,7 +516,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
           children: [
             // Consent & Data Privacy Card
             Container(
-              margin: const EdgeInsets.only(bottom: 14),
+              margin: const EdgeInsets.only(bottom: 12),
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
                 color: hasConsent ? SynapseColors.secondary.withAlpha(20) : const Color(0xFF1C1C30),
@@ -562,6 +562,79 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
                       ? 'Your name ("$scholarName") is cryptographically hashed into your certificate serials. No data is stored on remote servers (100% Zero-Knowledge verification).'
                       : 'Enable consent to attach your Scholar Name to official verification links when exporting to LinkedIn or Facebook. Stored 100% locally on your device.',
                     style: TextStyle(fontSize: 11, color: cs.onSurfaceVariant, height: 1.4),
+                  ),
+                ],
+              ),
+            ),
+
+            // Dual-Qualification Explainer Card
+            Container(
+              margin: const EdgeInsets.only(bottom: 14),
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                color: cs.surfaceContainerHighest.withAlpha(80),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: SynapseColors.primary.withAlpha(60)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Row(
+                    children: [
+                      Icon(Icons.school_rounded, color: SynapseColors.primary, size: 18),
+                      SizedBox(width: 8),
+                      Text(
+                        'Dual-Qualification Certification System',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: SynapseColors.primary),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'You can earn and unlock an official verified certificate through either of two paths:',
+                    style: TextStyle(fontSize: 11.5, color: cs.onSurfaceVariant, height: 1.35),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.timer_rounded, color: SynapseColors.guru, size: 15),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            style: TextStyle(fontSize: 11, color: cs.onSurface, height: 1.3),
+                            children: const [
+                              TextSpan(text: 'Path A (Mock Exam): ', style: TextStyle(fontWeight: FontWeight.bold, color: SynapseColors.guru)),
+                              TextSpan(text: 'Pass the timed Mock Exam with a score of '),
+                              TextSpan(text: '70% or higher', style: TextStyle(fontWeight: FontWeight.bold)),
+                              TextSpan(text: ' for instant certification.'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 6),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.local_fire_department_rounded, color: SynapseColors.burned, size: 15),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            style: TextStyle(fontSize: 11, color: cs.onSurface, height: 1.3),
+                            children: const [
+                              TextSpan(text: 'Path B (Memory Mastery): ', style: TextStyle(fontWeight: FontWeight.bold, color: SynapseColors.burned)),
+                              TextSpan(text: 'Graduate all curriculum cards to '),
+                              TextSpan(text: '100% Burned (Stage 8)', style: TextStyle(fontWeight: FontWeight.bold)),
+                              TextSpan(text: ' through daily spaced repetition.'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
