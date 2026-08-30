@@ -10,7 +10,6 @@ class PackService {
   static const _bundledPacks = [
     'assets/packs/pack_c_programming.json',
     'assets/packs/pack_html.json',
-    'assets/packs/pack_css.json',
     'assets/packs/pack_lto_ph.json',
   ];
 
