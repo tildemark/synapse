@@ -33,7 +33,7 @@ const _kAvailablePacks = [
     description: 'Complete LTO & DPWH licensing curriculum: 15 modules covering priority & warning signs, pavement markings, right-of-way, RA 4136, RA 10586, and BLOWBAGETS.',
     iconName: 'terminal',
     color: '#10B981',
-    questionCount: 60,
+    questionCount: 300,
     assetPath: 'assets/packs/pack_lto_ph.json',
   ),
 ];
