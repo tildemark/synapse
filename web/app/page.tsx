@@ -747,7 +747,7 @@ export default function HomePage() {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-around', flexWrap: 'wrap', gap: '20px', borderTop: '1px solid rgba(245, 158, 11, 0.2)', borderBottom: '1px solid rgba(245, 158, 11, 0.2)', padding: '20px 0', margin: '0 auto 28px', maxWidth: '800px' }}>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '11px', color: 'var(--text-dim)', textTransform: 'uppercase', fontWeight: 700 }}>Credential Serial</div>
-                <div className="mono-font" style={{ fontSize: '14px', fontWeight: 700, color: '#F59E0B' }}>SYN-CPROG-8F39-VERIFIED</div>
+                <div className="mono-font" style={{ fontSize: '14px', fontWeight: 700, color: '#F59E0B' }}>SYN-CPROG-B2F8-VERIFIED</div>
               </div>
               <div className="cert-seal">
                 <Award size={36} />
@@ -768,7 +768,7 @@ export default function HomePage() {
                 <Award size={16} /> Open &amp; Customize Certificate
               </Link>
               <a
-                href="https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=C+Programming+Mastery&organizationName=Synapse+SRS&issueYear=2026&issueMonth=8&certUrl=https://synapse.sanchez.ph/verify?id=SYN-CPROG-8F39-VERIFIED"
+                href="https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=C+Programming+Mastery&organizationName=Synapse+SRS&issueYear=2026&issueMonth=8&certUrl=https://synapse.sanchez.ph/verify?id=SYN-CPROG-B2F8-VERIFIED&name=Dr.+Alex+Mercer"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-linkedin"
@@ -777,7 +777,7 @@ export default function HomePage() {
                 <Share2 size={16} /> Add to LinkedIn Profile
               </a>
               <a
-                href="https://www.facebook.com/sharer/sharer.php?u=https://synapse.sanchez.ph/verify?id=SYN-CPROG-8F39-VERIFIED"
+                href="https://www.facebook.com/sharer/sharer.php?u=https://synapse.sanchez.ph/verify?id=SYN-CPROG-B2F8-VERIFIED&name=Dr.+Alex+Mercer"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-facebook"
