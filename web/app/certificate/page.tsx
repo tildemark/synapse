@@ -158,11 +158,11 @@ function CertificateContent() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-main)', color: 'var(--text-main)', paddingBottom: '80px' }}>
+    <div className="cert-page-wrapper" style={{ minHeight: '100vh', background: 'var(--bg-main)', color: 'var(--text-main)', paddingBottom: '80px' }}>
       <div className="glow-backdrop" />
       <div className="academic-grid-pattern" />
 
-      <div className="container" style={{ maxWidth: '1100px', paddingTop: '30px' }}>
+      <div className="container cert-page-container" style={{ maxWidth: '1100px', paddingTop: '30px' }}>
         {/* Navigation / Header */}
         <div className="no-print" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '28px', flexWrap: 'wrap', gap: '14px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
