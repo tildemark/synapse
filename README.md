@@ -5,6 +5,7 @@
   <p>
     <a href="http://sanchez.ph">Official Website</a> •
     <a href="https://synapse.sanchez.ph">Web Ledger</a> •
+    <a href="https://synapse.sanchez.ph/community">Community Hub</a> •
     <a href="https://synapse.sanchez.ph/verify">Verify Credential</a> •
     <a href="https://synapse.sanchez.ph/studio">Pack Studio</a>
   </p>

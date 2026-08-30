@@ -42,6 +42,7 @@ import {
   Boxes,
   Globe,
   Palette,
+  Users,
 } from 'lucide-react';
 
 // ─── SRS Stages & Cognitive Intervals ──────────────────────────────────────────
@@ -409,7 +410,10 @@ export default function HomePage() {
             <a href="#roadmap" className="nav-link">
               <Compass size={15} style={{ color: '#C084FC' }} /> Upcoming Roadmap
             </a>
-            <Link href="/studio" className="nav-link" style={{ color: '#10B981', fontWeight: 700 }}>
+            <Link href="/community" className="nav-link" style={{ color: '#10B981', fontWeight: 700 }}>
+              <Users size={15} /> Community Hub
+            </Link>
+            <Link href="/studio" className="nav-link">
               <Sparkles size={15} /> Pack Studio
             </Link>
             <a href="#downloads" className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '13px' }}>
@@ -1195,6 +1199,7 @@ export default function HomePage() {
                 <li><a href="#packs">C Systems Programming (101 Qs)</a></li>
                 <li><a href="#packs">HTML5 &amp; Web Semantics (138 Qs)</a></li>
                 <li><a href="#roadmap">Upcoming 10 Packs</a></li>
+                <li><Link href="/community">🌐 Community Knowledge Hub</Link></li>
                 <li><Link href="/studio">⚡ Pack Studio</Link></li>
                 <li><a href="#certification">Academic Credentials</a></li>
               </ul>
