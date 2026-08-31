@@ -235,83 +235,18 @@ function CertificateContent() {
           </div>
         </div>
 
-        {/* Customization Bar */}
-        <div className="card no-print" style={{ padding: '20px', marginBottom: '30px', border: '1px solid rgba(245, 158, 11, 0.3)' }}>
-          <div style={{ fontSize: '13px', fontWeight: 800, color: '#F59E0B', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Sparkles size={16} /> Customize Graduate Credential Parameters:
+        {/* Verified Credential Header Status Bar */}
+        <div className="card no-print" style={{ padding: '16px 20px', marginBottom: '24px', border: '1px solid rgba(245, 158, 11, 0.25)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10B981', boxShadow: '0 0 10px #10B981' }} />
+            <div style={{ fontSize: '13px', fontWeight: 700, color: '#E5E7EB' }}>
+              Authenticated Scholar: <span style={{ color: '#FDE047' }}>{studentName}</span> &bull; Curriculum: <span style={{ color: '#60A5FA' }}>{course.title}</span>
+            </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', color: 'var(--text-muted)', fontWeight: 700, marginBottom: '6px' }}>
-                Graduate / Scholar Full Name:
-              </label>
-              <input
-                type="text"
-                value={studentName}
-                onChange={(e) => setStudentName(e.target.value)}
-                placeholder="e.g. Marie Curie, PhD"
-                style={{
-                  width: '100%',
-                  background: 'var(--bg-card-subtle)',
-                  border: '1px solid var(--border-card)',
-                  borderRadius: '10px',
-                  color: '#fff',
-                  padding: '10px 14px',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  outline: 'none',
-                }}
-              />
-            </div>
 
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', color: 'var(--text-muted)', fontWeight: 700, marginBottom: '6px' }}>
-                Official Knowledge Curriculum:
-              </label>
-              <select
-                value={selectedCourseId}
-                onChange={(e) => setSelectedCourseId(e.target.value)}
-                style={{
-                  width: '100%',
-                  background: 'var(--bg-card-subtle)',
-                  border: '1px solid var(--border-card)',
-                  borderRadius: '10px',
-                  color: '#fff',
-                  padding: '10px 14px',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  outline: 'none',
-                }}
-              >
-                {OFFICIAL_COURSES.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.title} ({c.domain})
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '12px', color: 'var(--text-muted)', fontWeight: 700, marginBottom: '6px' }}>
-                Conferral Date:
-              </label>
-              <input
-                type="text"
-                value={issueDate}
-                onChange={(e) => setIssueDate(e.target.value)}
-                style={{
-                  width: '100%',
-                  background: 'var(--bg-card-subtle)',
-                  border: '1px solid var(--border-card)',
-                  borderRadius: '10px',
-                  color: '#fff',
-                  padding: '10px 14px',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  outline: 'none',
-                }}
-              />
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: 'var(--text-muted)' }}>
+            <ShieldCheck size={16} color="#10B981" />
+            <span>Cryptographic Serial: <strong className="mono-font" style={{ color: '#F59E0B' }}>{certSerial}</strong></span>
           </div>
         </div>
 
