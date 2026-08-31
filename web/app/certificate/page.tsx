@@ -386,8 +386,7 @@ function CertificateContent() {
                   style={{
                     height: '36px',
                     width: 'auto',
-                    filter: 'drop-shadow(0 2px 6px rgba(216, 180, 254, 0.2))',
-                    color: '#D8B4FE',
+                    filter: 'invert(1) brightness(1.8) drop-shadow(0 2px 8px rgba(255, 255, 255, 0.4))',
                   }}
                 />
               </div>
