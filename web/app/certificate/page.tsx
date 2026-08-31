@@ -295,8 +295,8 @@ function CertificateContent() {
                 <Image
                   src="/logo512.png"
                   alt="Synapse Official Crest"
-                  width={56}
-                  height={56}
+                  width={72}
+                  height={72}
                   className="cert-crest-img"
                 />
               </div>
@@ -377,6 +377,15 @@ function CertificateContent() {
           {/* Signatures & Academic Accreditation Footer */}
           <div className="cert-signatures-footer">
             <div className="cert-sig-left">
+              <div className="cert-signature-svg-wrap">
+                <Image
+                  src="/signature.svg"
+                  alt="Alfredo Sanchez Jr. Signature"
+                  width={140}
+                  height={44}
+                  className="cert-signature-svg"
+                />
+              </div>
               <div className="cert-sig-name-left">
                 Alfredo Sanchez Jr.
               </div>
@@ -386,6 +395,7 @@ function CertificateContent() {
             </div>
 
             <div className="cert-sig-right">
+              <div className="cert-sig-right-spacer" />
               <div className="cert-sig-name-right">
                 Synapse Academic Board
               </div>

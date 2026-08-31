@@ -827,6 +827,24 @@ a {
 
 .cert-sig-left {
   min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.cert-signature-svg-wrap {
+  height: 48px;
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 2px;
+}
+
+.cert-signature-svg {
+  height: 44px;
+  width: auto;
+  max-width: 140px;
+  color: #D8B4FE;
+  filter: drop-shadow(0 2px 8px rgba(216, 180, 254, 0.25));
 }
 
 .cert-sig-name-left {
@@ -846,6 +864,16 @@ a {
 .cert-sig-right {
   text-align: right;
   min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.cert-sig-right-spacer {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .cert-sig-name-right {
@@ -1273,6 +1301,21 @@ a {
   .cert-signatures-footer {
     margin-top: 0 !important;
     padding-top: 0 !important;
+  }
+
+  .cert-signature-svg-wrap {
+    height: 32px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .cert-signature-svg {
+    height: 30px !important;
+    color: #1E1B4B !important;
+    filter: none !important;
+  }
+
+  .cert-sig-right-spacer {
+    height: 32px !important;
   }
 
   .cert-sig-name-left {
