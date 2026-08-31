@@ -291,15 +291,13 @@ function CertificateContent() {
           {/* Certificate Header */}
           <div className="cert-header-section">
             <div className="cert-logo-wrap">
-              <div className="cert-logo-inner">
-                <Image
-                  src="/logo512.png"
-                  alt="Synapse Official Crest"
-                  width={88}
-                  height={88}
-                  className="cert-crest-img"
-                />
-              </div>
+              <Image
+                src="/logo512.png"
+                alt="Synapse Official Crest"
+                width={108}
+                height={108}
+                className="cert-crest-img"
+              />
             </div>
             <div className="cert-badge">
               <Award size={15} /> Official Verified Credential
