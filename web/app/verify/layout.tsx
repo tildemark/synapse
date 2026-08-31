@@ -12,6 +12,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const ogImageUrl = `https://synapse.sanchez.ph/api/cert-og?name=${encodeURIComponent(name)}&course=${encodeURIComponent(pack)}&id=${encodeURIComponent(id)}`;
 
   return {
+    metadataBase: new URL('https://synapse.sanchez.ph'),
     title: `Verified Academic Certificate — ${name} (${pack}) | Synapse`,
     description: `Official Verified Academic Certificate for ${name} in ${pack}. Cryptographically authenticated by Synapse Academic Institute.`,
     openGraph: {
@@ -22,12 +23,14 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
       images: [
         {
           url: ogImageUrl,
+          secureUrl: ogImageUrl,
           width: 1200,
           height: 630,
+          type: 'image/png',
           alt: `Synapse Verified Certificate for ${name}`,
         },
       ],
-      type: 'article',
+      type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
