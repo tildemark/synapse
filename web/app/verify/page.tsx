@@ -156,10 +156,8 @@ function VerifyContent() {
       return {
         isValid: false,
         isForged: true,
-        error: `Cryptographic Signature Mismatch: This serial code (Signature: ${claimedChecksum}) was NOT issued to "${scholarName}". The expected signature for this recipient and curriculum is ${expectedChecksum}.`,
+        error: `Cryptographic Signature Mismatch: This serial code (Signature: ${claimedChecksum}) does not match the recipient identity for "${scholarName}" and curriculum "${packInfo.name}". The credential verification has failed.`,
         packInfo,
-        expectedChecksum,
-        claimedChecksum,
       };
     }
 
