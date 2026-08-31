@@ -377,13 +377,18 @@ function CertificateContent() {
           {/* Signatures & Academic Accreditation Footer */}
           <div className="cert-signatures-footer">
             <div className="cert-sig-left">
-              <div className="cert-signature-svg-wrap">
+              <div style={{ height: '40px', display: 'flex', alignItems: 'flex-end', marginBottom: '-4px' }}>
                 <Image
                   src="/signature.svg"
                   alt="Alfredo Sanchez Jr. Signature"
-                  width={140}
-                  height={44}
-                  className="cert-signature-svg"
+                  width={110}
+                  height={38}
+                  style={{
+                    height: '36px',
+                    width: 'auto',
+                    filter: 'drop-shadow(0 2px 6px rgba(216, 180, 254, 0.2))',
+                    color: '#D8B4FE',
+                  }}
                 />
               </div>
               <div className="cert-sig-name-left">
@@ -395,7 +400,7 @@ function CertificateContent() {
             </div>
 
             <div className="cert-sig-right">
-              <div className="cert-sig-right-spacer" />
+              <div style={{ height: '40px' }} />
               <div className="cert-sig-name-right">
                 Synapse Academic Board
               </div>
