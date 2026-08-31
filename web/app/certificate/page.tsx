@@ -294,8 +294,8 @@ function CertificateContent() {
               <Image
                 src="/logo512.png"
                 alt="Synapse Official Crest"
-                width={108}
-                height={108}
+                width={120}
+                height={120}
                 className="cert-crest-img"
               />
             </div>
