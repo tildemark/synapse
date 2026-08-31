@@ -20,6 +20,8 @@ import {
   Lightbulb,
   Check,
   BookOpen,
+  GitPullRequest,
+  MessageSquare,
 } from 'lucide-react';
 
 interface Module {
@@ -413,8 +415,8 @@ export default function StudioPage() {
     reader.readAsText(file);
   };
 
-  // Submit GitHub PR / Issue
-  const handleGitHubSubmit = () => {
+  // Open Direct GitHub Pull Request Web Flow
+  const handleGitHubPR = () => {
     const errors = validatePack();
     if (errors.length > 0) {
       setValidationErrors(errors);
@@ -423,17 +425,95 @@ export default function StudioPage() {
     }
     setValidationErrors([]);
     const jsonStr = generateCleanJson();
+
+    // Copy JSON to clipboard so user can instantly paste into the GitHub web editor
+    try {
+      navigator.clipboard.writeText(jsonStr);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
+    } catch (err) {
+      console.error('Clipboard copy failed:', err);
+    }
+
+    // Direct link to create file under assets/packs/ in synapse repo
+    const filename = `pack_${pack.packId || 'custom_pack'}.json`;
+    const message = encodeURIComponent(`feat(packs): add ${pack.name} community knowledge pack`);
+    const description = encodeURIComponent(
+      `Adds the community-authored knowledge pack: **${pack.name}**\n\n` +
+        `- **Subject:** ${pack.subject}\n` +
+        `- **Questions:** ${pack.questions.length}\n` +
+        `- **Modules:** ${pack.modules.map((m) => m.name).join(', ')}\n\n` +
+        `Generated via Synapse Pack Studio (synapse.sanchez.ph/studio)`
+    );
+
+    const url = `https://github.com/tildemark/synapse/new/main/assets/packs?filename=${filename}&message=${message}&description=${description}`;
+    window.open(url, '_blank');
+  };
+
+  // Submit via GitHub Issue
+  const handleGitHubIssue = () => {
+    const errors = validatePack();
+    if (errors.length > 0) {
+      setValidationErrors(errors);
+      setActiveTab('export');
+      return;
+    }
+    setValidationErrors([]);
+    const jsonStr = generateCleanJson();
+
+    const isLarge = jsonStr.length > 1500;
+    const isHuge = jsonStr.length > 60000;
+
+    if (isHuge) {
+      handleDownload();
+    } else if (isLarge) {
+      try {
+        navigator.clipboard.writeText(jsonStr);
+      } catch (err) {
+        console.error('Clipboard copy failed:', err);
+      }
+    }
+
     const title = encodeURIComponent(`[Community Pack] ${pack.name} (${pack.questions.length} questions)`);
-    const body = encodeURIComponent(
-      `### 📦 New Community Knowledge Pack Submission\n\n` +
+    let bodyContent = '';
+
+    if (isHuge) {
+      bodyContent =
+        `### 📦 New Community Knowledge Pack Submission\n\n` +
+        `**Pack Name:** ${pack.name}\n` +
+        `**Pack ID:** \`${pack.packId}\`\n` +
+        `**Subject:** ${pack.subject}\n` +
+        `**Question Count:** ${pack.questions.length}\n` +
+        `**Modules:** ${pack.modules.map((m) => m.name).join(', ')}\n` +
+        `**File Size:** ${(jsonStr.length / 1024).toFixed(1)} KB\n\n` +
+        `> 📎 **Attachment:** Because this pack is over 65,536 characters, the \`pack_${pack.packId}.json\` file has been **automatically downloaded to your computer**. Please **drag and drop** the downloaded JSON file into this comment box.\n\n` +
+        `*Created via Synapse Pack Studio (synapse.sanchez.ph/studio)*`;
+    } else if (isLarge) {
+      bodyContent =
+        `### 📦 New Community Knowledge Pack Submission\n\n` +
+        `**Pack Name:** ${pack.name}\n` +
+        `**Pack ID:** \`${pack.packId}\`\n` +
+        `**Subject:** ${pack.subject}\n` +
+        `**Question Count:** ${pack.questions.length}\n` +
+        `**Modules:** ${pack.modules.map((m) => m.name).join(', ')}\n\n` +
+        `> 📋 **Note:** The pack JSON manifest (${(jsonStr.length / 1024).toFixed(1)} KB) has been **copied to your clipboard** automatically. Please paste it below:\n\n` +
+        `\`\`\`json\n` +
+        `<!-- Paste copied JSON here -->\n` +
+        `\`\`\`\n\n` +
+        `*Created via Synapse Pack Studio (synapse.sanchez.ph/studio)*`;
+    } else {
+      bodyContent =
+        `### 📦 New Community Knowledge Pack Submission\n\n` +
         `**Pack Name:** ${pack.name}\n` +
         `**Pack ID:** \`${pack.packId}\`\n` +
         `**Subject:** ${pack.subject}\n` +
         `**Question Count:** ${pack.questions.length}\n` +
         `**Modules:** ${pack.modules.map((m) => m.name).join(', ')}\n\n` +
         `#### 📄 Manifest JSON:\n\`\`\`json\n${jsonStr}\n\`\`\`\n\n` +
-        `*Created via Synapse Pack Studio (synapse.sanchez.ph/studio)*`
-    );
+        `*Created via Synapse Pack Studio (synapse.sanchez.ph/studio)*`;
+    }
+
+    const body = encodeURIComponent(bodyContent);
     window.open(`https://github.com/tildemark/synapse/issues/new?title=${title}&body=${body}`, '_blank');
   };
 
@@ -1175,13 +1255,32 @@ export default function StudioPage() {
                   </p>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-                  <button onClick={handleDownload} className="btn btn-primary" style={{ justifyContent: 'center' }}>
-                    <Download size={16} /> Download pack_{pack.packId}.json
-                  </button>
-                  <button onClick={handleGitHubSubmit} className="btn btn-secondary" style={{ justifyContent: 'center', borderColor: '#10B981', color: '#10B981' }}>
-                    <Github size={16} /> Submit PR to Synapse GitHub
-                  </button>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
+                    <button onClick={handleDownload} className="btn btn-primary" style={{ justifyContent: 'center', fontSize: '13px', padding: '10px 14px' }}>
+                      <Download size={15} /> Download JSON
+                    </button>
+                    <button
+                      onClick={handleGitHubPR}
+                      className="btn btn-secondary"
+                      style={{ justifyContent: 'center', borderColor: '#10B981', color: '#10B981', fontSize: '13px', padding: '10px 14px' }}
+                      title="Opens GitHub Web Editor to create a Pull Request directly"
+                    >
+                      <GitPullRequest size={15} /> Open Web PR
+                    </button>
+                    <button
+                      onClick={handleGitHubIssue}
+                      className="btn btn-secondary"
+                      style={{ justifyContent: 'center', borderColor: '#8B5CF6', color: '#C084FC', fontSize: '13px', padding: '10px 14px' }}
+                      title="Submit pack via GitHub Issue with automatic metadata & file attachment"
+                    >
+                      <MessageSquare size={15} /> Submit via Issue
+                    </button>
+                  </div>
+                  <div style={{ display: 'flex', gap: '16px', fontSize: '11.5px', color: 'var(--text-muted)' }}>
+                    <span>💡 <strong>Web PR:</strong> Copies JSON &amp; opens GitHub web editor in <code>assets/packs/</code>.</span>
+                    <span>💡 <strong>Issue:</strong> Opens an issue template and downloads file if &gt;65KB for easy drag-and-drop.</span>
+                  </div>
                 </div>
 
                 <div style={{ minWidth: 0, width: '100%' }}>

@@ -133,8 +133,8 @@ function CertificateContent() {
   const linkedInCertUrl = `https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=${encodeURIComponent(
     `${course.title} (Mastery)`
   )}&organizationName=${encodeURIComponent(
-    'Synapse Spaced Repetition Platform'
-  )}&issueYear=2026&issueMonth=8&certUrl=${encodeURIComponent(
+    'Synapse SRS'
+  )}&organizationId=144801941&issueYear=2026&issueMonth=8&certUrl=${encodeURIComponent(
     verificationUrl
   )}&certId=${encodeURIComponent(certSerial)}`;
 

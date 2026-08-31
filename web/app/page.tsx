@@ -399,56 +399,77 @@ export default function HomePage() {
       <div className="glow-backdrop" />
       <div className="academic-grid-pattern" />
 
-      <div className="container">
-        {/* Navigation */}
-        <nav className="navbar">
-          <div className="brand" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <img
-              src="/logo512.png"
-              alt="Synapse Logo"
-              width={32}
-              height={32}
-              style={{ borderRadius: 8, objectFit: 'contain' }}
-            />
-            <span style={{ fontWeight: 800, fontSize: '18px', letterSpacing: '-0.02em' }}>Synapse</span>
-          </div>
-          <div className="nav-links">
-            <a href="#metrics" className="nav-link">
-              <Activity size={15} /> Retention Metrics
-            </a>
-            <a href="#srs-science" className="nav-link">
-              <BrainCircuit size={15} /> Cognitive Science
-            </a>
-            <a href="#certification" className="nav-link">
-              <Award size={15} style={{ color: '#F59E0B' }} /> Credentials
-            </a>
-            <a href="#packs" className="nav-link">
-              <Layers size={15} /> Knowledge Packs
-            </a>
-            <a href="#roadmap" className="nav-link">
-              <Compass size={15} style={{ color: '#C084FC' }} /> Upcoming Roadmap
-            </a>
-            <Link href="/community" className="nav-link" style={{ color: '#10B981', fontWeight: 700 }}>
-              <Users size={15} /> Community Hub
+      {/* Sticky Navigation Bar */}
+      <header className="navbar-wrapper">
+        <div className="container">
+          <nav className="navbar">
+            {/* Brand */}
+            <Link href="/" className="brand">
+              <img
+                src="/logo512.png"
+                alt="Synapse Logo"
+                width={30}
+                height={30}
+                style={{ borderRadius: 8, objectFit: 'contain' }}
+              />
+              <span>Synapse</span>
             </Link>
-            <Link href="/studio" className="nav-link">
-              <Sparkles size={15} /> Pack Studio
-            </Link>
-            <a href="#downloads" className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '13px' }}>
-              <Download size={15} /> Downloads
-            </a>
-            <a
-              href="https://github.com/tildemark/synapse"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-secondary"
-              style={{ padding: '8px 16px', fontSize: '13px' }}
-            >
-              <Github size={15} /> GitHub
-            </a>
-          </div>
-        </nav>
 
+            {/* Middle Section: Clean Icon Bar with Hover Tooltips */}
+            <div className="nav-icon-group" role="navigation" aria-label="Page Sections">
+              <a href="#metrics" className="nav-icon-btn" aria-label="Retention Metrics">
+                <Activity size={17} />
+                <span className="nav-tooltip">Retention Metrics</span>
+              </a>
+              <a href="#srs-science" className="nav-icon-btn" aria-label="Cognitive Science">
+                <BrainCircuit size={17} />
+                <span className="nav-tooltip">Cognitive Science</span>
+              </a>
+              <a href="#certification" className="nav-icon-btn" aria-label="Verifiable Credentials">
+                <Award size={17} style={{ color: '#F59E0B' }} />
+                <span className="nav-tooltip">Verifiable Credentials</span>
+              </a>
+              <a href="#packs" className="nav-icon-btn" aria-label="Knowledge Packs">
+                <Layers size={17} />
+                <span className="nav-tooltip">Knowledge Packs</span>
+              </a>
+              <a href="#roadmap" className="nav-icon-btn" aria-label="Upcoming Roadmap">
+                <Compass size={17} style={{ color: '#C084FC' }} />
+                <span className="nav-tooltip">Upcoming Roadmap</span>
+              </a>
+            </div>
+
+            {/* Right Section: Key App Destinations & Actions */}
+            <div className="nav-actions">
+              <Link href="/community" className="nav-action-link" style={{ color: '#10B981' }}>
+                <Users size={15} />
+                <span>Community</span>
+              </Link>
+              <Link href="/studio" className="nav-action-link">
+                <Sparkles size={15} />
+                <span>Studio</span>
+              </Link>
+              <a href="#downloads" className="btn btn-secondary nav-action-btn-sm">
+                <Download size={14} />
+                <span>Downloads</span>
+              </a>
+              <a
+                href="https://github.com/tildemark/synapse"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-secondary nav-action-btn-sm"
+                style={{ padding: '7px 10px' }}
+                title="GitHub Repository"
+                aria-label="GitHub Repository"
+              >
+                <Github size={15} />
+              </a>
+            </div>
+          </nav>
+        </div>
+      </header>
+
+      <div className="container">
         {/* Hero Section */}
         <section className="hero">
           <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -790,7 +811,7 @@ export default function HomePage() {
                 <Award size={16} /> Open &amp; Customize Certificate
               </Link>
               <a
-                href="https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=C+Programming+Mastery&organizationName=Synapse+SRS&issueYear=2026&issueMonth=8&certUrl=https://synapse.sanchez.ph/verify?id=SYN-CPROG-B2F8-VERIFIED&name=Dr.+Alex+Mercer"
+                href="https://www.linkedin.com/profile/add?startTask=CERTIFICATION_NAME&name=C+Programming+Mastery&organizationName=Synapse+SRS&organizationId=144801941&issueYear=2026&issueMonth=8&certUrl=https://synapse.sanchez.ph/verify?id=SYN-CPROG-B2F8-VERIFIED&name=Dr.+Alex+Mercer"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-linkedin"

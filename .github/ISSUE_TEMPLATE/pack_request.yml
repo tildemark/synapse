@@ -1,0 +1,59 @@
+name: 💡 Knowledge Pack Request
+description: Request a new technical or academic subject knowledge pack for Synapse SRS
+title: "[Pack Request]: "
+labels: ["pack-request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for requesting a new Knowledge Pack! Community requests help authors and maintainers know what subjects to build next.
+  - type: input
+    id: subject
+    attributes:
+      label: Subject / Curriculum Name
+      description: What subject, certification, or exam curriculum would you like to see?
+      placeholder: "e.g., AWS Certified Solutions Architect, Rust Systems Programming, NCLEX-RN..."
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Computer Science & Programming
+        - DevOps & Cloud Architecture
+        - Web Development
+        - Mathematics & Physics
+        - Data Science & AI
+        - Medical & Health Sciences
+        - Professional Licensing & Certifications
+        - General Knowledge & Languages
+    validations:
+      required: true
+  - type: textarea
+    id: syllabus
+    attributes:
+      label: Target Modules / Syllabus Outline
+      description: If you know what key topics or modules should be included, list them here.
+      placeholder: |
+        1. Core Architecture & IAM
+        2. EC2, VPC & Subnets
+        3. S3 & Storage Tiers
+        4. High Availability & Auto Scaling
+    validations:
+      required: false
+  - type: input
+    id: references
+    attributes:
+      label: Recommended References or Syllabi Sources
+      description: Links to official exam blueprints, W3Schools, textbooks, or documentation.
+      placeholder: "e.g., https://aws.amazon.com/certification/certified-solutions-architect-associate/"
+    validations:
+      required: false
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Community Authorship
+      options:
+        - label: I would like to help author questions for this pack using Synapse Pack Studio (synapse.sanchez.ph/studio)
+        - label: I would like to help peer-review questions once authored

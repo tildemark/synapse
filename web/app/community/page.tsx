@@ -25,6 +25,8 @@ import {
   Shield,
   FileCode,
   Tag,
+  MessageSquarePlus,
+  ThumbsUp,
 } from 'lucide-react';
 
 interface CommunityPack {
@@ -228,11 +230,21 @@ export default function CommunityPage() {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+            <a
+              href="https://github.com/tildemark/synapse/issues/new?template=pack_request.yml&title=%5BPack+Request%5D%3A+"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-secondary"
+              style={{ padding: '8px 16px', fontSize: '13px', borderColor: '#F59E0B', color: '#F59E0B' }}
+              title="Request a new subject or curriculum"
+            >
+              <MessageSquarePlus size={16} /> Request a Pack
+            </a>
             <Link href="/studio" className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '13px' }}>
               <Plus size={16} /> Author New Pack in Studio
             </Link>
             <a
-              href="https://github.com/tildemark/synapse/issues/new?title=%5BCommunity+Pack+Submission%5D&labels=community-pack"
+              href="https://github.com/tildemark/synapse/issues/new?title=%5BCommunity+Pack+Submission%5D"
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-secondary"
@@ -472,8 +484,56 @@ export default function CommunityPage() {
           </div>
         )}
 
+        {/* Community Wishlist & Request Callout */}
+        <div
+          className="card"
+          style={{
+            marginTop: '36px',
+            padding: '24px 28px',
+            background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%)',
+            border: '1px solid rgba(245, 158, 11, 0.3)',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '20px',
+          }}
+        >
+          <div style={{ maxWidth: '680px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#F59E0B', fontWeight: 800, fontSize: '12px', textTransform: 'uppercase', marginBottom: '6px' }}>
+              <ThumbsUp size={14} /> Community Pack Wishlist
+            </div>
+            <h3 style={{ fontSize: '18px', fontWeight: 800, marginBottom: '6px' }}>
+              Looking for a specific subject, exam, or tech stack?
+            </h3>
+            <p style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+              Submit a topic request or upvote existing proposals on GitHub. Community authors and contributors prioritize packs based on learner demand!
+            </p>
+          </div>
+          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            <a
+              href="https://github.com/tildemark/synapse/issues?q=is%3Aissue+is%3Aopen+%22Pack+Request%22"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-secondary"
+              style={{ fontSize: '13px', padding: '10px 16px' }}
+            >
+              Browse Open Requests
+            </a>
+            <a
+              href="https://github.com/tildemark/synapse/issues/new?template=pack_request.yml&title=%5BPack+Request%5D%3A+"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-gold"
+              style={{ fontSize: '13px', padding: '10px 16px' }}
+            >
+              <MessageSquarePlus size={15} /> Request a Pack
+            </a>
+          </div>
+        </div>
+
         {/* How to install Guide Card */}
-        <div className="card" style={{ marginTop: '48px', padding: '30px' }}>
+        <div className="card" style={{ marginTop: '32px', padding: '30px' }}>
           <h3 style={{ fontSize: '18px', fontWeight: 800, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '10px' }}>
             <BookOpen size={18} color="#10B981" /> How to Install Community Packs in Synapse:
           </h3>
