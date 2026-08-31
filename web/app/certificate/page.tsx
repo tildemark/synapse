@@ -417,17 +417,13 @@ function CertificateContent() {
           {/* Signatures & Academic Accreditation Footer */}
           <div className="cert-signatures-footer">
             <div className="cert-sig-left">
-              <div style={{ height: '40px', display: 'flex', alignItems: 'flex-end', paddingLeft: '24px', marginBottom: '-4px' }}>
+              <div className="cert-signature-wrap" style={{ height: '40px', display: 'flex', alignItems: 'flex-end', paddingLeft: '24px', marginBottom: '-4px' }}>
                 <Image
                   src="/signature.svg"
                   alt="Alfredo Sanchez Jr. Signature"
                   width={110}
                   height={38}
-                  style={{
-                    height: '36px',
-                    width: 'auto',
-                    filter: 'invert(1) brightness(1.8) drop-shadow(0 2px 8px rgba(255, 255, 255, 0.4))',
-                  }}
+                  className="cert-signature-img"
                 />
               </div>
               <div className="cert-sig-name-left">

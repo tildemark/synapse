@@ -827,6 +827,12 @@ a {
   min-width: 220px;
 }
 
+.cert-signature-img {
+  height: 36px;
+  width: auto;
+  filter: invert(1) brightness(1.8) drop-shadow(0 2px 8px rgba(255, 255, 255, 0.4));
+}
+
 .cert-sig-name-left {
   font-family: var(--font-mono, monospace);
   color: #D8B4FE;
@@ -1276,6 +1282,14 @@ a {
   .cert-signatures-footer {
     margin-top: 0 !important;
     padding-top: 0 !important;
+  }
+
+  .cert-signature-img {
+    height: 28px !important;
+    width: auto !important;
+    filter: none !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
   .cert-sig-name-left {
