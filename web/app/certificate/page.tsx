@@ -215,22 +215,22 @@ function CertificateContent() {
             </div>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'nowrap' }}>
             <button
               onClick={() => handleExportImage('jpeg')}
               disabled={downloadingImg}
               className="btn btn-primary"
-              style={{ padding: '8px 16px', fontSize: '13px', background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)', borderColor: '#059669' }}
+              style={{ padding: '8px 12px', fontSize: '12.5px', whiteSpace: 'nowrap', background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)', borderColor: '#059669' }}
               title="Export high-resolution JPG image to attach to LinkedIn"
             >
-              <Download size={16} /> {downloadingImg ? 'Exporting...' : 'Export High-Res JPG'}
+              <Download size={14} /> {downloadingImg ? 'Saving...' : 'Save JPG'}
             </button>
-            <button onClick={handlePrint} className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '13px' }}>
-              <Printer size={16} /> Print / PDF
+            <button onClick={handlePrint} className="btn btn-secondary" style={{ padding: '8px 12px', fontSize: '12.5px', whiteSpace: 'nowrap' }}>
+              <Printer size={14} /> Print / PDF
             </button>
-            <button onClick={handleCopyLink} className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '13px' }}>
-              {copied ? <Check size={16} color="#10B981" /> : <Copy size={16} />}
-              {copied ? 'Verification Copied!' : 'Copy Verification URL'}
+            <button onClick={handleCopyLink} className="btn btn-secondary" style={{ padding: '8px 12px', fontSize: '12.5px', whiteSpace: 'nowrap' }}>
+              {copied ? <Check size={14} color="#10B981" /> : <Copy size={14} />}
+              {copied ? 'Copied!' : 'Copy URL'}
             </button>
           </div>
         </div>
