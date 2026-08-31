@@ -288,8 +288,19 @@ function CertificateContent() {
           <div className="cert-corner-decor cert-bl" />
           <div className="cert-corner-decor cert-br" />
 
-          {/* Certificate Header - Modern Asymmetric Layout with Prominent Crest on Right */}
-          <div className="cert-header-section" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', textAlign: 'left', marginBottom: '20px', gap: '20px' }}>
+          {/* Certificate Header - Modern Layout with Prominent Crest on Left */}
+          <div className="cert-header-section" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', textAlign: 'left', marginBottom: '20px', gap: '24px' }}>
+            <div className="cert-logo-wrap" style={{ margin: 0, flexShrink: 0 }}>
+              <Image
+                src="/logo512.png"
+                alt="Synapse Official Crest"
+                width={140}
+                height={140}
+                className="cert-crest-img"
+                style={{ filter: 'drop-shadow(0 8px 24px rgba(245, 158, 11, 0.25))' }}
+              />
+            </div>
+
             <div style={{ flex: 1 }}>
               <div className="cert-badge">
                 <Award size={15} /> Official Verified Credential
@@ -300,17 +311,6 @@ function CertificateContent() {
               <p className="cert-subtitle" style={{ textAlign: 'left' }}>
                 Cognitive Retention &amp; Spaced Repetition Registry &bull; Protocol {SYNAPSE_VERSION_TAG}
               </p>
-            </div>
-            
-            <div className="cert-logo-wrap" style={{ margin: 0, flexShrink: 0 }}>
-              <Image
-                src="/logo512.png"
-                alt="Synapse Official Crest"
-                width={140}
-                height={140}
-                className="cert-crest-img"
-                style={{ filter: 'drop-shadow(0 8px 24px rgba(245, 158, 11, 0.25))' }}
-              />
             </div>
           </div>
 
