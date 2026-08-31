@@ -288,26 +288,30 @@ function CertificateContent() {
           <div className="cert-corner-decor cert-bl" />
           <div className="cert-corner-decor cert-br" />
 
-          {/* Certificate Header */}
-          <div className="cert-header-section">
-            <div className="cert-logo-wrap">
+          {/* Certificate Header - Modern Asymmetric Layout with Prominent Crest on Right */}
+          <div className="cert-header-section" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', textAlign: 'left', marginBottom: '20px', gap: '20px' }}>
+            <div style={{ flex: 1 }}>
+              <div className="cert-badge">
+                <Award size={15} /> Official Verified Credential
+              </div>
+              <h2 className="cert-title" style={{ textAlign: 'left', margin: '4px 0 6px' }}>
+                SYNAPSE ACADEMIC INSTITUTE
+              </h2>
+              <p className="cert-subtitle" style={{ textAlign: 'left' }}>
+                Cognitive Retention &amp; Spaced Repetition Registry &bull; Protocol {SYNAPSE_VERSION_TAG}
+              </p>
+            </div>
+            
+            <div className="cert-logo-wrap" style={{ margin: 0, flexShrink: 0 }}>
               <Image
                 src="/logo512.png"
                 alt="Synapse Official Crest"
-                width={120}
-                height={120}
+                width={140}
+                height={140}
                 className="cert-crest-img"
+                style={{ filter: 'drop-shadow(0 8px 24px rgba(245, 158, 11, 0.25))' }}
               />
             </div>
-            <div className="cert-badge">
-              <Award size={15} /> Official Verified Credential
-            </div>
-            <h2 className="cert-title">
-              SYNAPSE ACADEMIC INSTITUTE
-            </h2>
-            <p className="cert-subtitle">
-              Cognitive Retention &amp; Spaced Repetition Registry &bull; Protocol {SYNAPSE_VERSION_TAG}
-            </p>
           </div>
 
           {/* Recipient */}
@@ -329,7 +333,7 @@ function CertificateContent() {
             </p>
           </div>
 
-          {/* Verification Bar with Live QR Code */}
+          {/* Verification Bar with Live QR Code & Professional Award Ribbon Seal */}
           <div className="cert-verify-bar">
             <div className="cert-meta-col">
               <div className="cert-meta-label">Credential Serial</div>
@@ -338,9 +342,47 @@ function CertificateContent() {
               <div className="cert-status-tag">Status: Authenticated ✓</div>
             </div>
 
-            {/* Center Seal */}
-            <div className="cert-seal">
-              <Award size={38} />
+            {/* Center Professional Rosette / Ribbon Seal */}
+            <div className="cert-ribbon-seal-wrap">
+              <svg viewBox="0 0 100 120" width="84" height="100" className="cert-rosette-svg">
+                {/* Ribbons */}
+                <path d="M 32 65 L 22 110 L 38 100 L 46 110 L 44 65 Z" fill="#DC2626" opacity="0.9" />
+                <path d="M 68 65 L 78 110 L 62 100 L 54 110 L 56 65 Z" fill="#B91C1C" opacity="0.9" />
+                {/* 16-point Scalloped Star Medallion */}
+                <path
+                  d="M 50 10 
+                     L 57 14 L 64 12 L 69 18 L 76 19 L 79 26 L 86 30 L 87 37 L 91 43 L 89 50 L 91 57 L 87 63 L 86 70 L 79 74 L 76 81 L 69 82 L 64 88 L 57 86 L 50 90 
+                     L 43 86 L 36 88 L 31 82 L 24 81 L 21 74 L 14 70 L 13 63 L 9 57 L 11 50 L 9 43 L 13 37 L 14 30 L 21 26 L 24 19 L 31 18 L 36 12 L 43 14 Z"
+                  fill="url(#goldGrad)"
+                  stroke="#78350F"
+                  strokeWidth="1.5"
+                />
+                {/* Inner Gold Disc */}
+                <circle cx="50" cy="50" r="30" fill="url(#goldInner)" stroke="#92400E" strokeWidth="1.5" />
+                {/* Star border / Beaded ring */}
+                <circle cx="50" cy="50" r="26" fill="none" stroke="#FDE68A" strokeWidth="1" strokeDasharray="2,2" />
+                {/* Verified Checkmark in Gold Center */}
+                <path
+                  d="M 38 49 L 46 57 L 63 39"
+                  fill="none"
+                  stroke="#78350F"
+                  strokeWidth="4.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <defs>
+                  <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#FDE047" />
+                    <stop offset="50%" stopColor="#F59E0B" />
+                    <stop offset="100%" stopColor="#B45309" />
+                  </linearGradient>
+                  <linearGradient id="goldInner" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#FEF08A" />
+                    <stop offset="60%" stopColor="#F59E0B" />
+                    <stop offset="100%" stopColor="#D97706" />
+                  </linearGradient>
+                </defs>
+              </svg>
             </div>
 
             {/* QR Code Validation Box */}

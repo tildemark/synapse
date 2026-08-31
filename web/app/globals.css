@@ -747,17 +747,15 @@ a {
   margin-top: 4px;
 }
 
-.cert-seal {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  border: 3px solid #fef3c7;
+.cert-ribbon-seal-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #000;
-  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.45);
+  filter: drop-shadow(0 6px 20px rgba(245, 158, 11, 0.45));
+}
+
+.cert-rosette-svg {
+  display: block;
 }
 
 .cert-qr-link {
@@ -1128,16 +1126,19 @@ a {
   .cert-br { bottom: 6px !important; right: 6px !important; }
 
   .cert-header-section {
-    margin-bottom: 4px !important;
+    margin-bottom: 2px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
   }
 
   .cert-logo-wrap {
-    margin-bottom: 3px !important;
+    margin-bottom: 0 !important;
   }
 
   .cert-crest-img {
-    width: 96px !important;
-    height: 96px !important;
+    width: 80px !important;
+    height: 80px !important;
   }
 
   .cert-badge {
@@ -1154,7 +1155,7 @@ a {
     -webkit-background-clip: initial !important;
     -webkit-text-fill-color: initial !important;
     color: #1E1B4B !important;
-    font-size: 22px !important;
+    font-size: 24px !important;
     margin-bottom: 2px !important;
     line-height: 1.1 !important;
   }
@@ -1178,7 +1179,8 @@ a {
   .cert-student-name {
     color: #0F172A !important;
     border-bottom: 2px solid #D97706 !important;
-    font-size: 26px !important;
+    font-size: 32px !important;
+    font-weight: 800 !important;
     padding-bottom: 2px !important;
     margin-bottom: 4px !important;
     line-height: 1.15 !important;
@@ -1193,7 +1195,7 @@ a {
 
   .cert-course-name {
     color: #1D4ED8 !important;
-    font-size: 19px !important;
+    font-size: 20px !important;
     margin-bottom: 3px !important;
     line-height: 1.2 !important;
   }
@@ -1209,7 +1211,7 @@ a {
     border-bottom: 1px solid #E5E7EB !important;
     background: #F9FAFB !important;
     border-radius: 6px !important;
-    padding: 6px 14px !important;
+    padding: 4px 14px !important;
     margin: 2px auto 4px !important;
   }
 
@@ -1233,14 +1235,13 @@ a {
     font-size: 10px !important;
   }
 
-  .cert-seal {
-    width: 48px !important;
-    height: 48px !important;
-    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%) !important;
-    border: 2px solid #92400E !important;
-    color: #000000 !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
+  .cert-ribbon-seal-wrap {
+    filter: none !important;
+  }
+
+  .cert-rosette-svg {
+    width: 68px !important;
+    height: 80px !important;
   }
 
   .cert-qr-link {
