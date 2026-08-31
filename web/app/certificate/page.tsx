@@ -418,12 +418,14 @@ function CertificateContent() {
           <div className="cert-signatures-footer">
             <div className="cert-sig-left">
               <div className="cert-signature-wrap" style={{ height: '40px', display: 'flex', alignItems: 'flex-end', paddingLeft: '24px', marginBottom: '-4px' }}>
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src="/signature.svg"
                   alt="Alfredo Sanchez Jr. Signature"
                   width={110}
                   height={38}
                   className="cert-signature-img"
+                  style={{ display: 'block' }}
                 />
               </div>
               <div className="cert-sig-name-left">
