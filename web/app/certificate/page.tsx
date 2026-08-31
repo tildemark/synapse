@@ -23,6 +23,7 @@ import {
 
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import { toJpeg, toPng } from 'html-to-image';
 import { SYNAPSE_VERSION_TAG } from '../config/version';
 
 const OFFICIAL_COURSES = [
@@ -100,6 +101,8 @@ function CertificateContent() {
   const [issueDate, setIssueDate] = useState('August 30, 2026');
   const [copied, setCopied] = useState(false);
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>('');
+  const [downloadingImg, setDownloadingImg] = useState<boolean>(false);
+  const certRef = useRef<HTMLDivElement>(null);
 
   // Synchronize state if URL query params arrive dynamically
   useEffect(() => {
@@ -158,6 +161,28 @@ function CertificateContent() {
     window.print();
   };
 
+  const handleExportImage = async (format: 'jpeg' | 'png') => {
+    if (!certRef.current) return;
+    try {
+      setDownloadingImg(true);
+      const exportFn = format === 'jpeg' ? toJpeg : toPng;
+      const dataUrl = await exportFn(certRef.current, {
+        quality: 0.98,
+        pixelRatio: 2, // High-res 2x retina crisp export
+        backgroundColor: '#090D16',
+      });
+      const link = document.createElement('a');
+      const filename = `Synapse-Certificate-${studentName.replace(/\s+/g, '_')}-${certSerial}.${format === 'jpeg' ? 'jpg' : 'png'}`;
+      link.download = filename;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error('Failed to export certificate image:', err);
+    } finally {
+      setDownloadingImg(false);
+    }
+  };
+
   return (
     <div className="cert-page-wrapper" style={{ minHeight: '100vh', background: 'var(--bg-main)', color: 'var(--text-main)', paddingBottom: '80px' }}>
       <div className="glow-backdrop" />
@@ -191,8 +216,17 @@ function CertificateContent() {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
-            <button onClick={handlePrint} className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '13px' }}>
-              <Printer size={16} /> Print / Save as PDF
+            <button
+              onClick={() => handleExportImage('jpeg')}
+              disabled={downloadingImg}
+              className="btn btn-primary"
+              style={{ padding: '8px 16px', fontSize: '13px', background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)', borderColor: '#059669' }}
+              title="Export high-resolution JPG image to attach to LinkedIn"
+            >
+              <Download size={16} /> {downloadingImg ? 'Exporting...' : 'Export High-Res JPG'}
+            </button>
+            <button onClick={handlePrint} className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '13px' }}>
+              <Printer size={16} /> Print / PDF
             </button>
             <button onClick={handleCopyLink} className="btn btn-secondary" style={{ padding: '8px 16px', fontSize: '13px' }}>
               {copied ? <Check size={16} color="#10B981" /> : <Copy size={16} />}
@@ -282,7 +316,7 @@ function CertificateContent() {
         </div>
 
         {/* Certificate Display Frame */}
-        <div className="cert-frame">
+        <div className="cert-frame" ref={certRef}>
           <div className="cert-corner-decor cert-tl" />
           <div className="cert-corner-decor cert-tr" />
           <div className="cert-corner-decor cert-bl" />
@@ -449,15 +483,40 @@ function CertificateContent() {
         </div>
 
         {/* Social & Professional Sharing Action Center */}
-        <div className="card no-print" style={{ padding: '30px', textAlign: 'center' }}>
-          <h3 style={{ fontSize: '20px', fontWeight: 800, marginBottom: '8px' }}>
+        <div className="card no-print" style={{ padding: '32px 24px', textAlign: 'center' }}>
+          <h3 style={{ fontSize: '22px', fontWeight: 800, marginBottom: '8px' }}>
             Publish &amp; Showcase Your Verified Credential
           </h3>
-          <p style={{ fontSize: '14px', color: 'var(--text-muted)', maxWidth: '640px', margin: '0 auto 24px' }}>
-            Add your achievement directly into your LinkedIn profile licenses or share on your social timelines with cryptographic verification metadata and live QR validation.
+          <p style={{ fontSize: '14px', color: 'var(--text-muted)', maxWidth: '680px', margin: '0 auto 24px', lineHeight: 1.6 }}>
+            Add this credential directly to your <strong>LinkedIn Licenses &amp; Certifications</strong>, download a crisp <strong>High-Resolution JPG / PNG image</strong> to attach as media to your profile or feed posts, or share directly with automatic rich preview cards.
           </p>
 
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px', flexWrap: 'wrap', marginBottom: '20px' }}>
+            <button
+              onClick={() => handleExportImage('jpeg')}
+              disabled={downloadingImg}
+              className="btn btn-primary"
+              style={{
+                padding: '14px 24px',
+                fontSize: '14px',
+                fontWeight: 700,
+                background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
+                borderColor: '#059669',
+                boxShadow: '0 4px 16px rgba(16, 185, 129, 0.35)',
+              }}
+            >
+              <Download size={18} /> {downloadingImg ? 'Generating...' : 'Download JPG for LinkedIn Media'}
+            </button>
+
+            <button
+              onClick={() => handleExportImage('png')}
+              disabled={downloadingImg}
+              className="btn btn-secondary"
+              style={{ padding: '14px 22px', fontSize: '14px', fontWeight: 600 }}
+            >
+              <Download size={18} /> Download Lossless PNG
+            </button>
+
             <a
               href={linkedInCertUrl}
               target="_blank"
@@ -465,7 +524,7 @@ function CertificateContent() {
               className="btn btn-linkedin"
               style={{ padding: '14px 24px', fontSize: '14px' }}
             >
-              <Award size={18} /> Add to LinkedIn Licenses &amp; Certifications
+              <Award size={18} /> Add to LinkedIn Licenses
             </a>
 
             <a
@@ -485,8 +544,13 @@ function CertificateContent() {
               className="btn btn-facebook"
               style={{ padding: '14px 22px', fontSize: '14px' }}
             >
-              <Share2 size={18} /> Post to Facebook Timeline
+              <Share2 size={18} /> Post to Facebook
             </a>
+          </div>
+
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: 'rgba(255, 255, 255, 0.04)', borderRadius: '20px', fontSize: '12px', color: 'var(--text-muted)' }}>
+            <Sparkles size={14} color="#F59E0B" /> 
+            <span><strong>Tip:</strong> In LinkedIn <em>&ldquo;Add license or certification&rdquo;</em>, click <strong>&ldquo;Add media&rdquo;</strong> to attach the downloaded JPG.</span>
           </div>
         </div>
       </div>
