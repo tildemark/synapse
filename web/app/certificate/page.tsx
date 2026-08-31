@@ -294,10 +294,10 @@ function CertificateContent() {
               <Image
                 src="/logo512.png"
                 alt="Synapse Official Crest"
-                width={130}
-                height={130}
+                width={170}
+                height={170}
                 className="cert-crest-img"
-                style={{ filter: 'drop-shadow(0 8px 24px rgba(245, 158, 11, 0.25))' }}
+                style={{ filter: 'drop-shadow(0 10px 28px rgba(245, 158, 11, 0.3))' }}
               />
             </div>
 
