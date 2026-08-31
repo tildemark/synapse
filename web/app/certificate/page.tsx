@@ -288,27 +288,27 @@ function CertificateContent() {
           <div className="cert-corner-decor cert-bl" />
           <div className="cert-corner-decor cert-br" />
 
-          {/* Certificate Header - Modern Layout with Prominent Crest on Left */}
-          <div className="cert-header-section" style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', textAlign: 'left', marginBottom: '20px', gap: '24px' }}>
-            <div className="cert-logo-wrap" style={{ margin: 0, flexShrink: 0 }}>
+          {/* Certificate Header - Logo on Left, Perfectly Centered Text */}
+          <div className="cert-header-section" style={{ position: 'relative', textAlign: 'center', marginBottom: '20px', minHeight: '120px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="cert-logo-wrap" style={{ position: 'absolute', left: 0, top: '50%', transform: 'translateY(-50%)', margin: 0 }}>
               <Image
                 src="/logo512.png"
                 alt="Synapse Official Crest"
-                width={140}
-                height={140}
+                width={130}
+                height={130}
                 className="cert-crest-img"
                 style={{ filter: 'drop-shadow(0 8px 24px rgba(245, 158, 11, 0.25))' }}
               />
             </div>
 
-            <div style={{ flex: 1 }}>
+            <div style={{ maxWidth: '680px', margin: '0 auto' }}>
               <div className="cert-badge">
                 <Award size={15} /> Official Verified Credential
               </div>
-              <h2 className="cert-title" style={{ textAlign: 'left', margin: '4px 0 6px' }}>
+              <h2 className="cert-title" style={{ textAlign: 'center', margin: '4px 0 6px' }}>
                 SYNAPSE ACADEMIC INSTITUTE
               </h2>
-              <p className="cert-subtitle" style={{ textAlign: 'left' }}>
+              <p className="cert-subtitle" style={{ textAlign: 'center' }}>
                 Cognitive Retention &amp; Spaced Repetition Registry &bull; Protocol {SYNAPSE_VERSION_TAG}
               </p>
             </div>
