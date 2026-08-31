@@ -13,7 +13,7 @@ const _kAvailablePacks = [
     description: 'Master C fundamentals: pointers, memory management, structs, file I/O, and systems programming.',
     iconName: 'code',
     color: '#3B82F6',
-    questionCount: 249,
+    questionCount: 450,
     assetPath: 'assets/packs/pack_c_programming.json',
   ),
   _PackMeta(
@@ -23,7 +23,7 @@ const _kAvailablePacks = [
     description: 'Master modern HTML5 semantics, document structure, forms, media, accessibility, and SEO best practices.',
     iconName: 'code',
     color: '#E44D26',
-    questionCount: 138,
+    questionCount: 450,
     assetPath: 'assets/packs/pack_html.json',
   ),
   _PackMeta(
@@ -35,6 +35,16 @@ const _kAvailablePacks = [
     color: '#2563EB',
     questionCount: 450,
     assetPath: 'assets/packs/pack_css.json',
+  ),
+  _PackMeta(
+    packId: 'javascript_fundamentals',
+    name: 'JavaScript Fundamentals',
+    subject: 'Web Development',
+    description: 'Complete modern JavaScript & W3Schools curriculum: ES6+, Scope, Closures, DOM, Async/Await, Fetch, Classes, Web APIs, and Functional Methods.',
+    iconName: 'code',
+    color: '#F59E0B',
+    questionCount: 450,
+    assetPath: 'assets/packs/pack_javascript.json',
   ),
   _PackMeta(
     packId: 'lto_drivers_exam_ph',

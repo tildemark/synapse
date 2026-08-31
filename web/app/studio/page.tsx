@@ -564,9 +564,9 @@ export default function StudioPage() {
         </div>
 
         {/* Studio Body: Editor & Preview Split */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.2fr) minmax(0, 0.8fr)', gap: '24px', alignItems: 'start' }}>
           {/* Left Column: Form Editors */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', minWidth: 0 }}>
             {/* TAB: QUESTIONS */}
             {activeTab === 'questions' && (
               <div className="card" style={{ padding: '24px' }}>
@@ -591,27 +591,150 @@ export default function StudioPage() {
                   </div>
                 </div>
 
-                {/* Horizontal Question Index Bar */}
-                <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '12px', marginBottom: '20px' }}>
-                  {pack.questions.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setSelectedQuestionIndex(i)}
-                      style={{
-                        minWidth: '34px',
-                        height: '34px',
-                        borderRadius: '8px',
-                        border: i === selectedQuestionIndex ? '2px solid var(--primary)' : '1px solid var(--border-card)',
-                        background: i === selectedQuestionIndex ? 'rgba(108, 99, 255, 0.25)' : 'var(--bg-card-subtle)',
-                        color: i === selectedQuestionIndex ? '#fff' : 'var(--text-muted)',
-                        fontWeight: 'bold',
-                        fontSize: '12px',
-                        cursor: 'pointer',
-                      }}
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
+                {/* Question Filter & Jump Bar for Large Packs */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '16px', background: 'var(--bg-card-subtle)', padding: '12px 14px', borderRadius: '12px', border: '1px solid var(--border-card)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)' }}>Jump to Card:</span>
+                      <select
+                        value={selectedQuestionIndex}
+                        onChange={(e) => setSelectedQuestionIndex(Number(e.target.value))}
+                        style={{
+                          background: 'var(--bg-card)',
+                          border: '1px solid var(--border-card)',
+                          borderRadius: '8px',
+                          color: '#fff',
+                          padding: '6px 10px',
+                          fontSize: '12px',
+                          outline: 'none',
+                          cursor: 'pointer',
+                          maxWidth: '240px',
+                        }}
+                      >
+                        {pack.questions.map((q, i) => (
+                          <option key={i} value={i}>
+                            #{i + 1}: {q.question ? (q.question.length > 35 ? q.question.substring(0, 35) + '...' : q.question) : `[Empty Card ${i + 1}]`} (Mod {q.module})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedQuestionIndex(Math.max(0, selectedQuestionIndex - 1))}
+                        disabled={selectedQuestionIndex === 0}
+                        className="btn btn-secondary"
+                        style={{ padding: '4px 10px', fontSize: '11px', opacity: selectedQuestionIndex === 0 ? 0.4 : 1 }}
+                      >
+                        &larr; Prev
+                      </button>
+                      <span style={{ fontSize: '12px', fontWeight: 700, padding: '0 4px' }}>
+                        {selectedQuestionIndex + 1} / {pack.questions.length}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedQuestionIndex(Math.min(pack.questions.length - 1, selectedQuestionIndex + 1))}
+                        disabled={selectedQuestionIndex === pack.questions.length - 1}
+                        className="btn btn-secondary"
+                        style={{ padding: '4px 10px', fontSize: '11px', opacity: selectedQuestionIndex === pack.questions.length - 1 ? 0.4 : 1 }}
+                      >
+                        Next &rarr;
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Filter by Module if more than 1 module exists */}
+                  {pack.modules && pack.modules.length > 1 && (
+                    <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '4px' }}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const firstInMod = 0;
+                          setSelectedQuestionIndex(firstInMod);
+                        }}
+                        style={{
+                          padding: '4px 10px',
+                          borderRadius: '6px',
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          cursor: 'pointer',
+                          background: 'transparent',
+                          border: '1px solid var(--border-card)',
+                          color: 'var(--text-muted)',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        All ({pack.questions.length})
+                      </button>
+                      {pack.modules.map((m) => {
+                        const countInMod = pack.questions.filter((q) => q.module === m.number).length;
+                        const isCurrentModule = currentQ?.module === m.number;
+                        return (
+                          <button
+                            key={m.number}
+                            type="button"
+                            onClick={() => {
+                              const firstIdx = pack.questions.findIndex((q) => q.module === m.number);
+                              if (firstIdx !== -1) setSelectedQuestionIndex(firstIdx);
+                            }}
+                            style={{
+                              padding: '4px 10px',
+                              borderRadius: '6px',
+                              fontSize: '11px',
+                              fontWeight: 600,
+                              cursor: 'pointer',
+                              background: isCurrentModule ? 'rgba(108, 99, 255, 0.2)' : 'transparent',
+                              border: isCurrentModule ? '1px solid var(--primary)' : '1px solid var(--border-card)',
+                              color: isCurrentModule ? '#fff' : 'var(--text-muted)',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            Mod {m.number}: {m.name.length > 20 ? m.name.substring(0, 20) + '...' : m.name} ({countInMod})
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* Compact Scrollable / Wrap Grid of Question Numbers */}
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '5px',
+                      flexWrap: 'wrap',
+                      maxHeight: '130px',
+                      overflowY: 'auto',
+                      padding: '4px',
+                      background: 'var(--bg-card)',
+                      borderRadius: '8px',
+                      border: '1px solid var(--border-card)',
+                    }}
+                  >
+                    {pack.questions.map((q, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        onClick={() => setSelectedQuestionIndex(i)}
+                        title={`Card #${i + 1} (Module ${q.module})`}
+                        style={{
+                          minWidth: '32px',
+                          height: '28px',
+                          padding: '0 4px',
+                          borderRadius: '6px',
+                          border: i === selectedQuestionIndex ? '2px solid var(--primary)' : '1px solid var(--border-card)',
+                          background: i === selectedQuestionIndex ? 'var(--primary)' : 'var(--bg-card-subtle)',
+                          color: i === selectedQuestionIndex ? '#fff' : 'var(--text-muted)',
+                          fontWeight: 'bold',
+                          fontSize: '11px',
+                          cursor: 'pointer',
+                          transition: 'all 0.1s ease',
+                        }}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 {currentQ && (
@@ -1061,7 +1184,7 @@ export default function StudioPage() {
                   </button>
                 </div>
 
-                <div>
+                <div style={{ minWidth: 0, width: '100%' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                     <label style={{ fontSize: '13px', fontWeight: 700 }}>Canonical Schema Output (Validated)</label>
                     <button onClick={handleCopy} className="btn btn-secondary" style={{ padding: '4px 10px', fontSize: '12px' }}>
@@ -1076,9 +1199,14 @@ export default function StudioPage() {
                       borderRadius: '12px',
                       padding: '16px',
                       fontSize: '12px',
-                      maxHeight: '260px',
+                      maxHeight: '380px',
+                      overflowX: 'auto',
                       overflowY: 'auto',
+                      maxWidth: '100%',
+                      boxSizing: 'border-box',
                       color: '#A78BFA',
+                      whiteSpace: 'pre-wrap',
+                      wordBreak: 'break-word',
                     }}
                   >
                     {generateCleanJson()}
@@ -1089,7 +1217,7 @@ export default function StudioPage() {
           </div>
 
           {/* Right Column: Live In-App Card Simulator */}
-          <div>
+          <div style={{ minWidth: 0 }}>
             <div style={{ position: 'sticky', top: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', color: 'var(--text-muted)', fontSize: '13px', fontWeight: 600 }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
