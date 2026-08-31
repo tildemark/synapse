@@ -107,12 +107,16 @@ function CertificateContent() {
   // Synchronize state if URL query params arrive dynamically
   useEffect(() => {
     if (urlName) setStudentName(urlName);
-  }, [urlName]);
+    if (urlPack) {
+      const match = OFFICIAL_COURSES.find((c) => c.title.toLowerCase().includes(urlPack.toLowerCase()) || c.id === urlPack);
+      if (match) setSelectedCourseId(match.id);
+    }
+  }, [urlName, urlPack]);
 
   const course = OFFICIAL_COURSES.find((c) => c.id === selectedCourseId) || OFFICIAL_COURSES[0];
   const cleanCode = selectedCourseId === 'c_programming' ? 'CPROG' : selectedCourseId === 'html_fundamentals' ? 'HTML' : selectedCourseId === 'css3_fundamentals' ? 'CSS3' : selectedCourseId === 'lto_drivers_exam_ph' ? 'LTOPH' : selectedCourseId.toUpperCase().slice(0, 5);
   const checksum = computeChecksum(studentName, selectedCourseId);
-  const certSerial = urlId && urlId.startsWith('SYN-') ? urlId : `SYN-${cleanCode}-${checksum}-VERIFIED`;
+  const certSerial = `SYN-${cleanCode}-${checksum}-VERIFIED`;
 
   const verificationUrl = `https://synapse.sanchez.ph/verify?id=${encodeURIComponent(certSerial)}&name=${encodeURIComponent(
     studentName
