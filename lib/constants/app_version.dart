@@ -3,9 +3,9 @@
 class AppVersion {
   AppVersion._();
 
-  static const String version = '1.1.0';
-  static const int buildNumber = 2;
+  static const String version = '1.1.1';
+  static const int buildNumber = 3;
   static const String versionTag = 'v$version';
   static const String fullVersion = '$version+$buildNumber';
-  static const String releaseDate = 'August 30, 2026';
+  static const String releaseDate = 'September 1, 2026';
 }

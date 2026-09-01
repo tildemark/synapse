@@ -3,7 +3,7 @@
  * Update this single file to change version numbering across all web application views,
  * download links, release targets, and protocol specs.
  */
-export const SYNAPSE_VERSION = '1.1.0';
+export const SYNAPSE_VERSION = '1.1.1';
 export const SYNAPSE_VERSION_TAG = `v${SYNAPSE_VERSION}`;
 
 export const SYNAPSE_DOWNLOADS = {

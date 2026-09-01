@@ -158,17 +158,20 @@ class _MockExamScreenState extends ConsumerState<MockExamScreen> {
       ('D', current.choiceD),
     ];
 
+    final settings = ref.watch(settingsServiceProvider);
+
     return Scaffold(
       backgroundColor: SynapseColors.surface,
       appBar: AppBar(
         title: Text('Mock Exam (${_currentIndex + 1}/${_questions.length})'),
         backgroundColor: SynapseColors.surface,
         actions: [
-          // Fast-Forward Auto-Answer All Questions (Testing & Rapid Completion Tool)
-          IconButton(
-            icon: const Icon(Icons.fast_forward_rounded, size: 22),
-            color: SynapseColors.secondary,
-            tooltip: 'Fast-Forward (Auto-Answer All)',
+          // Fast-Forward Auto-Answer All Questions (Testing & Rapid Completion Tool - Dev Mode Only)
+          if (settings.isDevMode)
+            IconButton(
+              icon: const Icon(Icons.fast_forward_rounded, size: 22),
+              color: SynapseColors.secondary,
+              tooltip: 'Fast-Forward (Auto-Answer All)',
             onPressed: () {
               showDialog(
                 context: context,

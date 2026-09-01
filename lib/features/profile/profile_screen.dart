@@ -23,6 +23,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
   late TextEditingController _instController;
   bool _isEditing = false;
   String? _selectedPackFilter; // null = all packs
+  int _aboutVersionTapCount = 0;
 
   @override
   void initState() {
@@ -115,14 +116,38 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
               ),
             ),
             const SizedBox(width: 12),
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('About Synapse', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                  Text(
-                    'Release ${AppVersion.versionTag} (Build ${AppVersion.buildNumber})',
-                    style: TextStyle(fontSize: 11, color: SynapseColors.secondary, fontWeight: FontWeight.w600),
+                  const Text('About Synapse', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                  InkWell(
+                    onTap: () async {
+                      final settings = ref.read(settingsServiceProvider);
+                      _aboutVersionTapCount++;
+                      if (_aboutVersionTapCount >= 7) {
+                        _aboutVersionTapCount = 0;
+                        final newStatus = !settings.isDevMode;
+                        await settings.setDevMode(newStatus);
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                newStatus
+                                    ? '🛠️ Developer Mode Enabled!'
+                                    : '🔒 Developer Mode Disabled.',
+                              ),
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: newStatus ? SynapseColors.burned : SynapseColors.card,
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    child: Text(
+                      'Release ${AppVersion.versionTag} (Build ${AppVersion.buildNumber})',
+                      style: const TextStyle(fontSize: 11, color: SynapseColors.secondary, fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ],
               ),

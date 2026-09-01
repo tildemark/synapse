@@ -172,12 +172,12 @@ Should expose:
 ### GitHub Release
 `.github/workflows/release.yml` is already complete. To trigger a release:
 ```powershell
-git tag v1.1.0
-git push origin v1.1.0
+git tag v1.1.1
+git push origin v1.1.1
 ```
 This produces:
-- `synapse_v1.1.0_android.apk`
-- `synapse_v1.1.0_windows_x64.zip`
+- `synapse_v1.1.1_android.apk`
+- `synapse_v1.1.1_windows_x64.zip`
 
 ---
 

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsService {
@@ -8,6 +9,7 @@ class SettingsService {
   static const _kApprenticeCap = 'apprentice_cap';
   static const _kThemeMode = 'theme_mode'; // 'dark' | 'light'
   static const _kActivePackId = 'active_pack_id';
+  static const _kDevModeEnabled = 'dev_mode_enabled';
 
   // Scholar Profile Keys
   static const _kUserName = 'user_name';
@@ -42,6 +44,11 @@ class SettingsService {
   String? get activePackId => _prefs.getString(_kActivePackId);
   Future<void> setActivePackId(String? v) =>
       v != null ? _prefs.setString(_kActivePackId, v) : _prefs.remove(_kActivePackId);
+
+  // Developer Mode (Default true in debug mode, false in release mode unless explicitly enabled)
+  bool get isDevMode => kDebugMode || (_prefs.getBool(_kDevModeEnabled) ?? false);
+  bool get isDevModeOverride => _prefs.getBool(_kDevModeEnabled) ?? false;
+  Future<void> setDevMode(bool enabled) => _prefs.setBool(_kDevModeEnabled, enabled);
 
   // Profile Getters / Setters
   String get userName => _prefs.getString(_kUserName) ?? 'Scholar';
