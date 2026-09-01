@@ -123,30 +123,29 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with SingleTicker
                   const Text('About Synapse', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                   InkWell(
                     onTap: () async {
+                      final messenger = ScaffoldMessenger.of(context);
                       final settings = ref.read(settingsServiceProvider);
                       _aboutVersionTapCount++;
                       if (_aboutVersionTapCount >= 7) {
                         _aboutVersionTapCount = 0;
                         final newStatus = !settings.isDevMode;
                         await settings.setDevMode(newStatus);
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                newStatus
-                                    ? '🛠️ Developer Mode Enabled!'
-                                    : '🔒 Developer Mode Disabled.',
-                              ),
-                              behavior: SnackBarBehavior.floating,
-                              backgroundColor: newStatus ? SynapseColors.burned : SynapseColors.card,
+                        messenger.showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              newStatus
+                                  ? '🛠️ Developer Mode Enabled!'
+                                  : '🔒 Developer Mode Disabled.',
                             ),
-                          );
-                        }
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: newStatus ? SynapseColors.burned : SynapseColors.card,
+                          ),
+                        );
                       }
                     },
-                    child: Text(
+                    child: const Text(
                       'Release ${AppVersion.versionTag} (Build ${AppVersion.buildNumber})',
-                      style: const TextStyle(fontSize: 11, color: SynapseColors.secondary, fontWeight: FontWeight.w600),
+                      style: TextStyle(fontSize: 11, color: SynapseColors.secondary, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],
