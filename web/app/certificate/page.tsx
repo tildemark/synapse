@@ -33,7 +33,7 @@ const OFFICIAL_COURSES = [
     code: 'CS-101-C',
     domain: 'Computer Science',
     modulesCount: 15,
-    questionsCount: 249,
+    questionsCount: 450,
     color: '#3B82F6',
   },
   {
@@ -42,7 +42,7 @@ const OFFICIAL_COURSES = [
     code: 'WEB-102-HTML',
     domain: 'Web Development',
     modulesCount: 15,
-    questionsCount: 138,
+    questionsCount: 450,
     color: '#E44D26',
   },
   {

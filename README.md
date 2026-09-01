@@ -44,8 +44,8 @@ Built with **Flutter**, **Drift (SQLite)**, and **Riverpod**, Synapse decouples 
 
 | Pack | Subject | Modules | Questions | Status | Credential |
 | :--- | :--- | :---: | :---: | :---: | :---: |
-| **C Systems Programming** | Computer Science | 15 | **249** | Default Starter Pack | `SYN-CPROG-8F39-VERIFIED` |
-| **HTML5 Web Semantics** | Web Development | 15 | **138** | Available in Pack Store | `SYN-HTML-9B41-VERIFIED` |
+| **C Systems Programming** | Computer Science | 15 | **450** | Default Starter Pack | `SYN-CPROG-8F39-VERIFIED` |
+| **HTML5 Web Semantics** | Web Development | 15 | **450** | Available in Pack Store | `SYN-HTML-9B41-VERIFIED` |
 | **CSS3 & Modern Stylesheets** | Web Development | 15 | **450** | Available in Pack Store | `SYN-CSS3-7E19-VERIFIED` |
 | **LTO Driver's Licensing Reviewer** | Traffic Laws & Safety | 15 | **450** | Available in Pack Store | `SYN-LTOPH-4D21-VERIFIED` |
 

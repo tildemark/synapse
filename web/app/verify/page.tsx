@@ -31,7 +31,7 @@ const PACK_REGISTRY: Record<string, { code: string; name: string; packId: string
     name: 'C Systems Programming & Architecture',
     packId: 'c_programming',
     modules: 15,
-    totalQuestions: 249,
+    totalQuestions: 450,
     color: '#3B82F6',
   },
   HTML: {
@@ -39,7 +39,7 @@ const PACK_REGISTRY: Record<string, { code: string; name: string; packId: string
     name: 'HTML5 & Web Semantics Architecture',
     packId: 'html_fundamentals',
     modules: 15,
-    totalQuestions: 138,
+    totalQuestions: 450,
     color: '#E44D26',
   },
   CSS: {
